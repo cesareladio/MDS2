@@ -214,7 +214,19 @@ export function CapabilityEngine({ active }: { active: boolean }) {
         return (
           <group key={node.item.id} position={pos}>
             {/* Node sphere */}
-            <mesh scale={hovered ? 1.5 : 1}>
+            <mesh
+              scale={hovered ? 1.5 : 1}
+              onPointerEnter={() =>
+                setHoveredNode(node.item.id)
+              }
+              onPointerLeave={() =>
+                setHoveredNode(null)
+              }
+              onClick={(event) => {
+                event.stopPropagation()
+                selectCapability(node.item.id)
+              }}
+            >
               <sphereGeometry args={[0.12, 24, 24]} />
               <meshStandardMaterial
                 color="#1455b8"
@@ -232,7 +244,10 @@ export function CapabilityEngine({ active }: { active: boolean }) {
                 style={{ opacity: networkOpacity }}
                 onPointerEnter={() => setHoveredNode(node.item.id)}
                 onPointerLeave={() => setHoveredNode(null)}
-                onClick={() => selectCapability(node.item.id)}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  selectCapability(node.item.id)
+                }}
                 aria-label={`Ver ${node.item.name}`}
               >
                 {node.item.name}

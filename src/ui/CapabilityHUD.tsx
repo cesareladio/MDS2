@@ -6,7 +6,11 @@ export function CapabilityHUD() {
   const phase = useExperienceStore((state) => state.phase)
   const selectCapability = useExperienceStore((state) => state.selectCapability)
   const item = capabilities.find((capability) => capability.id === selected)
-  if (!item || phase !== 'ibiol') return null
+  const visible =
+    phase === 'engine' ||
+    phase === 'ibiol'
+
+  if (!item || !visible) return null
   return (
     <aside className="capability-hud" aria-live="polite">
       <button onClick={() => selectCapability(null)} aria-label="Cerrar capability">×</button>
