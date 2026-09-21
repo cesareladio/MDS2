@@ -14,108 +14,83 @@ interface HubMarkerProps {
 
 export function HubMarker({ hub, color, glowColor }: HubMarkerProps) {
   const [hovered, setHovered] = useState(false)
-  const selectedHub  = useExperienceStore((state) => state.selectedHub)
-  const selectHub    = useExperienceStore((state) => state.selectHub)
-  const position     = useMemo(() => latLonToVector3(hub.lat, hub.lon, 2.088), [hub.lat, hub.lon])
-  const selected     = selectedHub === hub.id
+  const selectedHub = useExperienceStore((state) => state.selectedHub)
+  const selectHub = useExperienceStore((state) => state.selectHub)
+  const reduced = useExperienceStore((state) => state.reducedMotion)
+  const position = useMemo(() => latLonToVector3(hub.lat, hub.lon, 2.088), [hub.lat, hub.lon])
+  const selected = selectedHub === hub.id
   const surfaceNormal = useMemo(() => position.clone().normalize(), [position])
   const ringQuaternion = useMemo(() => new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), surfaceNormal), [surfaceNormal])
-
-  const coreRef    = useRef<THREE.Mesh>(null)
-  const pulse1Ref  = useRef<THREE.Mesh>(null)
-  const pulse2Ref  = useRef<THREE.Mesh>(null)
-  const haloRef    = useRef<THREE.Mesh>(null)
-  const offsetRef  = useRef(Math.random() * Math.PI * 2)
+  const coreRef = useRef<THREE.Mesh>(null)
+  const ringRef = useRef<THREE.Mesh>(null)
+  const haloRef = useRef<THREE.Mesh>(null)
+  const hoverStartedAt = useRef<number | null>(null)
 
   useFrame(({ clock }) => {
-    const t = clock.elapsedTime + offsetRef.current
-    const active = hovered || selected
-
-    // Core pulsing
+    if (hovered && hoverStartedAt.current === null) hoverStartedAt.current = clock.elapsedTime
     if (coreRef.current) {
-      const s = active ? 1.3 : 1.0 + Math.sin(t * 1.8) * 0.06
-      coreRef.current.scale.setScalar(s)
-      const mat = coreRef.current.material as THREE.MeshBasicMaterial
-      mat.color.setStyle(active ? glowColor : color)
+      coreRef.current.scale.setScalar(selected ? 1.08 : hovered ? 1.1 : 1)
+      const material = coreRef.current.material as THREE.MeshBasicMaterial
+      material.color.setStyle(hovered || selected ? glowColor : color)
     }
-
-    // Pulse ring 1 — slow
-    if (pulse1Ref.current) {
-      const phase = (t * 0.65) % 1
-      pulse1Ref.current.scale.setScalar(1 + phase * 0.78)
-      ;(pulse1Ref.current.material as THREE.MeshBasicMaterial).opacity =
-        (1 - phase) * 0.34 * (active ? 1.18 : 1)
-    }
-
-    // Pulse ring 2 — fast, offset
-    if (pulse2Ref.current) {
-      const phase = ((t * 0.65) + 0.5) % 1
-      pulse2Ref.current.scale.setScalar(1 + phase * 0.78)
-      ;(pulse2Ref.current.material as THREE.MeshBasicMaterial).opacity =
-        (1 - phase) * 0.22 * (active ? 1.18 : 1)
-    }
-
-    // Outer soft halo
     if (haloRef.current) {
-      const targetScale = active ? 1.7 : 1.3
-      const cur = haloRef.current.scale.x
-      haloRef.current.scale.setScalar(cur + (targetScale - cur) * 0.12)
-      ;(haloRef.current.material as THREE.MeshBasicMaterial).opacity = active ? 0.14 : 0.08
+      haloRef.current.scale.setScalar(selected ? 1.35 : hovered ? 1.25 : 1.15)
+      ;(haloRef.current.material as THREE.MeshBasicMaterial).opacity = selected ? 0.12 : hovered ? 0.1 : 0.035
+    }
+    if (ringRef.current) {
+      const material = ringRef.current.material as THREE.MeshBasicMaterial
+      if (selected) {
+        ringRef.current.scale.setScalar(1)
+        material.opacity = 0.18
+      } else if (!reduced && hoverStartedAt.current !== null) {
+        const phase = Math.min(1, (clock.elapsedTime - hoverStartedAt.current) / 1.05)
+        ringRef.current.scale.setScalar(1 + phase * 0.35)
+        material.opacity = (1 - phase) * 0.16
+        if (phase === 1) hoverStartedAt.current = null
+      } else {
+        ringRef.current.scale.setScalar(1)
+        material.opacity = 0
+      }
     }
   })
 
+  const enter = () => {
+    hoverStartedAt.current = null
+    setHovered(true)
+  }
+
   return (
     <group position={position}>
-      {/* Outer soft halo */}
       <mesh ref={haloRef}>
         <sphereGeometry args={[0.048, 16, 16]} />
-        <meshBasicMaterial color={color} transparent opacity={0.12} depthWrite={false} blending={THREE.AdditiveBlending} />
+        <meshBasicMaterial color={color} transparent opacity={0.035} depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>
-
-      {/* Pulse rings tangent to the Earth surface */}
       <group quaternion={ringQuaternion}>
-      <mesh ref={pulse1Ref}>
-        <ringGeometry args={[0.044, 0.055, 32]} />
-        <meshBasicMaterial color={color} transparent opacity={0.5} side={THREE.DoubleSide} toneMapped={false} />
-      </mesh>
-      <mesh ref={pulse2Ref}>
-        <ringGeometry args={[0.044, 0.055, 32]} />
-        <meshBasicMaterial color={color} transparent opacity={0.3} side={THREE.DoubleSide} toneMapped={false} />
-      </mesh>
+        <mesh ref={ringRef}>
+          <ringGeometry args={[0.044, 0.055, 32]} />
+          <meshBasicMaterial color={color} transparent opacity={0} side={THREE.DoubleSide} toneMapped={false} />
+        </mesh>
       </group>
-
-      {/* Core light dot */}
       <mesh
         ref={coreRef}
-        onPointerEnter={() => setHovered(true)}
-        onPointerLeave={() => setHovered(false)}
-        onClick={(e) => { e.stopPropagation(); selectHub(selected ? null : hub.id) }}
+        onPointerEnter={enter}
+        onPointerLeave={() => { hoverStartedAt.current = null; setHovered(false) }}
+        onClick={(event) => { event.stopPropagation(); selectHub(selected ? null : hub.id) }}
       >
         <sphereGeometry args={[0.04, 20, 20]} />
         <meshBasicMaterial color={color} toneMapped={false} />
       </mesh>
-
-      {/* Leader line + label */}
-      <Html
-        center
-        transform={false}
-        zIndexRange={[40, 0]}
-        style={{ pointerEvents: 'auto' }}
-      >
+      <Html center transform={false} zIndexRange={[40, 0]} style={{ pointerEvents: 'auto' }}>
         <button
           className={`hub-label ${selected ? 'is-selected' : ''} ${hovered ? 'is-hovered' : ''}`}
-          onPointerEnter={() => setHovered(true)}
-          onPointerLeave={() => setHovered(false)}
-          onClick={(e) => { e.stopPropagation(); selectHub(selected ? null : hub.id) }}
+          onPointerEnter={enter}
+          onPointerLeave={() => { hoverStartedAt.current = null; setHovered(false) }}
+          onClick={(event) => { event.stopPropagation(); selectHub(selected ? null : hub.id) }}
           aria-label={`Explorar ${hub.name}`}
           aria-pressed={selected}
         >
           <span className="hub-label__name">{hub.name}</span>
-          {(hovered || selected) && (
-            <span className="hub-label__metric">
-              {hub.hc == null ? 'HC · por confirmar' : `${hub.hc} personas*`}
-            </span>
-          )}
+          {(hovered || selected) && <span className="hub-label__metric">{hub.hc == null ? 'HC · por confirmar' : `${hub.hc} personas*`}</span>}
         </button>
       </Html>
     </group>

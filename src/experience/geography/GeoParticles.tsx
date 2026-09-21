@@ -6,6 +6,7 @@ import { useExperienceStore } from '../../store/experienceStore'
 export function GeoParticles() {
   const points = useRef<THREE.Points>(null)
   const quality = useExperienceStore((state) => state.deviceQuality)
+  const phase = useExperienceStore((state) => state.phase)
   const count = quality === 'LOW' ? 140 : quality === 'MEDIUM' ? 280 : 520
   const positions = useMemo(() => {
     const array = new Float32Array(count * 3)
@@ -19,7 +20,7 @@ export function GeoParticles() {
     }
     return array
   }, [count])
-  useFrame((_, delta) => { if (points.current) points.current.rotation.y -= delta * 0.012 })
+  useFrame((_, delta) => { if (points.current && phase !== 'explore') points.current.rotation.y -= delta * 0.003 })
   return (
     <points ref={points}>
       <bufferGeometry><bufferAttribute attach="attributes-position" args={[positions, 3]} /></bufferGeometry>

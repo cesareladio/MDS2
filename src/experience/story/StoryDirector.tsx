@@ -19,8 +19,9 @@ const phaseStops: Array<{ phase: ExperiencePhase; at: number }> = [
 ]
 
 export function StoryDirector() {
-  const setPhase       = useExperienceStore((state) => state.setPhase)
+  const setPhase = useExperienceStore((state) => state.setPhase)
   const setScrollProgress = useExperienceStore((state) => state.setScrollProgress)
+  const setExploration = useExperienceStore((state) => state.setExplorationMode)
   const explorationMode = useExperienceStore((state) => state.explorationMode)
 
   useLayoutEffect(() => {
@@ -42,7 +43,10 @@ export function StoryDirector() {
 
     phaseStops.forEach(({ phase, at }, index) => {
       timeline.addLabel(phase, at * 100)
-      timeline.call(() => setPhase(phase), [], at * 100)
+      timeline.call(() => {
+        setPhase(phase)
+        setExploration(phase === 'explore')
+      }, [], at * 100)
       if (index < phaseStops.length - 1) {
         timeline.to(state, {
           progress: phaseStops[index + 1].at,
@@ -66,6 +70,7 @@ export function StoryDirector() {
           if (self.progress >= stop.at) current = stop.phase
         }
         setPhase(current)
+        setExploration(current === 'explore')
       },
     })
 
@@ -73,7 +78,7 @@ export function StoryDirector() {
       trigger.kill()
       timeline.kill()
     }
-  }, [explorationMode, setPhase, setScrollProgress])
+  }, [explorationMode, setExploration, setPhase, setScrollProgress])
 
   return null
 }

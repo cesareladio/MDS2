@@ -2,7 +2,8 @@ import { useFrame } from '@react-three/fiber'
 import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import type { Hub } from '../../data/types'
-import { latLonToVector3, makeArc } from '../../lib/geo'
+import { latLonToVector3 } from '../../lib/geo'
+import { useExperienceStore } from '../../store/experienceStore'
 import { HubMarker } from './HubMarker'
 
 interface HubNetworkProps {
@@ -11,81 +12,50 @@ interface HubNetworkProps {
   glowColor?: string
 }
 
-/** Traveling pulse along a geodesic arc segment */
-function ArcSegment({
-  start,
-  end,
-  color,
-  delay = 0,
-}: {
-  start: THREE.Vector3
-  end: THREE.Vector3
-  color: string
-  delay?: number
-}) {
-  const particle = useRef<THREE.Mesh>(null)
-  const phaseRef = useRef(delay)
-
-  // Build geodesic arc
+function NetworkLine({ start, end, color }: { start: THREE.Vector3; end: THREE.Vector3; color: string }) {
   const points = useMemo(() => {
-    const mid = start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(
-      start.distanceTo(end) * 0.22 + 2.1,
-    )
-    const curve = new THREE.CatmullRomCurve3([start, mid, end])
-    return curve.getPoints(60)
+    const mid = start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(start.distanceTo(end) * 0.22 + 2.1)
+    return new THREE.CatmullRomCurve3([start, mid, end]).getPoints(60)
   }, [start, end])
+  const geometry = useMemo(() => new THREE.BufferGeometry().setFromPoints(points), [points])
+  const material = useMemo(() => new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.32, linewidth: 1 }), [color])
+  return <primitive object={new THREE.Line(geometry, material)} />
+}
 
-  const geom = useMemo(() => new THREE.BufferGeometry().setFromPoints(points), [points])
-  const mat  = useMemo(
-    () => new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.32, linewidth: 1 }),
-    [color],
-  )
+function NetworkTraveler({ positions, color }: { positions: THREE.Vector3[]; color: string }) {
+  const particle = useRef<THREE.Mesh>(null)
+  const reduced = useExperienceStore((state) => state.reducedMotion)
+  const phase = useExperienceStore((state) => state.phase)
+  const path = useMemo(() => {
+    if (positions.length < 2) return null
+    return new THREE.CatmullRomCurve3(positions)
+  }, [positions])
 
-  useFrame((_, delta) => {
-    if (!particle.current) return
-    phaseRef.current = (phaseRef.current + delta * 0.28) % 1
-    const idx = Math.floor(phaseRef.current * (points.length - 1))
-    particle.current.position.copy(points[idx])
+  const visible = !reduced && phase !== 'explore'
+
+  useFrame(({ clock }) => {
+    if (!particle.current || !path || !visible) return
+    particle.current.position.copy(path.getPoint((clock.elapsedTime * 0.07) % 1))
   })
 
+  if (!path) return null
   return (
-    <group>
-      <primitive object={new THREE.Line(geom, mat)} />
-      <mesh ref={particle}>
-        <sphereGeometry args={[0.022, 10, 10]} />
-        <meshBasicMaterial color={color} toneMapped={false} />
-      </mesh>
-    </group>
+    <mesh ref={particle} visible={visible}>
+      <sphereGeometry args={[0.012, 10, 10]} />
+      <meshBasicMaterial color={color} toneMapped={false} transparent opacity={0.55} />
+    </mesh>
   )
 }
 
 export function HubNetwork({ hubs, color, glowColor }: HubNetworkProps) {
   const glow = glowColor ?? color
-  const positions = useMemo(
-    () => hubs.map((h) => latLonToVector3(h.lat, h.lon, 2.078)),
-    [hubs],
-  )
+  const positions = useMemo(() => hubs.map((hub) => latLonToVector3(hub.lat, hub.lon, 2.078)), [hubs])
 
   return (
     <group>
-      {/* Geodesic arc segments between consecutive hubs */}
-      {positions.map((pos, i) => {
-        if (i === positions.length - 1) return null
-        return (
-          <ArcSegment
-            key={i}
-            start={pos}
-            end={positions[i + 1]}
-            color={color}
-            delay={i * 0.35}
-          />
-        )
-      })}
-
-      {/* Hub markers */}
-      {hubs.map((hub) => (
-        <HubMarker key={hub.id} hub={hub} color={color} glowColor={glow} />
-      ))}
+      {positions.map((position, index) => index === positions.length - 1 ? null : <NetworkLine key={index} start={position} end={positions[index + 1]} color={color} />)}
+      <NetworkTraveler positions={positions} color={color} />
+      {hubs.map((hub) => <HubMarker key={hub.id} hub={hub} color={color} glowColor={glow} />)}
     </group>
   )
 }

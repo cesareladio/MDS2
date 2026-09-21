@@ -7,8 +7,6 @@ import { useExperienceStore } from '../../store/experienceStore'
 export function LatamReveal({ active }: { active: boolean }) {
   const [geo, setGeo] = useState<FeatureCollection | null>(null)
   const scroll = useExperienceStore((state) => state.scrollProgress)
-  const selectedCountry = useExperienceStore((state) => state.selectedCountry)
-  const explorationMode = useExperienceStore((state) => state.explorationMode)
 
   useEffect(() => {
     loadSouthAmericaGeo().then(setGeo)
@@ -16,8 +14,8 @@ export function LatamReveal({ active }: { active: boolean }) {
 
   // Progress: 0→1 as scroll moves through latam phase (0.25..0.45)
   const progress = Math.min(1, Math.max(0, (scroll - 0.25) / 0.12))
-  const peruActive = active && (!explorationMode || selectedCountry === 'peru')
-  const chileActive = active && (!explorationMode || selectedCountry === 'chile')
+  const peruActive = active
+  const chileActive = active
   const subduedProgress = Math.min(0.08, progress)
 
   return (

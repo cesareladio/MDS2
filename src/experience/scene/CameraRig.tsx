@@ -122,10 +122,10 @@ function interpolateScalar(
    ─────────────────────────────────────────────────────────────────────────── */
 export function CameraRig() {
   const { camera, pointer } = useThree()
-  const progress        = useExperienceStore((state) => state.scrollProgress)
-  const selectedCountry = useExperienceStore((state) => state.selectedCountry)
+  const progress = useExperienceStore((state) => state.scrollProgress)
+  const phase = useExperienceStore((state) => state.phase)
   const explorationMode = useExperienceStore((state) => state.explorationMode)
-  const reduced         = useExperienceStore((state) => state.reducedMotion)
+  const reduced = useExperienceStore((state) => state.reducedMotion)
 
   const targetPos  = useMemo(() => new THREE.Vector3(), [])
   const lookTarget = useMemo(() => new THREE.Vector3(), [])
@@ -138,16 +138,9 @@ export function CameraRig() {
   useFrame((_, delta) => {
     const perspCamera = camera as THREE.PerspectiveCamera
 
-    if (explorationMode && selectedCountry) {
-      /* ── Country exploration close-up ── */
-      const lat  = selectedCountry === 'peru' ? -10 : -34
-      const lon  = selectedCountry === 'peru' ? -76 : -71
-      const dist = 3.9
-      targetPos.copy(latLonToVector3(lat, lon, dist))
-      if (!reduced) {
-        targetPos.x += pointer.x * 0.06
-        targetPos.y += pointer.y * 0.04
-      }
+    if (explorationMode || phase === 'explore') {
+      /* ── Comparative exploration framing ── */
+      targetPos.copy(latLonToVector3(-23, -74, 5.0))
       const ease = 1 - Math.pow(0.0008, delta)
       camera.position.lerp(targetPos, ease * 0.5)
 
@@ -174,7 +167,8 @@ export function CameraRig() {
       posCurve.getPoint(t)
     targetPos.copy(curvePos)
 
-    if (!reduced) {
+    const interactivePhase = phase === 'engine' || phase === 'ibiol'
+    if (!reduced && !interactivePhase) {
       targetPos.x += pointer.x * 0.08
       targetPos.y += pointer.y * 0.05
     }

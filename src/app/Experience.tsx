@@ -7,14 +7,14 @@ import { CapabilityHUD } from '../ui/CapabilityHUD'
 import { ClosingMessage } from '../ui/ClosingMessage'
 import { ContinueStory } from '../ui/ContinueStory'
 import { CountryHUD } from '../ui/CountryHUD'
-import { ExploreCountry } from '../ui/ExploreCountry'
 import { IntroBrand } from '../ui/IntroBrand'
 import { ProgressIndicator } from '../ui/ProgressIndicator'
 import { StoryCopy } from '../ui/StoryCopy'
 import { useExperienceStore } from '../store/experienceStore'
 
 export function Experience() {
-  const exploring       = useExperienceStore((state) => state.explorationMode)
+  const exploring = useExperienceStore((state) => state.explorationMode)
+  const selectedCapability = useExperienceStore((state) => state.selectedCapability)
   const selectCapability = useExperienceStore((state) => state.selectCapability)
   return (
     <div className={`experience ${exploring ? 'is-exploring' : ''}`}>
@@ -71,16 +71,14 @@ export function Experience() {
           </StoryCopy>
         </section>
 
-        {/* 05 EXPLORE — country selection via globe + accessible fallback */}
-        <section id="explore" className="chapter chapter--explore">
-          <ExploreCountry />
-        </section>
+        {/* 05 EXPLORE */}
+        <section id="explore" className="chapter chapter--explore" />
 
         {/* 06 COMPLEMENTARITY */}
         <section id="complementarity" className="chapter chapter--complementarity">
           <StoryCopy index="06" kicker="Complementariedad" title={<>Dos fortalezas<br />que se potencian</>} align="center">
             <div className="complement-grid">
-              <div>
+              <div className="complement-country complement-country--peru">
                 <strong>Perú</strong>
                 <span>Scale &amp; growth</span>
                 <span>Talent engine</span>
@@ -88,8 +86,14 @@ export function Experience() {
                 <span>SAP &amp; Testing</span>
                 <span>Diversity</span>
               </div>
-              <div className="one-capability">One<br />capability</div>
-              <div>
+              <div className="complement-center">
+                <svg className="complement-connectors" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <path className="complement-connectors__peru" d="M 0 50 C 28 50, 34 50, 42 50" />
+                  <path className="complement-connectors__chile" d="M 100 50 C 72 50, 66 50, 58 50" />
+                </svg>
+                <div className="one-capability">One<br />capability</div>
+              </div>
+              <div className="complement-country complement-country--chile">
                 <strong>Chile</strong>
                 <span>Maturity &amp; experience</span>
                 <span>Backend &amp; Data</span>
@@ -105,13 +109,23 @@ export function Experience() {
         {/* 07 ENGINE */}
         <section id="engine" className="chapter chapter--engine">
           <StoryCopy index="07" kicker="Capability engine" title={<>Una capacidad integrada<br />lista para entregar valor</>}>
-            <p className="engine-note">Selecciona los nodos para explorar la contribución de cada país. La oferta final permanece sujeta a validación.</p>
+            <div className="engine-capability-list">
+              {capabilities.map((item) => (
+                <button
+                  key={item.id}
+                  className={selectedCapability === item.id ? 'is-active' : ''}
+                  onClick={() => selectCapability(item.id)}
+                >
+                  {item.name}
+                </button>
+              ))}
+            </div>
           </StoryCopy>
         </section>
 
         {/* 08 IBIOL */}
         <section id="ibiol" className="chapter chapter--ibiol">
-          <StoryCopy index="08" kicker="Nuestra propuesta para IBIOL" title={<>Una red conectada<br /><em>para los desafíos del futuro</em></>} align="center">
+          <StoryCopy index="08" kicker="Nuestra propuesta para IBIOL" title={<>Una red conectada<br /><em>para los desafíos del futuro</em></>}>
             <div className="capability-orbit-list">
               {capabilities.map((item) => (
                 <button key={item.id} onClick={() => selectCapability(item.id)}>{item.name}</button>

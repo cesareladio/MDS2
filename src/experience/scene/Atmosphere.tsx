@@ -1,7 +1,4 @@
-import { useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { useExperienceStore } from '../../store/experienceStore'
 
 /* ────────────────────────────────────────────────────────────────────────────
    Fresnel atmospheric glow shader
@@ -58,18 +55,6 @@ interface AtmosphereProps {
 }
 
 export function Atmosphere({ intensity = 1 }: AtmosphereProps) {
-  const innerRef = useRef<THREE.Mesh>(null)
-  const outerRef = useRef<THREE.Mesh>(null)
-  const reduced  = useExperienceStore((state) => state.reducedMotion)
-
-  // Pulsating very slightly when not reduced
-  useFrame(({ clock }) => {
-    if (reduced) return
-    const breathe = 1.0 + Math.sin(clock.elapsedTime * 0.55) * 0.003
-    if (innerRef.current) innerRef.current.scale.setScalar(breathe * 1.038)
-    if (outerRef.current) outerRef.current.scale.setScalar(breathe * 1.095)
-  })
-
   const innerUniforms = {
     uRimColor:     { value: new THREE.Color(0.18, 0.62, 1.0) },
     uRimPower:     { value: 3.6 },
@@ -84,7 +69,7 @@ export function Atmosphere({ intensity = 1 }: AtmosphereProps) {
   return (
     <group>
       {/* Inner bright limb */}
-      <mesh ref={innerRef} scale={1.025}>
+      <mesh scale={1.025}>
         <sphereGeometry args={[2, 80, 80]} />
         <shaderMaterial
           vertexShader={atmoVertexShader}
@@ -98,7 +83,7 @@ export function Atmosphere({ intensity = 1 }: AtmosphereProps) {
       </mesh>
 
       {/* Outer diffuse corona */}
-      <mesh ref={outerRef} scale={1.04}>
+      <mesh scale={1.04}>
         <sphereGeometry args={[2, 56, 56]} />
         <shaderMaterial
           vertexShader={atmoVertexShader}

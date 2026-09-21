@@ -4,14 +4,14 @@ import { useExperienceStore } from '../../store/experienceStore'
 import { HubNetwork } from '../geography/HubNetwork'
 
 export function CountryExplorer() {
-  const active  = useExperienceStore((state) => state.explorationMode)
-  const country = useExperienceStore((state) => state.selectedCountry)
-  if (!active || !country) return null
+  const phase = useExperienceStore((state) => state.phase)
+  const explorationMode = useExperienceStore((state) => state.explorationMode)
+  const active = explorationMode || phase === 'explore'
+  if (!active) return null
   return (
-    <HubNetwork
-      hubs={country === 'peru' ? peruHubs : chileHubs}
-      color={country === 'peru' ? '#ffad42' : '#31c7ff'}
-      glowColor={country === 'peru' ? '#ffd07a' : '#78e8ff'}
-    />
+    <>
+      <HubNetwork hubs={peruHubs} color="#ffad42" glowColor="#ffd07a" />
+      <HubNetwork hubs={chileHubs} color="#31c7ff" glowColor="#78e8ff" />
+    </>
   )
 }

@@ -38,14 +38,10 @@ export function CountryHighlight({
   progress = 1,
 }: CountryHighlightProps) {
   const groupRef   = useRef<THREE.Group>(null)
-  const glowMesh   = useRef<THREE.Mesh>(null)
-  const pulseRing  = useRef<THREE.Mesh>(null)
-  const [hovered, setHovered]  = useState(false)
-  const selectCountry  = useExperienceStore((state) => state.selectCountry)
-  const setExploration = useExperienceStore((state) => state.setExplorationMode)
-  const setPhase       = useExperienceStore((state) => state.setPhase)
-  const selectedCountry = useExperienceStore((state) => state.selectedCountry)
+  const glowMesh = useRef<THREE.Mesh>(null)
+  const [hovered, setHovered] = useState(false)
   const { gl } = useThree()
+  const phase = useExperienceStore((state) => state.phase)
 
   const rings = useMemo(() => {
     if (!geo) return []
@@ -67,28 +63,8 @@ export function CountryHighlight({
     return () => { glowTexture?.dispose() }
   }, [glowTexture])
 
-  // Center point from all ring points averaged
-  const centerPos = useMemo(() => {
-    if (!linePoints.length) return new THREE.Vector3()
-    const all = linePoints.flat()
-    return all
-      .reduce((acc, p) => acc.add(p), new THREE.Vector3())
-      .divideScalar(all.length)
-      .normalize()
-      .multiplyScalar(2.08)
-  }, [linePoints])
-
-  useFrame(({ clock }) => {
-    const t = clock.elapsedTime
+  useFrame(() => {
     const baseOpacity = active ? Math.min(1, progress * 2) : 0
-
-    // Pulse ring expand
-    if (pulseRing.current) {
-      const pScale = 1 + (t % 2.4) * 0.25
-      pulseRing.current.scale.setScalar(pScale)
-      const pMat = pulseRing.current.material as THREE.MeshBasicMaterial
-      pMat.opacity = (1 - (t % 2.4) / 2.4) * 0.7 * baseOpacity * (hovered ? 1.4 : 1)
-    }
 
     // Glow mesh emissive intensity
     if (glowMesh.current) {
@@ -111,14 +87,6 @@ export function CountryHighlight({
 
   if (!geo || !linePoints.length) return null
 
-  const handleClick = () => {
-    if (!active) return
-    setPhase('explore')
-    selectCountry(countryKey)
-    setExploration(true)
-    gl.domElement.style.cursor = 'default'
-  }
-
   return (
     <group ref={groupRef}>
       {/* Country outline lines */}
@@ -133,34 +101,17 @@ export function CountryHighlight({
         />
       ))}
 
-      {/* Central pulse ring + hover clickable mesh */}
-      <group position={centerPos}>
-        {/* Pulse */}
-        <mesh ref={pulseRing}>
-          <ringGeometry args={[0.06, 0.08, 32]} />
-          <meshBasicMaterial
-            color={color}
-            transparent
-            opacity={0.6}
-            side={THREE.DoubleSide}
-            toneMapped={false}
-          />
-        </mesh>
 
-        <mesh scale={hovered ? 1.5 : 1}>
-          <sphereGeometry args={[0.048, 20, 20]} />
-          <meshBasicMaterial color={hovered ? glowColor : color} toneMapped={false} />
-        </mesh>
-      </group>
-
-      <CountryInteractionMesh
-        geo={geo as FeatureCollection}
-        countryId={countryId}
-        active={active && progress > 0.02}
-        onEnter={() => { setHovered(true); gl.domElement.style.cursor = 'pointer' }}
-        onLeave={() => { setHovered(false); gl.domElement.style.cursor = 'default' }}
-        onClick={handleClick}
-      />
+      {phase !== 'explore' && (
+        <CountryInteractionMesh
+          geo={geo as FeatureCollection}
+          countryId={countryId}
+          active={active && progress > 0.02}
+          onEnter={() => { setHovered(true); gl.domElement.style.cursor = 'default' }}
+          onLeave={() => { setHovered(false); gl.domElement.style.cursor = 'default' }}
+          onClick={() => undefined}
+        />
+      )}
 
       {/* Glow overlay on globe surface */}
       {glowTexture && (
