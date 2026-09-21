@@ -20,7 +20,7 @@ export function createFallbackSpecular(width = 512, height = 256) {
   canvas.width = width
   canvas.height = height
   const context = canvas.getContext('2d')!
-  context.fillStyle = '#777'
+  context.fillStyle = '#000000'
   context.fillRect(0, 0, width, height)
   const texture = new THREE.CanvasTexture(canvas)
   return configureEarthTexture(texture)

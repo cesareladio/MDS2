@@ -32,7 +32,7 @@ const waypoints: Waypoint[] = [
   { at: 0.19, lat:  42,  lon:  -4,  distance:  6.0, fov: 38, roll:  0.012 },
 
   // LATAM reveal – long arc south-west toward Andean region
-  { at: 0.29, lat: -22,  lon:  -74, distance:  5.8, fov: 36, roll: -0.010 },
+  { at: 0.28, lat: -22,  lon:  -74, distance:  5.8, fov: 36, roll: -0.010 },
 
   // SNAPSHOT – settle over Peru/Chile, slightly closer
   { at: 0.38, lat: -22,  lon:  -74, distance:  5.4, fov: 36, roll:  0.000 },
@@ -64,6 +64,43 @@ function buildPositionCurve(points: Waypoint[]): THREE.CatmullRomCurve3 {
 }
 
 /* Smooth scalar interpolation along the waypoint timeline */
+function mapProgressToCurveT(
+  points: Waypoint[],
+  progress: number,
+) {
+  if (progress <= points[0].at) return 0
+  if (progress >= points[points.length - 1].at) return 1
+
+  const nextIndex = points.findIndex(
+    (wp) => wp.at >= progress
+  )
+
+  const currentIndex = Math.max(1, nextIndex)
+
+  const a = points[currentIndex - 1]
+  const b = points[currentIndex]
+
+  const span = Math.max(
+    0.0001,
+    b.at - a.at
+  )
+
+  const local =
+    (progress - a.at) / span
+
+  const eased =
+    THREE.MathUtils.smoothstep(
+      local,
+      0,
+      1
+    )
+
+  return (
+    (currentIndex - 1 + eased) /
+    (points.length - 1)
+  )
+}
+
 function interpolateScalar(
   points: Waypoint[],
   progress: number,
@@ -127,11 +164,14 @@ export function CameraRig() {
     lastProgress.current = progress
 
     /* ── Story scroll – CatmullRom curve ── */
-    // Map progress 0..1 → curve t, with slight overshoot protection
-    const t = THREE.MathUtils.clamp(progress, 0, 0.9999)
+    const t =
+      mapProgressToCurveT(
+        waypoints,
+        progress
+      )
 
-    // Curve gives position
-    const curvePos = posCurve.getPoint(t)
+    const curvePos =
+      posCurve.getPoint(t)
     targetPos.copy(curvePos)
 
     if (!reduced) {

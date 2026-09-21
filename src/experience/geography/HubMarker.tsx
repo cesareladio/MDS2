@@ -33,7 +33,7 @@ export function HubMarker({ hub, color, glowColor }: HubMarkerProps) {
 
     // Core pulsing
     if (coreRef.current) {
-      const s = active ? 1.45 : 1.0 + Math.sin(t * 1.8) * 0.08
+      const s = active ? 1.3 : 1.0 + Math.sin(t * 1.8) * 0.06
       coreRef.current.scale.setScalar(s)
       const mat = coreRef.current.material as THREE.MeshBasicMaterial
       mat.color.setStyle(active ? glowColor : color)
@@ -42,25 +42,25 @@ export function HubMarker({ hub, color, glowColor }: HubMarkerProps) {
     // Pulse ring 1 — slow
     if (pulse1Ref.current) {
       const phase = (t * 0.65) % 1
-      pulse1Ref.current.scale.setScalar(1 + phase * 1.2)
+      pulse1Ref.current.scale.setScalar(1 + phase * 0.78)
       ;(pulse1Ref.current.material as THREE.MeshBasicMaterial).opacity =
-        (1 - phase) * 0.55 * (active ? 1.3 : 1)
+        (1 - phase) * 0.34 * (active ? 1.18 : 1)
     }
 
     // Pulse ring 2 — fast, offset
     if (pulse2Ref.current) {
       const phase = ((t * 0.65) + 0.5) % 1
-      pulse2Ref.current.scale.setScalar(1 + phase * 1.2)
+      pulse2Ref.current.scale.setScalar(1 + phase * 0.78)
       ;(pulse2Ref.current.material as THREE.MeshBasicMaterial).opacity =
-        (1 - phase) * 0.35 * (active ? 1.3 : 1)
+        (1 - phase) * 0.22 * (active ? 1.18 : 1)
     }
 
     // Outer soft halo
     if (haloRef.current) {
-      const targetScale = active ? 2.4 : 1.8
+      const targetScale = active ? 1.7 : 1.3
       const cur = haloRef.current.scale.x
       haloRef.current.scale.setScalar(cur + (targetScale - cur) * 0.12)
-      ;(haloRef.current.material as THREE.MeshBasicMaterial).opacity = active ? 0.22 : 0.12
+      ;(haloRef.current.material as THREE.MeshBasicMaterial).opacity = active ? 0.14 : 0.08
     }
   })
 
@@ -68,18 +68,18 @@ export function HubMarker({ hub, color, glowColor }: HubMarkerProps) {
     <group position={position}>
       {/* Outer soft halo */}
       <mesh ref={haloRef}>
-        <sphereGeometry args={[0.06, 16, 16]} />
+        <sphereGeometry args={[0.048, 16, 16]} />
         <meshBasicMaterial color={color} transparent opacity={0.12} depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>
 
       {/* Pulse rings tangent to the Earth surface */}
       <group quaternion={ringQuaternion}>
       <mesh ref={pulse1Ref}>
-        <ringGeometry args={[0.058, 0.072, 32]} />
+        <ringGeometry args={[0.044, 0.055, 32]} />
         <meshBasicMaterial color={color} transparent opacity={0.5} side={THREE.DoubleSide} toneMapped={false} />
       </mesh>
       <mesh ref={pulse2Ref}>
-        <ringGeometry args={[0.058, 0.072, 32]} />
+        <ringGeometry args={[0.044, 0.055, 32]} />
         <meshBasicMaterial color={color} transparent opacity={0.3} side={THREE.DoubleSide} toneMapped={false} />
       </mesh>
       </group>
@@ -91,7 +91,7 @@ export function HubMarker({ hub, color, glowColor }: HubMarkerProps) {
         onPointerLeave={() => setHovered(false)}
         onClick={(e) => { e.stopPropagation(); selectHub(selected ? null : hub.id) }}
       >
-        <sphereGeometry args={[0.048, 20, 20]} />
+        <sphereGeometry args={[0.04, 20, 20]} />
         <meshBasicMaterial color={color} toneMapped={false} />
       </mesh>
 

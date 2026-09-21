@@ -13,7 +13,7 @@ export function PostProcessing() {
         mipmapBlur
         radius={0.72}
       />
-      <Vignette eskil={false} offset={0.16} darkness={0.78} />
+      <Vignette eskil={false} offset={0.16} darkness={0.58} />
     </EffectComposer>
   )
 }
