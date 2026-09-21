@@ -24,6 +24,16 @@ export function StoryDirector() {
   const explorationMode = useExperienceStore((state) => state.explorationMode)
 
   useLayoutEffect(() => {
+    // Freeze scroll during exploration mode
+    if (explorationMode) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+    return () => { document.body.style.overflow = 'auto' }
+  }, [explorationMode])
+
+  useLayoutEffect(() => {
     const story = document.querySelector<HTMLElement>('#story')
     if (!story) return
 

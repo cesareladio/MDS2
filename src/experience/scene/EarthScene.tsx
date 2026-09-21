@@ -21,7 +21,7 @@ export function EarthScene() {
   const quality = useExperienceStore((state) => state.deviceQuality)
 
   const showLatam  = ['latam', 'snapshot', 'explore', 'complementarity', 'engine', 'ibiol', 'closing'].includes(phase)
-  const showEngine = ['engine', 'ibiol', 'closing'].includes(phase)
+  const showEngine = phase === 'engine' || phase === 'ibiol'
   const showClose  = phase === 'closing'
 
   return (

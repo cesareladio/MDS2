@@ -45,7 +45,7 @@ export function FlightArc({
   // Map global scroll into local 0..1 progress for this arc
   const span     = Math.max(0.001, progressEnd - progressStart)
   const rawLocal = (scrollProgress - progressStart) / span + offset
-  const local    = THREE.MathUtils.clamp(rawLocal % 1, 0, 1)
+  const local    = THREE.MathUtils.clamp(rawLocal, 0, 1)
 
   useFrame(() => {
     if (!particleRef.current) return

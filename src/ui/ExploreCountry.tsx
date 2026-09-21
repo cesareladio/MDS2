@@ -8,9 +8,13 @@ import { useExperienceStore } from '../store/experienceStore'
  * for keyboard/screen-reader users who cannot interact with the canvas.
  */
 export function ExploreCountry() {
+  const phase          = useExperienceStore((state) => state.phase)
   const selectCountry  = useExperienceStore((state) => state.selectCountry)
   const setExploration = useExperienceStore((state) => state.setExplorationMode)
   const setPhase       = useExperienceStore((state) => state.setPhase)
+  
+  if (phase !== 'explore') return null
+
   const enter = (country: CountryId) => {
     setPhase('explore')
     selectCountry(country)
@@ -19,26 +23,15 @@ export function ExploreCountry() {
   return (
     <div className="country-select" aria-label="Selecciona un país">
       <p className="country-select__hint">
-        Haz clic en el territorio en el globo, o selecciona abajo
+        Click on the territory
       </p>
-      <div className="country-select__actions" role="group" aria-label="Selección de país">
-        <button
-          className="country-choice country-choice--peru"
-          onClick={() => enter('peru')}
-        >
-          <span>01</span>
-          <strong>Perú</strong>
-          <small>Escala · talento · crecimiento</small>
-          <i>Explorar →</i>
+      <div className="country-select__compact" role="group" aria-label="Country selection">
+        <button className="country-select__btn country-select__btn--peru" onClick={() => enter('peru')}>
+          Perú
         </button>
-        <button
-          className="country-choice country-choice--chile"
-          onClick={() => enter('chile')}
-        >
-          <span>02</span>
-          <strong>Chile</strong>
-          <small>Madurez · especialización · territorio</small>
-          <i>Explorar →</i>
+        <span className="country-select__divider">·</span>
+        <button className="country-select__btn country-select__btn--chile" onClick={() => enter('chile')}>
+          Chile
         </button>
       </div>
     </div>

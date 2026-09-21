@@ -5,7 +5,7 @@ import { useExperienceStore } from '../../store/experienceStore'
 import { createEarthTextures } from '../../lib/earthTexture'
 
 /* ────────────────────────────────────────────────────────────────────────────
-   Custom day/night terminator shader
+   Custom day/night terminator shader with intro exposure control
    ─────────────────────────────────────────────────────────────────────────── */
 const earthVertexShader = /* glsl */ `
   varying vec2 vUv;
@@ -29,6 +29,7 @@ const earthFragmentShader = /* glsl */ `
   uniform sampler2D uSpecular;
   uniform vec3 uSunDir;
   uniform float uNightIntensity;
+  uniform float uExposure;
 
   varying vec2 vUv;
   varying vec3 vNormal;
@@ -53,12 +54,13 @@ const earthFragmentShader = /* glsl */ `
     vec3 litNight = night * nightBlend * 1.8;
 
     // Basic specular on ocean (spec map = grey on ocean, near-black on land)
-    float specMask = spec * (1.0 - terminator * 0.5 + 0.5); // present on both sides slightly
+    float specMask = spec * (1.0 - terminator * 0.5 + 0.5);
     float specPow  = pow(max(0.0, dot(reflect(-normalize(uSunDir), vNormal), vViewDir)), 28.0);
     vec3 specColor = vec3(0.18, 0.42, 0.82) * specMask * specPow * 1.8;
 
-    // Combine
+    // Combine with exposure control (during intro, Earth is darker)
     vec3 color = mix(litNight, litDay, terminator) + specColor;
+    color *= mix(0.2, 1.0, uExposure);
 
     gl_FragColor = vec4(color, 1.0);
   }
@@ -96,12 +98,17 @@ const cloudFragmentShader = /* glsl */ `
    ─────────────────────────────────────────────────────────────────────────── */
 export function Earth() {
   const group  = useRef<THREE.Group>(null)
+  const earthMesh = useRef<THREE.Mesh>(null)
   const clouds = useRef<THREE.Mesh>(null)
   const reduced = useExperienceStore((state) => state.reducedMotion)
+  const scroll = useExperienceStore((state) => state.scrollProgress)
   const textures = useMemo(() => createEarthTextures(), [])
 
   // Sun direction — roughly lit from the right/front to show lit side facing camera
   const sunDir = useMemo(() => new THREE.Vector3(5, 3, 5).normalize(), [])
+
+  // Intro exposure: Earth dims during intro and brightens as we scroll past (~12% scroll window)
+  const introExposure = Math.min(1, scroll * 8.5)
 
   const earthUniforms = useMemo(() => ({
     uDay:          { value: textures.day },
@@ -109,7 +116,8 @@ export function Earth() {
     uSpecular:     { value: textures.specular },
     uSunDir:       { value: sunDir },
     uNightIntensity: { value: 1.0 },
-  }), [textures, sunDir])
+    uExposure:     { value: introExposure },
+  }), [textures, sunDir, introExposure])
 
   const cloudUniforms = useMemo(() => ({
     uClouds:  { value: textures.clouds },
@@ -128,12 +136,17 @@ export function Earth() {
     if (reduced) return
     if (group.current)  group.current.rotation.y  += delta * 0.010
     if (clouds.current) clouds.current.rotation.y += delta * 0.015
+    
+    // Update exposure uniform each frame
+    if (earthMesh.current && earthMesh.current.material instanceof THREE.ShaderMaterial) {
+      (earthMesh.current.material as THREE.ShaderMaterial).uniforms.uExposure.value = introExposure
+    }
   })
 
   return (
     <group ref={group} rotation={[0, -Math.PI / 2, 0]}>
       {/* Main globe */}
-      <mesh>
+      <mesh ref={earthMesh}>
         <sphereGeometry args={[2, 128, 128]} />
         <shaderMaterial
           vertexShader={earthVertexShader}
