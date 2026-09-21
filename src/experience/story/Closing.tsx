@@ -69,8 +69,8 @@ export function Closing({ active }: { active: boolean }) {
   const scroll  = useExperienceStore((state) => state.scrollProgress)
   const reduced = useExperienceStore((state) => state.reducedMotion)
 
-  // Local progress within closing phase (0.91 → 1.0)
-  const localProgress = Math.min(1, Math.max(0, (scroll - 0.91) / 0.09))
+  // Local progress within closing phase (0.925 → 1.0)
+  const localProgress = Math.min(1, Math.max(0, (scroll - 0.925) / 0.075))
   const fade = active ? Math.min(1, localProgress * 5) : 0
 
   const arcOpacity = Math.min(1, Math.max(0, (fade - 0.3) * 1.5))

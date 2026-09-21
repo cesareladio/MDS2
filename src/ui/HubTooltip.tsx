@@ -3,12 +3,14 @@ import { peruHubs } from '../data/peru'
 import { useExperienceStore } from '../store/experienceStore'
 
 export function HubTooltip() {
-  const country = useExperienceStore((state) => state.selectedCountry)
   const selectedHub = useExperienceStore((state) => state.selectedHub)
   const selectHub = useExperienceStore((state) => state.selectHub)
-  if (!country || !selectedHub) return null
-  const hub = (country === 'peru' ? peruHubs : chileHubs).find((item) => item.id === selectedHub)
-  if (!hub) return null
+  if (!selectedHub) return null
+  const peruHub = peruHubs.find((item) => item.id === selectedHub)
+  const chileHub = chileHubs.find((item) => item.id === selectedHub)
+  const hub = peruHub ?? chileHub
+  const country = peruHub ? 'peru' : chileHub ? 'chile' : null
+  if (!hub || !country) return null
   return (
     <aside className="hub-tooltip" aria-live="polite">
       <button onClick={() => selectHub(null)} aria-label="Cerrar detalle">×</button>

@@ -124,7 +124,6 @@ export function CameraRig() {
   const { camera, pointer } = useThree()
   const progress = useExperienceStore((state) => state.scrollProgress)
   const phase = useExperienceStore((state) => state.phase)
-  const explorationMode = useExperienceStore((state) => state.explorationMode)
   const reduced = useExperienceStore((state) => state.reducedMotion)
 
   const targetPos  = useMemo(() => new THREE.Vector3(), [])
@@ -138,7 +137,7 @@ export function CameraRig() {
   useFrame((_, delta) => {
     const perspCamera = camera as THREE.PerspectiveCamera
 
-    if (explorationMode || phase === 'explore') {
+    if (phase === 'explore') {
       /* ── Comparative exploration framing ── */
       targetPos.copy(latLonToVector3(-23, -74, 5.0))
       const ease = 1 - Math.pow(0.0008, delta)

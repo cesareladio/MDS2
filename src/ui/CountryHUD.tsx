@@ -108,27 +108,24 @@ function ComparisonLayer({ layer }: { layer: Layer }) {
 
 export function CountryHUD() {
   const phase = useExperienceStore((state) => state.phase)
-  const explorationMode = useExperienceStore((state) => state.explorationMode)
-  const active = explorationMode || phase === 'explore'
-  const setExploration = useExperienceStore((state) => state.setExplorationMode)
-  const setPhase = useExperienceStore((state) => state.setPhase)
+  const active = phase === 'explore'
   const selectHub = useExperienceStore((state) => state.selectHub)
   const [layer, setLayer] = useState<Layer>('territory')
 
   useEffect(() => {
     const key = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') { selectHub(null); setExploration(false) }
+      if (event.key === 'Escape') selectHub(null)
     }
     window.addEventListener('keydown', key)
     return () => window.removeEventListener('keydown', key)
-  }, [selectHub, setExploration])
+  }, [selectHub])
 
   if (!active) return null
 
   const continueStory = () => {
-    setPhase('complementarity')
-    setExploration(false)
-    document.getElementById('complementarity')?.scrollIntoView({ behavior: 'smooth' })
+    requestAnimationFrame(() => {
+      document.getElementById('complementarity')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
   }
 
   return (

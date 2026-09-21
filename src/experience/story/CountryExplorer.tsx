@@ -5,9 +5,8 @@ import { HubNetwork } from '../geography/HubNetwork'
 
 export function CountryExplorer() {
   const phase = useExperienceStore((state) => state.phase)
-  const explorationMode = useExperienceStore((state) => state.explorationMode)
-  const active = explorationMode || phase === 'explore'
-  if (!active) return null
+  const showExploreGeography = phase === 'explore'
+  if (!showExploreGeography) return null
   return (
     <>
       <HubNetwork hubs={peruHubs} color="#ffad42" glowColor="#ffd07a" />

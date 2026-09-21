@@ -28,8 +28,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
 .canvas-shell { position: fixed; inset: 0; z-index: 0; background: radial-gradient(circle at 50% 48%, #07172a 0, #02060d 55%, #000 100%); }
 .experience { position: relative; }
 .experience main { position: relative; z-index: 10; }
-.experience main { transition: opacity .45s ease; }
-.experience.is-exploring main { opacity: 0; pointer-events: none; }
+.experience.is-exploring main { pointer-events: none; }
 
 .chapter {
   min-height: 100svh;
@@ -175,7 +174,8 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
 
 /* ─── COUNTRY HUD (thin rail redesign) ──────────────────────────────────── */
 .country-hud { position: fixed; inset: 0; z-index: 70; padding: 3rem 4vw 7rem; pointer-events: none; background: transparent; }
-.country-hud button, .country-hud [role="button"], .country-hud .compare-card, .chud-panel, .hub-tooltip { pointer-events: auto; }
+html { scrollbar-gutter: stable; }
+.country-hud button, .country-hud [role="button"], .hub-tooltip { pointer-events: auto; }
 .chud-header { max-width: 36rem; }
 .chud-flag { width: 2.25rem; height: 1.5rem; object-fit: cover; margin-bottom: .8rem; filter: saturate(.8); }
 .chud-identity { margin: .7rem 0 0; color: #d2e7fb; font-size: 1rem; letter-spacing: .02em; }
@@ -300,7 +300,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
 .hub-tooltip p { color: #a4b8ca; line-height: 1.45; font-size: .8rem; }
 .hub-tooltip small { color: #70889f; font-size: .62rem; }
 
-.engine-core { text-transform: uppercase; font-weight: 700; letter-spacing: .1em; font-size: 1.3rem; text-shadow: 0 0 14px #4ba8ff; pointer-events: none; }
+.engine-core { text-transform: uppercase; font-weight: 700; letter-spacing: .1em; font-size: 1.3rem; text-shadow: 0 0 14px #4ba8ff; pointer-events: none; white-space: nowrap; text-align: center; }
 .capability-node { transform: translateY(2rem); border: 1px solid rgba(129,200,255,.38); border-radius: 999px; background: rgba(2,9,18,.85); color: #d9eeff; padding: .45rem .6rem; text-transform: uppercase; letter-spacing: .08em; font-size: .48rem; cursor: pointer; transition: all .2s; }
 .capability-node:hover, .capability-node.is-hovered, .capability-node.is-selected { border-color: #a8d8ff; background: rgba(20,60,110,.9); color: #fff; }
 

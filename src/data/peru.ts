@@ -29,12 +29,15 @@ export const peruHubs: Hub[] = [
 export const peruHistory: TimelineEvent[] = [
   { year: '2016', title: 'Trujillo', detail: 'Primera oficina, sede Orbegoso · 50 colaboradores' },
   { year: '2020', title: 'Expomall', detail: 'La operación supera los 500 colaboradores' },
+  { year: '2021', title: 'Testing & SAP', detail: 'Crecimiento de las líneas de Testing y SAP' },
+  { year: '2022', title: 'Re-Image Woman Tech', detail: 'Nace la iniciativa en GDN-e, enfocada en SAP y Testing' },
+  { year: '2023', title: 'Tech Girl Power', detail: 'El programa es adoptado por Oficina Lima y se traslada a todo Perú' },
   { year: '2023', title: 'Arequipa', detail: 'Inauguración del segundo hub de Perú' },
 ]
 
 export const peruDiversity: TimelineEvent[] = [
-  { year: '2022', title: 'Re-Image Woman Tech', detail: 'Escuelas de SAP y Testing' },
-  { year: '2023', title: 'Tech Girl Power', detail: 'El programa se extiende a todo Perú' },
+  { year: '2022', title: 'Re-Image Woman Tech', detail: 'Nace la iniciativa en GDN-e, enfocada en SAP y Testing' },
+  { year: '2023', title: 'Tech Girl Power', detail: 'El programa es adoptado por Oficina Lima y se traslada a todo Perú' },
   { year: 'FY25', title: '19 incorporaciones', detail: 'Talento formado en SAP, Java y Data' },
   { year: 'CURRENT', title: '22% HC femenino', detail: 'Participación femenina actual', status: 'current' },
 ]

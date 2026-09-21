@@ -82,7 +82,7 @@ export function CapabilityEngine({ active }: { active: boolean }) {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null)
   const nodes = useMemo(() => buildNodes(), [])
   const engineProgress = Math.min(1, Math.max(0, (scroll - 0.70) / 0.10))
-  const ibiOLProgress = Math.min(1, Math.max(0, (scroll - 0.80) / 0.11))
+  const ibiOLProgress = Math.min(1, Math.max(0, (scroll - 0.80) / 0.125))
   const networkOpacity = active ? Math.min(1, engineProgress * 3 + 0.25) : 0
   const isIbiOL = phase === 'ibiol' || ibiOLProgress > 0.4
   const nodePositions = useMemo(() => nodes.map((node) => node.basePos.clone().lerp(node.ibiOLPos, ibiOLProgress)), [nodes, ibiOLProgress])
