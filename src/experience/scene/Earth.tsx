@@ -1,51 +1,159 @@
 import { useFrame } from '@react-three/fiber'
-import { Line } from '@react-three/drei'
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { useExperienceStore } from '../../store/experienceStore'
+import { createEarthTextures } from '../../lib/earthTexture'
 
-function GlobeGrid() {
-  const lines = useMemo(() => {
-    const result: THREE.Vector3[][] = []
-    for (let lat = -60; lat <= 60; lat += 30) {
-      const points: THREE.Vector3[] = []
-      for (let lon = -180; lon <= 180; lon += 5) {
-        const phi = (90 - lat) * Math.PI / 180
-        const theta = (lon + 180) * Math.PI / 180
-        points.push(new THREE.Vector3(-2.015 * Math.sin(phi) * Math.cos(theta), 2.015 * Math.cos(phi), 2.015 * Math.sin(phi) * Math.sin(theta)))
-      }
-      result.push(points)
-    }
-    for (let lon = -180; lon < 180; lon += 30) {
-      const points: THREE.Vector3[] = []
-      for (let lat = -85; lat <= 85; lat += 4) {
-        const phi = (90 - lat) * Math.PI / 180
-        const theta = (lon + 180) * Math.PI / 180
-        points.push(new THREE.Vector3(-2.015 * Math.sin(phi) * Math.cos(theta), 2.015 * Math.cos(phi), 2.015 * Math.sin(phi) * Math.sin(theta)))
-      }
-      result.push(points)
-    }
-    return result
-  }, [])
+/* ────────────────────────────────────────────────────────────────────────────
+   Custom day/night terminator shader
+   ─────────────────────────────────────────────────────────────────────────── */
+const earthVertexShader = /* glsl */ `
+  varying vec2 vUv;
+  varying vec3 vNormal;
+  varying vec3 vWorldNormal;
+  varying vec3 vViewDir;
 
-  return <>{lines.map((points, index) => <Line key={index} points={points} color="#297fc8" transparent opacity={0.1} lineWidth={0.45} />)}</>
-}
+  void main() {
+    vUv = uv;
+    vNormal = normalize(normalMatrix * normal);
+    vWorldNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
+    vec4 worldPos = modelMatrix * vec4(position, 1.0);
+    vViewDir = normalize(cameraPosition - worldPos.xyz);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`
 
+const earthFragmentShader = /* glsl */ `
+  uniform sampler2D uDay;
+  uniform sampler2D uNight;
+  uniform sampler2D uSpecular;
+  uniform vec3 uSunDir;
+  uniform float uNightIntensity;
+
+  varying vec2 vUv;
+  varying vec3 vNormal;
+  varying vec3 vWorldNormal;
+  varying vec3 vViewDir;
+
+  void main() {
+    vec3 day    = texture2D(uDay,     vUv).rgb;
+    vec3 night  = texture2D(uNight,   vUv).rgb;
+    float spec  = texture2D(uSpecular, vUv).r;
+
+    // Sun term (0 = dark side, 1 = full light)
+    float NdotL = dot(vWorldNormal, normalize(uSunDir));
+    float terminator = smoothstep(-0.12, 0.22, NdotL);
+
+    // Diffuse shading on day side
+    float diffuse = max(0.0, NdotL);
+    vec3 litDay = day * (0.18 + diffuse * 1.0);
+
+    // City lights only on dark side, fading through terminator
+    float nightBlend = smoothstep(0.14, -0.14, NdotL) * uNightIntensity;
+    vec3 litNight = night * nightBlend * 1.8;
+
+    // Basic specular on ocean (spec map = grey on ocean, near-black on land)
+    float specMask = spec * (1.0 - terminator * 0.5 + 0.5); // present on both sides slightly
+    float specPow  = pow(max(0.0, dot(reflect(-normalize(uSunDir), vNormal), vViewDir)), 28.0);
+    vec3 specColor = vec3(0.18, 0.42, 0.82) * specMask * specPow * 1.8;
+
+    // Combine
+    vec3 color = mix(litNight, litDay, terminator) + specColor;
+
+    gl_FragColor = vec4(color, 1.0);
+  }
+`
+
+/* ────────────────────────────────────────────────────────────────────────────
+   Cloud shader (alpha-blended overlay, slight glow toward sun)
+   ─────────────────────────────────────────────────────────────────────────── */
+const cloudVertexShader = /* glsl */ `
+  varying vec2 vUv;
+  varying vec3 vWorldNormal;
+  void main() {
+    vUv = uv;
+    vWorldNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`
+
+const cloudFragmentShader = /* glsl */ `
+  uniform sampler2D uClouds;
+  uniform vec3 uSunDir;
+  uniform float uOpacity;
+  varying vec2 vUv;
+  varying vec3 vWorldNormal;
+  void main() {
+    float alpha = texture2D(uClouds, vUv).r * uOpacity;
+    float NdotL = dot(vWorldNormal, normalize(uSunDir));
+    float light = 0.55 + max(0.0, NdotL) * 0.7;
+    gl_FragColor = vec4(vec3(light), alpha);
+  }
+`
+
+/* ────────────────────────────────────────────────────────────────────────────
+   Earth component
+   ─────────────────────────────────────────────────────────────────────────── */
 export function Earth() {
-  const mesh = useRef<THREE.Mesh>(null)
+  const group  = useRef<THREE.Group>(null)
+  const clouds = useRef<THREE.Mesh>(null)
   const reduced = useExperienceStore((state) => state.reducedMotion)
+  const textures = useMemo(() => createEarthTextures(), [])
+
+  // Sun direction — roughly lit from the right/front to show lit side facing camera
+  const sunDir = useMemo(() => new THREE.Vector3(5, 3, 5).normalize(), [])
+
+  const earthUniforms = useMemo(() => ({
+    uDay:          { value: textures.day },
+    uNight:        { value: textures.night },
+    uSpecular:     { value: textures.specular },
+    uSunDir:       { value: sunDir },
+    uNightIntensity: { value: 1.0 },
+  }), [textures, sunDir])
+
+  const cloudUniforms = useMemo(() => ({
+    uClouds:  { value: textures.clouds },
+    uSunDir:  { value: sunDir },
+    uOpacity: { value: 0.3 },
+  }), [textures, sunDir])
+
+  useEffect(() => () => {
+    textures.day.dispose()
+    textures.night.dispose()
+    textures.specular.dispose()
+    textures.clouds.dispose()
+  }, [textures])
 
   useFrame((_, delta) => {
-    if (mesh.current && !reduced) mesh.current.rotation.y += delta * 0.014
+    if (reduced) return
+    if (group.current)  group.current.rotation.y  += delta * 0.010
+    if (clouds.current) clouds.current.rotation.y += delta * 0.015
   })
 
   return (
-    <group>
-      <mesh ref={mesh}>
+    <group ref={group} rotation={[0, -Math.PI / 2, 0]}>
+      {/* Main globe */}
+      <mesh>
         <sphereGeometry args={[2, 128, 128]} />
-        <meshStandardMaterial color="#061b35" roughness={0.72} metalness={0.22} emissive="#00152f" emissiveIntensity={0.72} />
+        <shaderMaterial
+          vertexShader={earthVertexShader}
+          fragmentShader={earthFragmentShader}
+          uniforms={earthUniforms}
+        />
       </mesh>
-      <GlobeGrid />
+
+      {/* Cloud layer */}
+      <mesh ref={clouds} scale={1.007}>
+        <sphereGeometry args={[2, 96, 96]} />
+        <shaderMaterial
+          vertexShader={cloudVertexShader}
+          fragmentShader={cloudFragmentShader}
+          uniforms={cloudUniforms}
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </mesh>
     </group>
   )
 }

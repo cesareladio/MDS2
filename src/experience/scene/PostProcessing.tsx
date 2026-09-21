@@ -6,8 +6,14 @@ export function PostProcessing() {
   if (quality === 'LOW') return null
   return (
     <EffectComposer multisampling={quality === 'HIGH' ? 4 : 0}>
-      <Bloom luminanceThreshold={0.55} luminanceSmoothing={0.8} intensity={0.75} mipmapBlur />
-      <Vignette eskil={false} offset={0.18} darkness={0.72} />
+      <Bloom
+        luminanceThreshold={0.48}
+        luminanceSmoothing={0.9}
+        intensity={quality === 'HIGH' ? 0.95 : 0.65}
+        mipmapBlur
+        radius={0.72}
+      />
+      <Vignette eskil={false} offset={0.16} darkness={0.78} />
     </EffectComposer>
   )
 }

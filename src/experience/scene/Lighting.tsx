@@ -1,9 +1,31 @@
 export function Lighting() {
   return (
     <>
-      <ambientLight intensity={0.32} color="#6dafff" />
-      <directionalLight position={[4, 2, 6]} intensity={3.2} color="#d8e9ff" />
-      <pointLight position={[-4, -1, 3]} intensity={9} distance={12} color="#0d7aff" />
+      {/* Ambient — cool deep space fill */}
+      <ambientLight intensity={0.18} color="#3a6ea0" />
+
+      {/* Sun — key light, strong warm-white, matches uSunDir in Earth shader */}
+      <directionalLight
+        position={[5, 3, 5]}
+        intensity={2.8}
+        color="#d5e8ff"
+        castShadow={false}
+      />
+
+      {/* Rim / backlight from opposite side — deep blue */}
+      <directionalLight
+        position={[-6, -2, -3]}
+        intensity={0.55}
+        color="#0848b0"
+      />
+
+      {/* Subtle fill from below — prevents total blackout on dark hemisphere */}
+      <pointLight
+        position={[0, -6, 0]}
+        intensity={1.4}
+        distance={14}
+        color="#071a3a"
+      />
     </>
   )
 }

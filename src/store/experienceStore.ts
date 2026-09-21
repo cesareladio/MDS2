@@ -1,7 +1,16 @@
 import { create } from 'zustand'
 import type { CountryId } from '../data/types'
 
-export type ExperiencePhase = 'intro' | 'global' | 'latam' | 'snapshot' | 'explore' | 'complementarity' | 'ibiol' | 'closing'
+export type ExperiencePhase =
+  | 'intro'
+  | 'global'
+  | 'latam'
+  | 'snapshot'
+  | 'explore'
+  | 'complementarity'
+  | 'engine'      // ← distinct 3D capability-engine phase (was merged with 'ibiol')
+  | 'ibiol'       // IBIOL proposition (network transforms)
+  | 'closing'
 export type DeviceQuality = 'HIGH' | 'MEDIUM' | 'LOW'
 
 interface ExperienceState {
@@ -36,13 +45,15 @@ export const useExperienceStore = create<ExperienceState>((set) => ({
   deviceQuality: 'HIGH',
   setPhase: (phase) => set({ phase }),
   setScrollProgress: (scrollProgress) => set({ scrollProgress }),
-  selectCountry: (selectedCountry) => set((state) => ({
-    selectedCountry,
-    selectedHub: null,
-    visitedCountries: selectedCountry && !state.visitedCountries.includes(selectedCountry)
-      ? [...state.visitedCountries, selectedCountry]
-      : state.visitedCountries,
-  })),
+  selectCountry: (selectedCountry) =>
+    set((state) => ({
+      selectedCountry,
+      selectedHub: null,
+      visitedCountries:
+        selectedCountry && !state.visitedCountries.includes(selectedCountry)
+          ? [...state.visitedCountries, selectedCountry]
+          : state.visitedCountries,
+    })),
   selectHub: (selectedHub) => set({ selectedHub }),
   setExplorationMode: (explorationMode) => set({ explorationMode }),
   selectCapability: (selectedCapability) => set({ selectedCapability }),
