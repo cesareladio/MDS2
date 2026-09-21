@@ -3,31 +3,22 @@ import * as THREE from 'three'
 export interface EarthTextures {
   day: THREE.Texture
   night: THREE.Texture
-  clouds: THREE.Texture
   specular: THREE.Texture
 }
 
-export function configureEarthTexture(texture: THREE.Texture, color = false) {
+export function configureEarthTexture(texture: THREE.Texture, color = false, maxAnisotropy = 8) {
   texture.wrapS = THREE.RepeatWrapping
-  texture.anisotropy = Math.min(8, texture.anisotropy || 1)
-  if (color) texture.colorSpace = THREE.SRGBColorSpace
+  texture.minFilter = THREE.LinearMipmapLinearFilter
+  texture.magFilter = THREE.LinearFilter
+  texture.generateMipmaps = true
+  texture.anisotropy = Math.min(8, maxAnisotropy)
+  texture.colorSpace = color ? THREE.SRGBColorSpace : THREE.NoColorSpace
   texture.needsUpdate = true
   return texture
 }
 
-export function createFallbackSpecular(width = 512, height = 256) {
-  const canvas = document.createElement('canvas')
-  canvas.width = width
-  canvas.height = height
-  const context = canvas.getContext('2d')!
-  context.fillStyle = '#000000'
-  context.fillRect(0, 0, width, height)
-  const texture = new THREE.CanvasTexture(canvas)
-  return configureEarthTexture(texture)
-}
-
 export const earthAssetUrls = {
-  day: '/textures/earth/earth-day.jpg',
-  night: '/textures/earth/earth-night.jpg',
-  clouds: '/textures/earth/earth-clouds.png',
+  day: '/textures/earth/earth-day-4k.jpg',
+  night: '/textures/earth/earth-night-4k.jpg',
+  specular: '/textures/earth/earth-specular.jpg',
 }

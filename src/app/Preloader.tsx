@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
 const criticalAssets = [
-  '/textures/earth/earth-day.jpg',
-  '/textures/earth/earth-night.jpg',
-  '/textures/earth/earth-clouds.png',
+  '/textures/earth/earth-day-4k.jpg',
+  '/textures/earth/earth-night-4k.jpg',
+  '/textures/earth/earth-specular.jpg',
   '/geo/south-america.geojson',
   '/flags/peru.svg',
   '/flags/chile.svg',

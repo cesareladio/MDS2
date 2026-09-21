@@ -9,10 +9,11 @@ import { LatamReveal } from '../story/LatamReveal'
 import { CountryExplorer } from '../story/CountryExplorer'
 import { GeoParticles } from '../geography/GeoParticles'
 import { GeoAlignmentDebug } from '../geography/GeoAlignmentDebug'
+import { Closing } from '../story/Closing'
 
 const GEO_DEBUG = false
 
-export function EarthSystem({ showLatam }: { showLatam: boolean }) {
+export function EarthSystem({ showLatam, showClose }: { showLatam: boolean; showClose: boolean }) {
   const group = useRef<THREE.Group>(null)
   const scroll = useExperienceStore((state) => state.scrollProgress)
   const reduced = useExperienceStore((state) => state.reducedMotion)
@@ -37,6 +38,7 @@ export function EarthSystem({ showLatam }: { showLatam: boolean }) {
       <GlobeGlow intensity={atmosphereIntensity} />
       <LatamReveal active={showLatam} />
       <CountryExplorer />
+      <Closing active={showClose} />
     </group>
   )
 }

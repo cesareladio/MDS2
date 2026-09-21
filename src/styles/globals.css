@@ -142,13 +142,14 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
 .continue-button span { margin-left: .8rem; }
 
 /* ─── CLOSING MESSAGE ───────────────────────────────────────────────────── */
-.closing-message { display: flex; flex-direction: column; align-items: center; text-transform: uppercase; }
-.closing-message p { letter-spacing: .5em; color: #d7e8f8; margin: 0 0 1.5rem; }
-.closing-message p span { color: var(--blue); margin: 0 1rem; }
-.closing-message h2 { margin: 0; font-size: clamp(4rem, 11vw, 11rem); line-height: .8; letter-spacing: .18em; text-indent: .18em; font-weight: 350; text-shadow: 0 0 30px rgba(78,155,255,.35); }
-.closing-message > div { margin-top: 3.5rem; line-height: 1.8; letter-spacing: .3em; font-size: .75rem; color: #c2d3e5; }
-.closing-message small { position: absolute; bottom: 8rem; right: 6vw; text-align: left; color: #93aac1; letter-spacing: .18em; line-height: 1.8; }
-.closing-message > strong { position: absolute; bottom: 8rem; left: 6vw; font-size: 1.35rem; letter-spacing: -.04em; }
+.closing-message { width: min(90vw, 1200px); min-height: 70vh; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; text-transform: uppercase; padding: 2rem 0 5rem; box-sizing: border-box; }
+.closing-message p { letter-spacing: .34em; color: #d7e8f8; margin: 0 0 1.8rem; font-size: .72rem; }
+.closing-message p span { color: var(--blue); margin: 0 .8rem; }
+.closing-message h2 { margin: 0; font-size: clamp(4rem, 7.2vw, 8.5rem); line-height: .92; letter-spacing: .12em; text-indent: .12em; font-weight: 330; text-shadow: 0 0 24px rgba(78,155,255,.28); }
+.closing-message > div { margin-top: 2.4rem; line-height: 1.7; letter-spacing: .2em; font-size: .92rem; color: #c2d3e5; text-align: center; }
+.closing-message small { position: absolute; bottom: 5rem; right: 0; text-align: left; color: #93aac1; letter-spacing: .2em; line-height: 1.7; font-size: .68rem; }
+.closing-message > strong { position: absolute; bottom: 5rem; left: 0; font-size: 1.1rem; letter-spacing: -.04em; font-weight: 500; }
+
 
 /* ─── PROGRESS NAV ──────────────────────────────────────────────────────── */
 .progress-nav { position: fixed; z-index: 80; left: 2.2rem; right: 2.2rem; bottom: 1.35rem; height: 3.35rem; display: flex; align-items: center; gap: 3vw; padding: 0 1rem; background: rgba(2,7,14,.48); border: 1px solid rgba(155,203,255,.12); backdrop-filter: blur(14px); transition: opacity .3s ease; }
@@ -295,9 +296,10 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
   .radial-stats strong { font-size: 1.3rem; }
   .cert-grid { min-height: 13rem; }
   .cert-grid strong { font-size: 1.4rem; }
-  .closing-message small, .closing-message > strong { bottom: 6rem; }
-  .closing-message small { right: 1.5rem; }
-  .closing-message > strong { left: 1.5rem; }
+  .closing-message { width: min(92vw, 42rem); min-height: 68vh; padding-bottom: 5.5rem; }
+  .closing-message small, .closing-message > strong { bottom: 5.5rem; }
+  .closing-message small { right: 0; }
+  .closing-message > strong { left: 0; }
   .capability-hud { top: auto; bottom: 5rem; left: 1rem; right: 1rem; width: auto; }
 }
 
@@ -316,9 +318,12 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
   .constellation-list { grid-template-columns: 1fr; }
   .split-stat { grid-template-columns: 1fr 1fr; }
   .chud-panel { max-height: 48vh; overflow-y: auto; }
-  .closing-message h2 { font-size: 3.8rem; }
-  .closing-message p { letter-spacing: .25em; }
-  .closing-message small { display: none; }
+  .closing-message { width: min(92vw, 27rem); min-height: 64vh; padding-bottom: 6rem; }
+  .closing-message h2 { font-size: clamp(3.1rem, 13vw, 4.8rem); letter-spacing: .1em; text-indent: .1em; }
+  .closing-message p { letter-spacing: .2em; font-size: .62rem; }
+  .closing-message > div { margin-top: 1.8rem; font-size: .72rem; letter-spacing: .14em; }
+  .closing-message small { display: block; right: auto; left: 50%; transform: translateX(-50%); width: max-content; bottom: 3.8rem; text-align: center; font-size: .55rem; }
+  .closing-message > strong { left: 50%; transform: translateX(-50%); bottom: 1.5rem; font-size: .92rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -10,7 +10,6 @@ import { GeoParticles } from '../geography/GeoParticles'
 import { GlobalJourney } from '../story/GlobalJourney'
 import { Complementarity } from '../story/Complementarity'
 import { CapabilityEngine } from '../story/CapabilityEngine'
-import { Closing } from '../story/Closing'
 
 export function EarthScene() {
   const phase   = useExperienceStore((state) => state.phase)
@@ -33,13 +32,12 @@ export function EarthScene() {
         <Suspense fallback={null}>
           <Lighting />
           <Stars />
-          <EarthSystem showLatam={showLatam} />
+          <EarthSystem showLatam={showLatam} showClose={showClose} />
 
           {/* Story components — keep mounted during neighbouring phases, fade internally */}
           <GlobalJourney active={phase === 'global'} />
           <Complementarity active={phase === 'complementarity'} />
           <CapabilityEngine active={showEngine} />
-          <Closing active={showClose} />
 
           <CameraRig />
           <PostProcessing />
