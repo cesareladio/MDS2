@@ -13,7 +13,8 @@ import { StoryCopy } from '../ui/StoryCopy'
 import { useExperienceStore } from '../store/experienceStore'
 
 export function Experience() {
-  const exploring = useExperienceStore((state) => state.explorationMode)
+  const phase = useExperienceStore((state) => state.phase)
+  const exploring = phase === 'explore'
   const selectedCapability = useExperienceStore((state) => state.selectedCapability)
   const selectCapability = useExperienceStore((state) => state.selectCapability)
   return (
@@ -149,7 +150,7 @@ export function Experience() {
 
       <CountryHUD />
       <CapabilityHUD />
-      <ProgressIndicator />
+      {phase !== 'intro' && <ProgressIndicator />}
       <div className="screen-grain" aria-hidden="true" />
     </div>
   )

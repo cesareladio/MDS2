@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { BrandLogo } from '../ui/BrandLogo'
 
 const criticalAssets = [
   '/textures/earth/earth-day-4k.jpg',
@@ -29,7 +30,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
   }, [onComplete])
   return (
     <div className="preloader" role="status" aria-label={`Cargando experiencia ${progress}%`}>
-      <div className="brand-wordmark">NTT <strong>DATA</strong></div>
+      <BrandLogo className="brand-wordmark" decorative />
       <div className="load-copy"><span>Loading experience</span><span>{String(progress).padStart(2, '0')}%</span></div>
       <div className="load-line"><i style={{ transform: `scaleX(${progress / 100})` }} /></div>
     </div>

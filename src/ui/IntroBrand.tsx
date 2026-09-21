@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useExperienceStore } from '../store/experienceStore'
+import { BrandLogo } from './BrandLogo'
 
 /**
  * IntroBrand
@@ -48,7 +49,9 @@ export function IntroBrand() {
       aria-hidden={phase !== 'intro'}
     >
       <p className="intro-eyebrow">People · Connect · Possibilities</p>
-      <h1 className="intro-title">NTT <strong>DATA</strong></h1>
+      <div className="intro-title intro-brand-logo">
+        <BrandLogo />
+      </div>
       <p className="intro-claim">Technology<br />for a brighter society</p>
 
       {/* The light line that "becomes" the Earth horizon */}

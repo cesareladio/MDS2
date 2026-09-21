@@ -5,15 +5,15 @@ export function PostProcessing() {
   const quality = useExperienceStore((state) => state.deviceQuality)
   if (quality === 'LOW') return null
   return (
-    <EffectComposer multisampling={quality === 'HIGH' ? 4 : 0}>
+    <EffectComposer multisampling={0}>
       <Bloom
-        luminanceThreshold={0.48}
-        luminanceSmoothing={0.9}
-        intensity={quality === 'HIGH' ? 0.28 : 0.18}
-        mipmapBlur
-        radius={0.72}
+        luminanceThreshold={0.56}
+        luminanceSmoothing={0.82}
+        intensity={quality === 'HIGH' ? 0.18 : 0.12}
+        mipmapBlur={false}
+        radius={0.48}
       />
-      <Vignette eskil={false} offset={0.16} darkness={0.58} />
+      <Vignette eskil={false} offset={0.14} darkness={0.5} />
     </EffectComposer>
   )
 }

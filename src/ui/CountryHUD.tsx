@@ -108,9 +108,27 @@ function ComparisonLayer({ layer }: { layer: Layer }) {
 
 export function CountryHUD() {
   const phase = useExperienceStore((state) => state.phase)
-  const active = phase === 'explore'
   const selectHub = useExperienceStore((state) => state.selectHub)
   const [layer, setLayer] = useState<Layer>('territory')
+  const [exploreVisible, setExploreVisible] = useState(false)
+
+  // Sync with physical #explore section visibility
+  useEffect(() => {
+    const exploreEl = document.getElementById('explore')
+    if (!exploreEl) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setExploreVisible(entry.isIntersecting)
+      },
+      { threshold: 0.45 }
+    )
+
+    observer.observe(exploreEl)
+    return () => observer.disconnect()
+  }, [])
+
+  const active = phase === 'explore' && exploreVisible
 
   useEffect(() => {
     const key = (event: KeyboardEvent) => {

@@ -1,6 +1,6 @@
 import { Html } from '@react-three/drei'
-import { useFrame, useThree } from '@react-three/fiber'
-import { useMemo, useRef, useState } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { capabilities } from '../../data/capabilities'
 import { useExperienceStore } from '../../store/experienceStore'
@@ -78,19 +78,28 @@ export function CapabilityEngine({ active }: { active: boolean }) {
   const selectCapability = useExperienceStore((state) => state.selectCapability)
   const scroll = useExperienceStore((state) => state.scrollProgress)
   const reduced = useExperienceStore((state) => state.reducedMotion)
-  const { gl } = useThree()
   const [hoveredNode, setHoveredNode] = useState<string | null>(null)
   const nodes = useMemo(() => buildNodes(), [])
   const engineProgress = Math.min(1, Math.max(0, (scroll - 0.70) / 0.10))
-  const ibiOLProgress = Math.min(1, Math.max(0, (scroll - 0.80) / 0.125))
+  const ibiOLProgress = Math.min(1, Math.max(0, (scroll - 0.80) / 0.15))
   const networkOpacity = active ? Math.min(1, engineProgress * 3 + 0.25) : 0
   const isIbiOL = phase === 'ibiol' || ibiOLProgress > 0.4
   const nodePositions = useMemo(() => nodes.map((node) => node.basePos.clone().lerp(node.ibiOLPos, ibiOLProgress)), [nodes, ibiOLProgress])
 
+  // Position and scale: Engine lower-left, IBIOL upper-right
+  const groupPos = isIbiOL ? [1.35, 0.28, 2.7] : [0.95, -0.08, 2.7]
+  const groupScale = isIbiOL ? 0.58 : 0.64
+
+  useEffect(() => {
+    if (selectedCapability) {
+      setHoveredNode(null)
+    }
+  }, [selectedCapability])
+
   if (!active && networkOpacity < 0.01) return null
 
   return (
-    <group position={[0.95, -0.08, 2.7]} scale={0.64}>
+    <group position={groupPos as [number, number, number]} scale={groupScale}>
       <OrbitalRing radius={1.55} tilt={0.4} opacity={networkOpacity * 0.12} />
       <OrbitalRing radius={1.2} tilt={-0.32} opacity={networkOpacity * 0.08} />
       {nodePositions.map((position, index) => (
@@ -117,9 +126,7 @@ export function CapabilityEngine({ active }: { active: boolean }) {
           <group key={node.item.id} position={nodePositions[index]}>
             <mesh
               scale={selected ? 1.14 : hovered ? 1.25 : 1}
-              onPointerEnter={() => { setHoveredNode(node.item.id); gl.domElement.style.cursor = 'pointer' }}
-              onPointerLeave={() => { setHoveredNode(null); gl.domElement.style.cursor = 'default' }}
-              onClick={(event) => { event.stopPropagation(); selectCapability(node.item.id) }}
+              visible={false}
             >
               <sphereGeometry args={[0.108, 24, 24]} />
               <meshStandardMaterial color="#1455b8" emissive={hovered || selected ? '#5cb8ff' : '#3078e0'} emissiveIntensity={hovered || selected ? 1.2 : 0.8} roughness={0.4} metalness={0.5} />
@@ -128,9 +135,9 @@ export function CapabilityEngine({ active }: { active: boolean }) {
               <button
                 className={`capability-node ${hovered ? 'is-hovered' : ''} ${selected ? 'is-selected' : ''}`}
                 style={{ opacity: networkOpacity }}
-                onPointerEnter={() => { setHoveredNode(node.item.id); gl.domElement.style.cursor = 'pointer' }}
-                onPointerLeave={() => { setHoveredNode(null); gl.domElement.style.cursor = 'default' }}
-                onClick={(event) => { event.stopPropagation(); selectCapability(node.item.id) }}
+                onPointerEnter={() => { setHoveredNode(node.item.id) }}
+                onPointerLeave={() => { setHoveredNode(null) }}
+                onClick={(event) => { event.stopPropagation(); setHoveredNode(null); selectCapability(node.item.id) }}
                 aria-label={`Ver ${node.item.name}`}
               >
                 {node.item.name}
