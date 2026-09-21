@@ -51,9 +51,9 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
 .chapter--intro, .chapter--complementarity, .chapter--engine, .chapter--ibiol, .chapter--closing { justify-content: center; text-align: center; }
 .chapter--intro::after { background: radial-gradient(circle at 50% 55%, transparent 0 35%, rgba(0, 2, 8, .5) 78%); }
 .chapter--global { align-items: flex-start; padding-top: 12vh; }
-.chapter--global .story-copy { max-width: 34rem; }
-.chapter--latam { justify-content: flex-end; text-align: left; }
-.chapter--latam::after { background: linear-gradient(-90deg, rgba(1, 5, 12, .86), rgba(1, 5, 12, .15) 45%, transparent 66%); }
+.chapter--latam .story-copy { width: min(42vw, 640px); max-width: 640px; margin-right: 4vw; padding-right: 1vw; }
+.chapter--latam { justify-content: flex-end; text-align: left; padding-left: max(6vw, 4rem); padding-right: max(8vw, 6rem); }
+.chapter--latam::after { background: linear-gradient(-90deg, rgba(1, 5, 12, .88), rgba(1, 5, 12, .22) 42%, transparent 70%); }
 .chapter--snapshot { align-items: flex-end; }
 .chapter--explore { justify-content: center; }
 .chapter--complementarity::after, .chapter--engine::after, .chapter--ibiol::after { background: radial-gradient(circle at 50% 50%, rgba(2, 11, 24, .18), rgba(0, 2, 8, .8) 85%); }
@@ -89,6 +89,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
 .story-copy--center .chapter-kicker { justify-content: center; }
 .chapter-kicker span { display: grid; place-content: center; width: 2.25rem; height: 2.25rem; border: 1px solid rgba(255,255,255,.2); border-radius: .42rem; color: #fff; font-size: .82rem; letter-spacing: 0; background: rgba(8,16,29,.64); }
 .story-copy h2 { font-size: clamp(2.5rem, 5.7vw, 6.2rem); line-height: .98; letter-spacing: -.045em; margin: 0; font-weight: 320; text-wrap: balance; }
+.chapter--latam .story-copy h2 { font-size: clamp(2rem, 4.2vw, 4.4rem); }
 .story-copy h2 em { color: #85c9ff; font-style: normal; font-weight: 620; }
 .story-body { margin-top: 2rem; color: #c3d3e3; font-size: .98rem; line-height: 1.65; }
 .journey-steps { margin-top: 3.5rem; display: flex; flex-direction: column; gap: 1.35rem; text-transform: uppercase; letter-spacing: .18em; font-size: .66rem; }
@@ -150,7 +151,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
 .closing-message > strong { position: absolute; bottom: 8rem; left: 6vw; font-size: 1.35rem; letter-spacing: -.04em; }
 
 /* ─── PROGRESS NAV ──────────────────────────────────────────────────────── */
-.progress-nav { position: fixed; z-index: 80; left: 2.2rem; right: 2.2rem; bottom: 1.35rem; height: 3.8rem; display: flex; align-items: center; gap: 3vw; padding: 0 1rem; background: rgba(2,7,14,.7); border: 1px solid rgba(155,203,255,.18); backdrop-filter: blur(18px); }
+.progress-nav { position: fixed; z-index: 80; left: 2.2rem; right: 2.2rem; bottom: 1.35rem; height: 3.35rem; display: flex; align-items: center; gap: 3vw; padding: 0 1rem; background: rgba(2,7,14,.48); border: 1px solid rgba(155,203,255,.12); backdrop-filter: blur(14px); transition: opacity .3s ease; }
 .progress-brand { white-space: nowrap; font-size: 1rem; font-weight: 300; letter-spacing: -.04em; }
 .progress-brand strong { font-weight: 750; }
 .progress-brand span { margin-left: 1.4rem; padding-left: 1.4rem; border-left: 1px solid var(--line); color: #7f98b3; text-transform: uppercase; letter-spacing: .17em; font-size: .47rem; vertical-align: middle; }

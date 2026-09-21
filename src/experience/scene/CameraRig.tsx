@@ -32,13 +32,13 @@ const waypoints: Waypoint[] = [
   { at: 0.19, lat:  42,  lon:  -4,  distance:  6.0, fov: 38, roll:  0.012 },
 
   // LATAM reveal – long arc south-west toward Andean region
-  { at: 0.29, lat: -12,  lon:  -70, distance:  5.2, fov: 36, roll: -0.010 },
+  { at: 0.29, lat: -22,  lon:  -74, distance:  5.8, fov: 36, roll: -0.010 },
 
   // SNAPSHOT – settle over Peru/Chile, slightly closer
-  { at: 0.38, lat: -20,  lon:  -70, distance:  4.8, fov: 36, roll:  0.000 },
+  { at: 0.38, lat: -22,  lon:  -74, distance:  5.4, fov: 36, roll:  0.000 },
 
   // EXPLORE (country selection active) – close West-face of South America
-  { at: 0.48, lat: -22,  lon:  -74, distance:  4.5, fov: 36, roll:  0.004 },
+  { at: 0.48, lat: -23,  lon:  -75, distance:  5.0, fov: 36, roll:  0.004 },
 
   // COMPLEMENTARITY – pull back slightly for bilateral geometry
   { at: 0.60, lat: -20,  lon:  -72, distance:  5.4, fov: 40, roll:  0.000 },
@@ -135,8 +135,8 @@ export function CameraRig() {
     targetPos.copy(curvePos)
 
     if (!reduced) {
-      targetPos.x += pointer.x * 0.10
-      targetPos.y += pointer.y * 0.07
+      targetPos.x += pointer.x * 0.08
+      targetPos.y += pointer.y * 0.05
     }
 
     const ease = 1 - Math.pow(0.0004, delta)

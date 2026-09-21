@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 
+// Geographic convention: lon+180 matches the equirectangular map; BASE_GLOBE_ROTATION is applied only by EarthSystem.
 export function latLonToVector3(lat: number, lon: number, radius = 2.03) {
   const phi = (90 - lat) * (Math.PI / 180)
   const theta = (lon + 180) * (Math.PI / 180)

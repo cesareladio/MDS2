@@ -8,6 +8,10 @@ import { GlobeGlow } from '../effects/GlobeGlow'
 import { LatamReveal } from '../story/LatamReveal'
 import { CountryExplorer } from '../story/CountryExplorer'
 import { GeoParticles } from '../geography/GeoParticles'
+import { GeoAlignmentDebug } from '../geography/GeoAlignmentDebug'
+
+const BASE_GLOBE_ROTATION = -Math.PI / 2
+const GEO_DEBUG = false
 
 export function EarthSystem({ showLatam }: { showLatam: boolean }) {
   const group = useRef<THREE.Group>(null)
@@ -18,14 +22,17 @@ export function EarthSystem({ showLatam }: { showLatam: boolean }) {
   useFrame((_, delta) => {
     if (!group.current) return
     group.current.position.y = THREE.MathUtils.lerp(-3.55, 0, introProgress)
-    group.current.scale.setScalar(THREE.MathUtils.lerp(0.62, 0.9, introProgress))
-    group.current.position.x = THREE.MathUtils.lerp(0.1, 0.18, Math.min(1, Math.max(0, (scroll - 0.1) / 0.15)))
+    const globalProgress = THREE.MathUtils.smoothstep(scroll, 0.1, 0.24)
+    const globalScale = THREE.MathUtils.lerp(1, 0.86, globalProgress)
+    group.current.scale.setScalar(THREE.MathUtils.lerp(0.6, 0.82, introProgress) * globalScale)
+    group.current.position.x = THREE.MathUtils.lerp(0.08, 0.16, Math.min(1, Math.max(0, (scroll - 0.1) / 0.15)))
     if (!reduced && scroll < 0.58) group.current.rotation.y += delta * THREE.MathUtils.lerp(0.008, 0.001, Math.min(1, scroll / 0.58))
   })
 
   const atmosphereIntensity = THREE.MathUtils.lerp(0.05, 1, introProgress)
   return (
-    <group ref={group}>
+    <group ref={group} rotation={[0, BASE_GLOBE_ROTATION, 0]}>
+      {GEO_DEBUG && <GeoAlignmentDebug />}
       <Earth />
       <GeoParticles />
       <Atmosphere intensity={atmosphereIntensity} />

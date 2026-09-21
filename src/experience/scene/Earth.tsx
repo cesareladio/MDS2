@@ -65,7 +65,7 @@ const cloudFragmentShader = /* glsl */ `
   varying vec3 vWorldNormal;
   void main() {
     float cloud = texture2D(uClouds, vUv).r;
-    float cloudMask = smoothstep(0.58, 0.84, cloud);
+    float cloudMask = smoothstep(0.74, 0.94, cloud);
     float NdotL = dot(vWorldNormal, normalize(uSunDir));
     float alpha = cloudMask * uOpacity;
     float light = 0.35 + max(0.0, NdotL) * 0.45;
@@ -91,13 +91,24 @@ export function Earth() {
     uDay: { value: textures.day }, uNight: { value: textures.night }, uSpecular: { value: textures.specular },
     uSunDir: { value: sunDir }, uNightIntensity: { value: 1 }, uExposure: { value: introExposure },
   }), [textures, sunDir, introExposure])
-  const cloudUniforms = useMemo(() => ({ uClouds: { value: textures.clouds }, uSunDir: { value: sunDir }, uOpacity: { value: 0.10 } }), [textures, sunDir])
+  const cloudUniforms = useMemo(() => ({ uClouds: { value: textures.clouds }, uSunDir: { value: sunDir }, uOpacity: { value: 0.02 } }), [textures, sunDir])
 
   useEffect(() => () => {
     textures.day.dispose(); textures.night.dispose(); textures.clouds.dispose(); textures.specular.dispose()
   }, [textures])
 
   useFrame((_, delta) => {
+    const introToGlobal = THREE.MathUtils.smoothstep(scroll, 0.08, 0.2)
+    const globalToLatam = THREE.MathUtils.smoothstep(scroll, 0.24, 0.32)
+    const latamToSnapshot = THREE.MathUtils.smoothstep(scroll, 0.34, 0.4)
+    const snapshotToExplore = THREE.MathUtils.smoothstep(scroll, 0.44, 0.52)
+
+    const globalOpacity = THREE.MathUtils.lerp(0.02, 0.045, introToGlobal)
+    const latamOpacity = THREE.MathUtils.lerp(globalOpacity, 0.02, globalToLatam)
+    const snapshotOpacity = THREE.MathUtils.lerp(latamOpacity, 0.012, latamToSnapshot)
+    const exploreOpacity = THREE.MathUtils.lerp(snapshotOpacity, 0.005, snapshotToExplore)
+
+    cloudUniforms.uOpacity.value = exploreOpacity
     if (!reduced && clouds.current) clouds.current.rotation.y += delta * 0.004
     if (earthMesh.current && earthMesh.current.material instanceof THREE.ShaderMaterial) {
       earthMesh.current.material.uniforms.uExposure.value = introExposure
@@ -106,11 +117,11 @@ export function Earth() {
 
   return (
     <>
-      <mesh ref={earthMesh} rotation={[0, -Math.PI / 2, 0]}>
+      <mesh ref={earthMesh}>
         <sphereGeometry args={[2, 128, 128]} />
         <shaderMaterial vertexShader={earthVertexShader} fragmentShader={earthFragmentShader} uniforms={earthUniforms} />
       </mesh>
-      <mesh ref={clouds} scale={1.008} rotation={[0, -Math.PI / 2, 0]}>
+      <mesh ref={clouds} scale={1.008}>
         <sphereGeometry args={[2, 96, 96]} />
         <shaderMaterial vertexShader={cloudVertexShader} fragmentShader={cloudFragmentShader} uniforms={cloudUniforms} transparent depthWrite={false} blending={THREE.NormalBlending} />
       </mesh>

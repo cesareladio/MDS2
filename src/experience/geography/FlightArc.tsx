@@ -39,7 +39,7 @@ export function FlightArc({
   const trailMat = useMemo(() => new THREE.LineBasicMaterial({
     color,
     transparent: true,
-    opacity: 0.38,
+    opacity: 0.14,
   }), [color])
 
   // Map global scroll into local 0..1 progress for this arc
@@ -54,15 +54,15 @@ export function FlightArc({
     // Fade: visible only while arc is in its active window
     const inRange = scrollProgress >= progressStart - 0.04 && scrollProgress <= progressEnd + 0.04
     const vis = inRange ? 1 : 0
-    ;(particleRef.current.material as THREE.MeshBasicMaterial).opacity = vis
-    if (trailRef.current) trailMat.opacity = vis * 0.38
+    ;(particleRef.current.material as THREE.MeshBasicMaterial).opacity = vis * 0.5
+    if (trailRef.current) trailMat.opacity = vis * 0.14
   })
 
   return (
     <group>
       <primitive object={new THREE.Line(trailGeom, trailMat)} ref={trailRef} />
       <mesh ref={particleRef}>
-        <sphereGeometry args={[0.038, 16, 16]} />
+        <sphereGeometry args={[0.016, 10, 10]} />
         <meshBasicMaterial color={color} toneMapped={false} transparent />
       </mesh>
     </group>

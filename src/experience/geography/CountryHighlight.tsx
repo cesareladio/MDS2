@@ -127,9 +127,9 @@ export function CountryHighlight({
           key={i}
           points={pts}
           color={hovered ? glowColor : color}
-          lineWidth={hovered ? 2.4 : 1.6}
+          lineWidth={hovered ? 2.2 : 1.4}
           transparent
-          opacity={0.75}
+          opacity={0.58}
         />
       ))}
 
@@ -164,7 +164,7 @@ export function CountryHighlight({
 
       {/* Glow overlay on globe surface */}
       {glowTexture && (
-        <mesh ref={glowMesh} scale={1.001} rotation={[0, -Math.PI / 2, 0]}>
+        <mesh ref={glowMesh} scale={1.001}>
           <sphereGeometry args={[2, 128, 128]} />
           <meshBasicMaterial
             map={glowTexture}
