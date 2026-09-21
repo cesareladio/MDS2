@@ -131,6 +131,7 @@ export function CapabilityEngine({ active }: { active: boolean }) {
 
   // Progress: engine phase 0.70→0.80, ibiol phase 0.80→0.91
   const engineProgress = Math.min(1, Math.max(0, (scroll - 0.70) / 0.10))
+  const transitionProgress = Math.min(1, Math.max(0, (scroll - 0.66) / 0.10))
   const ibildProgress  = Math.min(1, Math.max(0, (scroll - 0.80) / 0.11))
 
   // Node positions (lerp between base and ibiol target based on ibil progress)
@@ -139,8 +140,9 @@ export function CapabilityEngine({ active }: { active: boolean }) {
     [nodes, ibildProgress],
   )
 
-  const fadeIn  = active ? Math.min(1, engineProgress * 4) : 0
+  const fadeIn  = active ? Math.max(engineProgress * 4, transitionProgress * 0.7) : 0
   const coreScale = 0.3 + ibildProgress * 0.6
+  const continuityFade = fadeIn
 
   useFrame(({ clock }, delta) => {
     if (!groupRef.current) return
@@ -160,12 +162,13 @@ export function CapabilityEngine({ active }: { active: boolean }) {
     }
   })
 
-  if (!active && fadeIn < 0.01) return null
+  if (!active && continuityFade < 0.01) return null
 
   const showIbiol = ibildProgress > 0.4
+  const networkOpacity = Math.min(1, continuityFade)
 
   return (
-    <group ref={groupRef} position={[0, 0, 2.7]} scale={0.68}>
+    <group ref={groupRef} position={[0, -0.35, 2.7]} scale={0.68}>
       {/* Orbital decorations */}
       <OrbitalRing radius={1.7}  tilt={0.4}  color="#2a68cc" opacity={fadeIn * 0.35} />
       <OrbitalRing radius={1.35} tilt={-0.3} color="#1a4e9e" opacity={fadeIn * 0.25} />
@@ -178,7 +181,7 @@ export function CapabilityEngine({ active }: { active: boolean }) {
           from={new THREE.Vector3(0, 0, 0)}
           to={pos}
           color={ibildProgress > 0.3 ? '#5cb8ff' : '#3d8cff'}
-          opacity={fadeIn * 0.35}
+          opacity={networkOpacity * 0.35}
           particleOffset={i / nodes.length}
         />
       ))}
@@ -226,7 +229,7 @@ export function CapabilityEngine({ active }: { active: boolean }) {
             <Html center>
               <button
                 className={`capability-node ${hovered ? 'is-hovered' : ''}`}
-                style={{ opacity: fadeIn }}
+                style={{ opacity: networkOpacity }}
                 onPointerEnter={() => setHoveredNode(node.item.id)}
                 onPointerLeave={() => setHoveredNode(null)}
                 onClick={() => selectCapability(node.item.id)}

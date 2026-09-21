@@ -18,6 +18,8 @@ export function HubMarker({ hub, color, glowColor }: HubMarkerProps) {
   const selectHub    = useExperienceStore((state) => state.selectHub)
   const position     = useMemo(() => latLonToVector3(hub.lat, hub.lon, 2.088), [hub.lat, hub.lon])
   const selected     = selectedHub === hub.id
+  const surfaceNormal = useMemo(() => position.clone().normalize(), [position])
+  const ringQuaternion = useMemo(() => new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), surfaceNormal), [surfaceNormal])
 
   const coreRef    = useRef<THREE.Mesh>(null)
   const pulse1Ref  = useRef<THREE.Mesh>(null)
@@ -70,7 +72,8 @@ export function HubMarker({ hub, color, glowColor }: HubMarkerProps) {
         <meshBasicMaterial color={color} transparent opacity={0.12} depthWrite={false} blending={THREE.AdditiveBlending} />
       </mesh>
 
-      {/* Pulse rings */}
+      {/* Pulse rings tangent to the Earth surface */}
+      <group quaternion={ringQuaternion}>
       <mesh ref={pulse1Ref}>
         <ringGeometry args={[0.058, 0.072, 32]} />
         <meshBasicMaterial color={color} transparent opacity={0.5} side={THREE.DoubleSide} toneMapped={false} />
@@ -79,6 +82,7 @@ export function HubMarker({ hub, color, glowColor }: HubMarkerProps) {
         <ringGeometry args={[0.058, 0.072, 32]} />
         <meshBasicMaterial color={color} transparent opacity={0.3} side={THREE.DoubleSide} toneMapped={false} />
       </mesh>
+      </group>
 
       {/* Core light dot */}
       <mesh

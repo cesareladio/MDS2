@@ -3,5 +3,8 @@ import { useExperienceStore } from '../../store/experienceStore'
 
 export function Stars() {
   const quality = useExperienceStore((state) => state.deviceQuality)
-  return <DreiStars radius={70} depth={45} count={quality === 'LOW' ? 700 : quality === 'MEDIUM' ? 1400 : 2300} factor={2.5} saturation={0.2} fade speed={0.25} />
+  const scroll = useExperienceStore((state) => state.scrollProgress)
+  const introProgress = Math.min(1, scroll / 0.12)
+  const count = quality === 'LOW' ? 700 : quality === 'MEDIUM' ? 1400 : 2300
+  return <DreiStars radius={70} depth={45} count={Math.max(80, Math.round(count * (0.18 + introProgress * 0.82)))} factor={1.4 + introProgress * 1.1} saturation={0.2} fade speed={0.25} />
 }

@@ -11,6 +11,7 @@ import {
   type loadSouthAmericaGeo,
 } from '../../lib/countryGeo'
 import type { FeatureCollection } from 'geojson'
+import { CountryInteractionMesh } from './CountryInteractionMesh'
 import { useExperienceStore } from '../../store/experienceStore'
 import type { CountryId } from '../../data/types'
 
@@ -146,30 +147,20 @@ export function CountryHighlight({
           />
         </mesh>
 
-        {/* Solid center dot */}
-        <mesh
-          onPointerEnter={() => { if (active) { setHovered(true); gl.domElement.style.cursor = 'pointer' } }}
-          onPointerLeave={() => { setHovered(false); gl.domElement.style.cursor = 'default' }}
-          onClick={handleClick}
-          scale={hovered ? 1.5 : 1}
-        >
+        <mesh scale={hovered ? 1.5 : 1}>
           <sphereGeometry args={[0.048, 20, 20]} />
           <meshBasicMaterial color={hovered ? glowColor : color} toneMapped={false} />
         </mesh>
-
-        {/* Invisible large raycast surface for easy hover */}
-        {active && (
-          <mesh
-            visible={false}
-            onPointerEnter={() => { setHovered(true); gl.domElement.style.cursor = 'pointer' }}
-            onPointerLeave={() => { setHovered(false); gl.domElement.style.cursor = 'default' }}
-            onClick={handleClick}
-          >
-            <sphereGeometry args={[0.3, 12, 12]} />
-            <meshBasicMaterial />
-          </mesh>
-        )}
       </group>
+
+      <CountryInteractionMesh
+        geo={geo as FeatureCollection}
+        countryId={countryId}
+        active={active && progress > 0.02}
+        onEnter={() => { setHovered(true); gl.domElement.style.cursor = 'pointer' }}
+        onLeave={() => { setHovered(false); gl.domElement.style.cursor = 'default' }}
+        onClick={handleClick}
+      />
 
       {/* Glow overlay on globe surface */}
       {glowTexture && (

@@ -1,17 +1,13 @@
 import { Canvas } from '@react-three/fiber'
 import { Suspense } from 'react'
 import { useExperienceStore } from '../../store/experienceStore'
-import { Atmosphere } from './Atmosphere'
 import { CameraRig } from './CameraRig'
-import { Earth } from './Earth'
+import { EarthSystem } from './EarthSystem'
 import { Lighting } from './Lighting'
 import { PostProcessing } from './PostProcessing'
 import { Stars } from './Stars'
-import { GlobeGlow } from '../effects/GlobeGlow'
 import { GeoParticles } from '../geography/GeoParticles'
 import { GlobalJourney } from '../story/GlobalJourney'
-import { LatamReveal } from '../story/LatamReveal'
-import { CountryExplorer } from '../story/CountryExplorer'
 import { Complementarity } from '../story/Complementarity'
 import { CapabilityEngine } from '../story/CapabilityEngine'
 import { Closing } from '../story/Closing'
@@ -37,15 +33,10 @@ export function EarthScene() {
         <Suspense fallback={null}>
           <Lighting />
           <Stars />
-          <GeoParticles />
-          <Earth />
-          <Atmosphere />
-          <GlobeGlow />
+          <EarthSystem showLatam={showLatam} />
 
           {/* Story components — keep mounted during neighbouring phases, fade internally */}
           <GlobalJourney active={phase === 'global'} />
-          <LatamReveal active={showLatam} />
-          <CountryExplorer />
           <Complementarity active={phase === 'complementarity'} />
           <CapabilityEngine active={showEngine} />
           <Closing active={showClose} />

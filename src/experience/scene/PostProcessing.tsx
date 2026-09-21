@@ -9,7 +9,7 @@ export function PostProcessing() {
       <Bloom
         luminanceThreshold={0.48}
         luminanceSmoothing={0.9}
-        intensity={quality === 'HIGH' ? 0.95 : 0.65}
+        intensity={quality === 'HIGH' ? 0.28 : 0.18}
         mipmapBlur
         radius={0.72}
       />

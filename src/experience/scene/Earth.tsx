@@ -1,24 +1,20 @@
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useLoader } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { useExperienceStore } from '../../store/experienceStore'
-import { createEarthTextures } from '../../lib/earthTexture'
+import { configureEarthTexture, createFallbackSpecular, earthAssetUrls } from '../../lib/earthTexture'
 
-/* ────────────────────────────────────────────────────────────────────────────
-   Custom day/night terminator shader with intro exposure control
-   ─────────────────────────────────────────────────────────────────────────── */
 const earthVertexShader = /* glsl */ `
   varying vec2 vUv;
   varying vec3 vNormal;
   varying vec3 vWorldNormal;
   varying vec3 vViewDir;
-
   void main() {
     vUv = uv;
     vNormal = normalize(normalMatrix * normal);
     vWorldNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
-    vec4 worldPos = modelMatrix * vec4(position, 1.0);
-    vViewDir = normalize(cameraPosition - worldPos.xyz);
+    vec3 worldPos = (modelMatrix * vec4(position, 1.0)).xyz;
+    vViewDir = normalize(cameraPosition - worldPos);
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
 `
@@ -30,45 +26,27 @@ const earthFragmentShader = /* glsl */ `
   uniform vec3 uSunDir;
   uniform float uNightIntensity;
   uniform float uExposure;
-
   varying vec2 vUv;
   varying vec3 vNormal;
   varying vec3 vWorldNormal;
   varying vec3 vViewDir;
-
   void main() {
-    vec3 day    = texture2D(uDay,     vUv).rgb;
-    vec3 night  = texture2D(uNight,   vUv).rgb;
-    float spec  = texture2D(uSpecular, vUv).r;
-
-    // Sun term (0 = dark side, 1 = full light)
+    vec3 day = texture2D(uDay, vUv).rgb;
+    vec3 night = texture2D(uNight, vUv).rgb;
+    float spec = texture2D(uSpecular, vUv).r;
     float NdotL = dot(vWorldNormal, normalize(uSunDir));
     float terminator = smoothstep(-0.12, 0.22, NdotL);
-
-    // Diffuse shading on day side
-    float diffuse = max(0.0, NdotL);
-    vec3 litDay = day * (0.18 + diffuse * 1.0);
-
-    // City lights only on dark side, fading through terminator
+    vec3 litDay = day * (0.24 + max(0.0, NdotL) * 1.05);
     float nightBlend = smoothstep(0.14, -0.14, NdotL) * uNightIntensity;
-    vec3 litNight = night * nightBlend * 1.8;
-
-    // Basic specular on ocean (spec map = grey on ocean, near-black on land)
+    vec3 litNight = night * nightBlend * 1.35;
     float specMask = spec * (1.0 - terminator * 0.5 + 0.5);
-    float specPow  = pow(max(0.0, dot(reflect(-normalize(uSunDir), vNormal), vViewDir)), 28.0);
-    vec3 specColor = vec3(0.18, 0.42, 0.82) * specMask * specPow * 1.8;
-
-    // Combine with exposure control (during intro, Earth is darker)
+    float specPow = pow(max(0.0, dot(reflect(-normalize(uSunDir), vNormal), vViewDir)), 28.0);
+    vec3 specColor = vec3(0.16, 0.34, 0.62) * specMask * specPow * 1.2;
     vec3 color = mix(litNight, litDay, terminator) + specColor;
-    color *= mix(0.2, 1.0, uExposure);
-
-    gl_FragColor = vec4(color, 1.0);
+    gl_FragColor = vec4(color * mix(0.12, 1.0, uExposure), 1.0);
   }
 `
 
-/* ────────────────────────────────────────────────────────────────────────────
-   Cloud shader (alpha-blended overlay, slight glow toward sun)
-   ─────────────────────────────────────────────────────────────────────────── */
 const cloudVertexShader = /* glsl */ `
   varying vec2 vUv;
   varying vec3 vWorldNormal;
@@ -86,87 +64,56 @@ const cloudFragmentShader = /* glsl */ `
   varying vec2 vUv;
   varying vec3 vWorldNormal;
   void main() {
-    float alpha = texture2D(uClouds, vUv).r * uOpacity;
+    float cloud = texture2D(uClouds, vUv).r;
+    float cloudMask = smoothstep(0.58, 0.84, cloud);
     float NdotL = dot(vWorldNormal, normalize(uSunDir));
-    float light = 0.55 + max(0.0, NdotL) * 0.7;
+    float alpha = cloudMask * uOpacity;
+    float light = 0.35 + max(0.0, NdotL) * 0.45;
     gl_FragColor = vec4(vec3(light), alpha);
   }
 `
 
-/* ────────────────────────────────────────────────────────────────────────────
-   Earth component
-   ─────────────────────────────────────────────────────────────────────────── */
 export function Earth() {
-  const group  = useRef<THREE.Group>(null)
   const earthMesh = useRef<THREE.Mesh>(null)
   const clouds = useRef<THREE.Mesh>(null)
   const reduced = useExperienceStore((state) => state.reducedMotion)
   const scroll = useExperienceStore((state) => state.scrollProgress)
-  const textures = useMemo(() => createEarthTextures(), [])
-
-  // Sun direction — roughly lit from the right/front to show lit side facing camera
+  const [day, night, cloud] = useLoader(THREE.TextureLoader, [earthAssetUrls.day, earthAssetUrls.night, earthAssetUrls.clouds])
+  const textures = useMemo(() => ({
+    day: configureEarthTexture(day, true),
+    night: configureEarthTexture(night, true),
+    clouds: configureEarthTexture(cloud),
+    specular: createFallbackSpecular(),
+  }), [day, night, cloud])
   const sunDir = useMemo(() => new THREE.Vector3(5, 3, 5).normalize(), [])
-
-  // Intro exposure: Earth dims during intro and brightens as we scroll past (~12% scroll window)
-  const introExposure = Math.min(1, scroll * 8.5)
-
+  const introExposure = Math.min(1, Math.max(0, scroll / 0.11))
   const earthUniforms = useMemo(() => ({
-    uDay:          { value: textures.day },
-    uNight:        { value: textures.night },
-    uSpecular:     { value: textures.specular },
-    uSunDir:       { value: sunDir },
-    uNightIntensity: { value: 1.0 },
-    uExposure:     { value: introExposure },
+    uDay: { value: textures.day }, uNight: { value: textures.night }, uSpecular: { value: textures.specular },
+    uSunDir: { value: sunDir }, uNightIntensity: { value: 1 }, uExposure: { value: introExposure },
   }), [textures, sunDir, introExposure])
-
-  const cloudUniforms = useMemo(() => ({
-    uClouds:  { value: textures.clouds },
-    uSunDir:  { value: sunDir },
-    uOpacity: { value: 0.3 },
-  }), [textures, sunDir])
+  const cloudUniforms = useMemo(() => ({ uClouds: { value: textures.clouds }, uSunDir: { value: sunDir }, uOpacity: { value: 0.10 } }), [textures, sunDir])
 
   useEffect(() => () => {
-    textures.day.dispose()
-    textures.night.dispose()
-    textures.specular.dispose()
-    textures.clouds.dispose()
+    textures.day.dispose(); textures.night.dispose(); textures.clouds.dispose(); textures.specular.dispose()
   }, [textures])
 
   useFrame((_, delta) => {
-    if (reduced) return
-    if (group.current)  group.current.rotation.y  += delta * 0.010
-    if (clouds.current) clouds.current.rotation.y += delta * 0.015
-    
-    // Update exposure uniform each frame
+    if (!reduced && clouds.current) clouds.current.rotation.y += delta * 0.004
     if (earthMesh.current && earthMesh.current.material instanceof THREE.ShaderMaterial) {
-      (earthMesh.current.material as THREE.ShaderMaterial).uniforms.uExposure.value = introExposure
+      earthMesh.current.material.uniforms.uExposure.value = introExposure
     }
   })
 
   return (
-    <group ref={group} rotation={[0, -Math.PI / 2, 0]}>
-      {/* Main globe */}
-      <mesh ref={earthMesh}>
+    <>
+      <mesh ref={earthMesh} rotation={[0, -Math.PI / 2, 0]}>
         <sphereGeometry args={[2, 128, 128]} />
-        <shaderMaterial
-          vertexShader={earthVertexShader}
-          fragmentShader={earthFragmentShader}
-          uniforms={earthUniforms}
-        />
+        <shaderMaterial vertexShader={earthVertexShader} fragmentShader={earthFragmentShader} uniforms={earthUniforms} />
       </mesh>
-
-      {/* Cloud layer */}
-      <mesh ref={clouds} scale={1.007}>
+      <mesh ref={clouds} scale={1.008} rotation={[0, -Math.PI / 2, 0]}>
         <sphereGeometry args={[2, 96, 96]} />
-        <shaderMaterial
-          vertexShader={cloudVertexShader}
-          fragmentShader={cloudFragmentShader}
-          uniforms={cloudUniforms}
-          transparent
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
+        <shaderMaterial vertexShader={cloudVertexShader} fragmentShader={cloudFragmentShader} uniforms={cloudUniforms} transparent depthWrite={false} blending={THREE.NormalBlending} />
       </mesh>
-    </group>
+    </>
   )
 }

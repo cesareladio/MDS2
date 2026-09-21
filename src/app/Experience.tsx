@@ -1,5 +1,6 @@
 import { globalData } from '../data/global'
 import { capabilities } from '../data/capabilities'
+import { countryIdentity } from '../data/countryIdentity'
 import { EarthScene } from '../experience/scene/EarthScene'
 import { StoryDirector } from '../experience/story/StoryDirector'
 import { CapabilityHUD } from '../ui/CapabilityHUD'
@@ -49,22 +50,23 @@ export function Experience() {
         {/* 04 SNAPSHOT */}
         <section id="snapshot" className="chapter chapter--snapshot">
           <StoryCopy index="04" kicker="One GDN-e snapshot" title="La escala aparece en el territorio">
-            <div className="snapshot-stats">
-              <div>
-                <small>Perú</small>
+            <div className="snapshot-identities">
+              <strong className="snapshot-gdne">ONE GDN-e</strong>
+              <div className="snapshot-country snapshot-country--peru">
+                <img src={countryIdentity.peru.flag} alt="" />
+                <small>{countryIdentity.peru.name}</small>
                 <strong>{globalData.peruHC.toLocaleString('es-PE')}</strong>
                 <span>personas</span>
+                <em>{countryIdentity.peru.tagline}</em>
               </div>
-              <div>
-                <small>Chile</small>
+              <div className="snapshot-country snapshot-country--chile">
+                <img src={countryIdentity.chile.flag} alt="" />
+                <small>{countryIdentity.chile.name}</small>
                 <strong>{globalData.chileGdneHC}</strong>
                 <span>colaboradores GDN-e</span>
+                <em>{countryIdentity.chile.tagline}</em>
               </div>
-              <div className="is-pending">
-                <small>HC conjunto</small>
-                <strong>TBD</strong>
-                <span>por confirmar</span>
-              </div>
+              <div className="snapshot-pending">HC conjunto · por confirmar</div>
             </div>
           </StoryCopy>
         </section>

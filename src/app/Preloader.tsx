@@ -1,19 +1,31 @@
 import { useEffect, useState } from 'react'
 
+const criticalAssets = [
+  '/textures/earth/earth-day.jpg',
+  '/textures/earth/earth-night.jpg',
+  '/textures/earth/earth-clouds.png',
+  '/geo/south-america.geojson',
+  '/flags/peru.svg',
+  '/flags/chile.svg',
+]
+
 export function Preloader({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0)
   useEffect(() => {
-    const started = performance.now()
-    const timer = window.setInterval(() => {
-      const elapsed = performance.now() - started
-      const next = Math.min(100, Math.round((elapsed / 1450) * 100))
-      setProgress(next)
-      if (next >= 100) {
-        window.clearInterval(timer)
+    let cancelled = false
+    Promise.all(criticalAssets.map(async (asset) => {
+      const response = await fetch(asset)
+      if (!response.ok) throw new Error(`Critical asset unavailable: ${asset}`)
+      return response
+    })).then(() => {
+      if (!cancelled) {
+        setProgress(100)
         window.setTimeout(onComplete, 220)
       }
-    }, 35)
-    return () => window.clearInterval(timer)
+    }).catch(() => {
+      if (!cancelled) onComplete()
+    })
+    return () => { cancelled = true }
   }, [onComplete])
   return (
     <div className="preloader" role="status" aria-label={`Cargando experiencia ${progress}%`}>

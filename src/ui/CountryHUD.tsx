@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { chileCertifications, chileData, chileHistory, chileHubs } from '../data/chile'
 import { peruData, peruDiversity, peruHistory, peruHubs } from '../data/peru'
+import { countryIdentity } from '../data/countryIdentity'
 import type { CountryId } from '../data/types'
 import { useExperienceStore } from '../store/experienceStore'
 import { Timeline } from './Timeline'
@@ -145,6 +146,7 @@ export function CountryHUD() {
   }
 
   const isPerú = country === 'peru'
+  const identity = countryIdentity[country]
 
   return (
     <div
@@ -156,12 +158,10 @@ export function CountryHUD() {
       {/* ── Header ── */}
       <header className="chud-header">
         <span className="chud-chapter">05 · Explore</span>
-        <h2 className="chud-title">{isPerú ? 'Perú' : 'Chile'}</h2>
-        <p className="chud-sub">
-          {isPerú
-            ? 'Talento que impulsa el futuro'
-            : 'Experiencia, especialización y talento distribuido'}
-        </p>
+        <img className="chud-flag" src={identity.flag} alt="" />
+        <h2 className="chud-title">{identity.name}</h2>
+        <p className="chud-identity">{identity.tagline}</p>
+        <p className="chud-sub">{identity.description}</p>
       </header>
 
       {/* ── Thin spatial layer rail ── */}

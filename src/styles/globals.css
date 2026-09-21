@@ -98,12 +98,16 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
 .gdne-label { display: inline-block; margin-top: 2rem; text-transform: uppercase; letter-spacing: .3em; color: #75bdff; }
 
 /* ─── SNAPSHOT ──────────────────────────────────────────────────────────── */
-.snapshot-stats { margin-top: 2.5rem; display: grid; grid-template-columns: repeat(3, minmax(9rem, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); backdrop-filter: blur(10px); background: rgba(3, 11, 22, .33); }
-.snapshot-stats > div { padding: 1.45rem; border-right: 1px solid var(--line); display: flex; flex-direction: column; }
-.snapshot-stats > div:last-child { border-right: 0; }
-.snapshot-stats small, .snapshot-stats span { text-transform: uppercase; letter-spacing: .18em; font-size: .55rem; color: #8da6c0; }
-.snapshot-stats strong { font-size: clamp(2.1rem, 4vw, 4rem); line-height: 1; margin: .5rem 0; font-weight: 450; font-variant-numeric: tabular-nums; }
-.snapshot-stats .is-pending strong { color: #8494a7; }
+.snapshot-identities { margin-top: 2.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; position: relative; padding: 1.5rem 0 3rem; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.snapshot-gdne { grid-column: 1 / -1; text-align: center; color: #b9dcff; text-transform: uppercase; letter-spacing: .32em; font-size: .72rem; }
+.snapshot-country { display: grid; grid-template-columns: auto 1fr; gap: .35rem .7rem; align-items: center; padding: 1rem; border-left: 1px solid var(--line); }
+.snapshot-country img { width: 2rem; grid-row: 1 / 3; align-self: start; margin-top: .15rem; }
+.snapshot-country small, .snapshot-country span { text-transform: uppercase; letter-spacing: .18em; font-size: .55rem; color: #8da6c0; }
+.snapshot-country > strong { grid-column: 1 / -1; font-size: clamp(2.1rem, 4vw, 4rem); line-height: 1; font-weight: 450; font-variant-numeric: tabular-nums; }
+.snapshot-country em { grid-column: 1 / -1; color: #c3d3e3; font-size: .75rem; font-style: normal; margin-top: .35rem; }
+.snapshot-country--peru > strong { color: #ffbe66; }
+.snapshot-country--chile > strong { color: #78dbff; }
+.snapshot-pending { position: absolute; bottom: .65rem; left: 0; right: 0; text-align: center; color: #8494a7; text-transform: uppercase; letter-spacing: .15em; font-size: .52rem; }
 
 /* ─── COUNTRY SELECT (compact accessible fallback) ─────────────────────── */
 .country-select { text-align: center; width: min(90vw, 68rem); }
@@ -162,6 +166,8 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
 .country-hud { position: fixed; inset: 0; z-index: 70; padding: 3rem 4vw 7rem; pointer-events: none; background: linear-gradient(90deg, rgba(0,3,8,.86), rgba(0,3,8,.12) 48%, rgba(0,3,8,.62)); }
 .country-hud button, .chud-panel, .hub-tooltip { pointer-events: auto; }
 .chud-header { max-width: 36rem; }
+.chud-flag { width: 2.25rem; height: 1.5rem; object-fit: cover; margin-bottom: .8rem; filter: saturate(.8); }
+.chud-identity { margin: .7rem 0 0; color: #d2e7fb; font-size: 1rem; letter-spacing: .02em; }
 .chud-chapter { text-transform: uppercase; letter-spacing: .25em; font-size: .6rem; color: #89a5c0; display: block; margin-bottom: .8rem; }
 .chud-title { font-size: clamp(3rem, 7vw, 7rem); font-weight: 320; line-height: .88; margin: 0 .6rem 0 0; }
 .country-hud--peru .chud-title { color: #ffbe66; }

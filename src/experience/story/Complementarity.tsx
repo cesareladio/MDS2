@@ -23,8 +23,12 @@ function buildEnergyPath(
   convergence: THREE.Vector3,
   lift: number,
 ): THREE.CatmullRomCurve3 {
-  const mid1 = origin.clone().lerp(convergence, 0.33).add(new THREE.Vector3(0, lift * 0.4, 0))
-  const mid2 = origin.clone().lerp(convergence, 0.66).add(new THREE.Vector3(0, lift * 0.18, 0))
+  const liftedPoint = (t: number, amount: number) => {
+    const point = origin.clone().lerp(convergence, t)
+    return point.add(point.clone().normalize().multiplyScalar(amount))
+  }
+  const mid1 = liftedPoint(0.33, lift * 0.4)
+  const mid2 = liftedPoint(0.66, lift * 0.18)
   return new THREE.CatmullRomCurve3([origin, mid1, mid2, convergence], false, 'catmullrom', 0.5)
 }
 

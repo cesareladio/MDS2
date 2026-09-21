@@ -34,7 +34,7 @@ const atmoFragmentShader = /* glsl */ `
 
     // Two-layer: thin bright edge + broader diffuse corona
     float edge   = pow(1.0 - clamp(cosA, 0.0, 1.0), uRimPower * 1.6);
-    float corona = pow(1.0 - clamp(cosA, 0.0, 1.0), uRimPower * 0.5) * 0.28;
+    float corona = pow(1.0 - clamp(cosA, 0.0, 1.0), uRimPower * 0.5) * 0.14;
 
     float alpha = (edge + corona) * uRimIntensity * uInnerOpacity;
     gl_FragColor = vec4(uRimColor * (fresnel * 1.4 + 0.15), alpha);
@@ -48,7 +48,7 @@ const outerFragmentShader = /* glsl */ `
   void main() {
     float cosA   = dot(vNormal, -vPositionNormal);
     float fresnel = pow(1.0 - clamp(cosA, 0.0, 1.0), 2.8);
-    gl_FragColor = vec4(uRimColor, fresnel * 0.055);
+    gl_FragColor = vec4(uRimColor, fresnel * 0.028);
   }
 `
 
@@ -73,7 +73,7 @@ export function Atmosphere({ intensity = 1 }: AtmosphereProps) {
   const innerUniforms = {
     uRimColor:     { value: new THREE.Color(0.18, 0.62, 1.0) },
     uRimPower:     { value: 3.6 },
-    uRimIntensity: { value: 1.1 },
+    uRimIntensity: { value: 0.38 },
     uInnerOpacity: { value: intensity },
   }
 
@@ -84,8 +84,8 @@ export function Atmosphere({ intensity = 1 }: AtmosphereProps) {
   return (
     <group>
       {/* Inner bright limb */}
-      <mesh ref={innerRef} scale={1.038}>
-        <sphereGeometry args={[2, 96, 96]} />
+      <mesh ref={innerRef} scale={1.025}>
+        <sphereGeometry args={[2, 80, 80]} />
         <shaderMaterial
           vertexShader={atmoVertexShader}
           fragmentShader={atmoFragmentShader}
@@ -98,8 +98,8 @@ export function Atmosphere({ intensity = 1 }: AtmosphereProps) {
       </mesh>
 
       {/* Outer diffuse corona */}
-      <mesh ref={outerRef} scale={1.095}>
-        <sphereGeometry args={[2, 64, 64]} />
+      <mesh ref={outerRef} scale={1.04}>
+        <sphereGeometry args={[2, 56, 56]} />
         <shaderMaterial
           vertexShader={atmoVertexShader}
           fragmentShader={outerFragmentShader}

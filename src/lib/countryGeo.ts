@@ -85,22 +85,26 @@ export function buildCountryTexture(
   return tex
 }
 
+/** Return every polygon, including interior rings, for territory raycasting. */
+export function extractCountryPolygons(
+  fc: FeatureCollection,
+  targetId: number,
+): number[][][][] {
+  const polygons: number[][][][] = []
+  for (const f of fc.features) {
+    if (Number(f.id) !== targetId) continue
+    const geometry = f.geometry
+    if (!geometry) continue
+    if (geometry.type === 'Polygon') polygons.push(geometry.coordinates as number[][][])
+    if (geometry.type === 'MultiPolygon') polygons.push(...(geometry.coordinates as number[][][][]))
+  }
+  return polygons
+}
+
 /** Extract all outer ring points for a country (for 3D outline lines) */
 export function extractCountryRings(
   fc: FeatureCollection,
   targetId: number,
 ): number[][][] {
-  const rings: number[][][] = []
-  for (const f of fc.features) {
-    if (Number(f.id) !== targetId) continue
-    const geom = f.geometry as { type: string; coordinates: number[][][][] | number[][][] }
-    if (geom.type === 'Polygon') {
-      rings.push(geom.coordinates[0] as number[][])
-    } else if (geom.type === 'MultiPolygon') {
-      for (const poly of geom.coordinates as number[][][][]) {
-        rings.push(poly[0] as number[][])
-      }
-    }
-  }
-  return rings
+  return extractCountryPolygons(fc, targetId).map((polygon) => polygon[0])
 }
