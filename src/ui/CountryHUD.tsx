@@ -28,32 +28,48 @@ function Column({ country, children }: { country: 'peru' | 'chile'; children: Re
   )
 }
 
-function HubList({ hubs }: { hubs: typeof peruHubs | typeof chileHubs }) {
-  const selectHub = useExperienceStore((state) => state.selectHub)
-  return <div className="comparison-hubs">{hubs.map((hub) => <button key={hub.id} onPointerDown={(event) => event.stopPropagation()} onClick={(event) => { event.stopPropagation(); selectHub(hub.id) }}>{hub.name}</button>)}</div>
-}
-
 function TerritoryComparison() {
   return <>
     <Column country="peru">
-      <p className="comparison-label">Hubs</p>
-      <HubList hubs={peruHubs} />
-      <p className="comparison-note">HC por ciudad · pendiente</p>
+      <p className="comparison-label">DISTRIBUCIÓN TERRITORIAL</p>
+      <ul className="comparison-list">
+        {peruData.territoryDistribution.regions.map((region) => (
+          <li key={region.name}>
+            <span>{region.name}</span>
+            <strong>{region.hc} · {region.percentage}%</strong>
+          </li>
+        ))}
+        <li className="comparison-total"><span>TOTAL</span><strong>{peruData.territoryDistribution.total} · 100%</strong></li>
+      </ul>
     </Column>
     <Column country="chile">
-      <p className="comparison-label">Distribución regional</p>
-      <ul className="comparison-list">{chileData.regions.map((item) => <li key={item.region}><span>{item.region}</span><strong>{item.hc} · {item.percent}%</strong></li>)}</ul>
-      <HubList hubs={chileHubs} />
+      <p className="comparison-label">DISTRIBUCIÓN TERRITORIAL</p>
+      <ul className="comparison-list">
+        {chileData.territoryDistribution.regions.map((region) => (
+          <li key={region.name}>
+            <span>{region.name}</span>
+            <strong>{region.hc} · {region.percentage}%</strong>
+          </li>
+        ))}
+        <li className="comparison-total"><span>TOTAL</span><strong>{chileData.territoryDistribution.total} · 100%</strong></li>
+      </ul>
     </Column>
   </>
 }
+
 
 function TalentComparison() {
   return <>
     <Column country="peru">
       <div className="comparison-stat"><strong>{peruData.hc.toLocaleString('es-PE')}</strong><span>HC</span></div>
       <div className="comparison-stat"><strong>{peruData.gender.femalePercent}%</strong><span>HC femenino</span></div>
-      <ul className="comparison-list">{peruData.roles.map((role) => <li key={role.role}><span>{role.role}</span><strong>{role.hc} · {role.percent}%</strong></li>)}</ul>
+      {Array.isArray(peruData.talent?.roles) && peruData.talent.roles.length > 0 && (
+  <ul className="comparison-list">
+    {peruData.talent.roles.map(role => (
+      <li key={role.name}><span>{role.name}</span><strong>{role.hc} · {role.percentage}%</strong></li>
+    ))}
+  </ul>
+)}
     </Column>
     <Column country="chile">
       <div className="comparison-stat"><strong>{chileData.gdneHC}</strong><span>GDN-e</span></div>
@@ -64,13 +80,28 @@ function TalentComparison() {
 }
 
 function CapabilitiesComparison() {
+  const peruCapabilities = Array.isArray(peruData.capabilities) ? peruData.capabilities : [];
+  const chileCapabilities = Array.isArray(chileData.capabilities) ? chileData.capabilities : [];
   return <>
     <Column country="peru">
-      <div className="comparison-tags"><span>SAP</span><span>Testing</span><span>Data</span><span>Backend</span><span>Frontend</span></div>
-      <p className="comparison-note">Cuantificación · por validar</p>
+      <ul className="comparison-list">
+        {peruCapabilities.map((item) => (
+          <li key={item.name}>
+            <span>{item.name}</span>
+            <strong>{item.hc} · {item.percent}%</strong>
+          </li>
+        ))}
+      </ul>
     </Column>
     <Column country="chile">
-      <ul className="comparison-list">{chileData.capabilities.map((item) => <li key={item.name}><span>{item.name}</span><strong>{item.hc}{item.percent ? ` · ${item.percent}%` : ''}</strong></li>)}</ul>
+      <ul className="comparison-list">
+        {chileCapabilities.map((item) => (
+          <li key={item.name}>
+            <span>{item.name}</span>
+            <strong>{item.hc} · {item.percent}%</strong>
+          </li>
+        ))}
+      </ul>
     </Column>
   </>
 }

@@ -114,6 +114,34 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
 /* ─── SNAPSHOT ──────────────────────────────────────────────────────────── */
 .snapshot-identities { margin-top: 2.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; position: relative; padding: 1.5rem 0 3rem; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .snapshot-gdne { grid-column: 1 / -1; text-align: center; color: #b9dcff; text-transform: uppercase; letter-spacing: .32em; font-size: .72rem; }
+
+.snapshot-combined {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2.1rem 0 0.6rem 0;
+  color: #f5f7fa;
+  font-variant-numeric: tabular-nums;
+}
+.snapshot-gdne--total {
+  font-size: clamp(2.6rem, 5vw, 3.8rem);
+  font-weight: 650;
+  line-height: 1.09;
+  letter-spacing: 0.01em;
+  color: #fff;
+}
+.snapshot-combined-caption {
+  margin-top: -0.25em;
+  font-size: 0.63rem;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: #f5f7f7;
+  opacity: 0.7;
+  font-weight: 340;
+}
+
 .snapshot-country { display: grid; grid-template-columns: auto 1fr; gap: .35rem .7rem; align-items: center; padding: 1rem; border-left: 1px solid var(--line); }
 .snapshot-country img { width: 2rem; grid-row: 1 / 3; align-self: start; margin-top: .15rem; }
 .snapshot-country small, .snapshot-country span { text-transform: uppercase; letter-spacing: .18em; font-size: .55rem; color: #8da6c0; }

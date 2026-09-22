@@ -7,7 +7,8 @@ export function HubTooltip() {
   const selectHub = useExperienceStore((state) => state.selectHub)
   if (!selectedHub) return null
   const peruHub = peruHubs.find((item) => item.id === selectedHub)
-  const chileHub = chileHubs.find((item) => item.id === selectedHub)
+  // If there are no visible chileHubs, this disables all Chile map tooltips
+  const chileHub = chileHubs.length ? chileHubs.find((item) => item.id === selectedHub) : undefined
   const hub = peruHub ?? chileHub
   const country = peruHub ? 'peru' : chileHub ? 'chile' : null
   if (!hub || !country) return null

@@ -67,7 +67,7 @@ export function Experience() {
                 <span>colaboradores GDN-e</span>
                 <em>{countryIdentity.chile.tagline}</em>
               </div>
-              <div className="snapshot-pending">HC conjunto · por confirmar</div>
+
             </div>
           </StoryCopy>
         </section>
