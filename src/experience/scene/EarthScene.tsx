@@ -11,13 +11,15 @@ import { GeoParticles } from '../geography/GeoParticles'
 import { GlobalJourney } from '../story/GlobalJourney'
 import { Complementarity } from '../story/Complementarity'
 import { CapabilityEngine } from '../story/CapabilityEngine'
+import { IbiolValueScene } from '../story/IbiolValueScene'
 
 export function EarthScene() {
   const phase   = useExperienceStore((state) => state.phase)
   const quality = useExperienceStore((state) => state.deviceQuality)
 
   const showLatam  = ['latam', 'snapshot', 'explore'].includes(phase)
-  const showEngine = phase === 'engine' || phase === 'ibiol'
+  const showEngine = phase === 'engine'
+  const showIbiol  = phase === 'ibiol'
   const showClose  = phase === 'closing'
 
   return (
@@ -40,6 +42,7 @@ export function EarthScene() {
           <GlobalJourney active={phase === 'global'} />
           <Complementarity active={phase === 'complementarity'} />
           <CapabilityEngine active={showEngine} />
+          <IbiolValueScene active={showIbiol} />
 
           <CameraRig />
           <PostProcessing />

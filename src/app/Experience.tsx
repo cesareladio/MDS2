@@ -127,18 +127,12 @@ export function Experience() {
         {/* 08 IBIOL */}
         <section id="ibiol" className="chapter chapter--ibiol">
           <StoryCopy index="08" kicker="Nuestra propuesta para IBIOL" title={<>Una red conectada<br /><em>para los desafíos del futuro</em></>}>
-            <div className="capability-orbit-list">
-              {capabilities.map((item) => (
-                <button key={item.id} onClick={() => selectCapability(item.id)}>{item.name}</button>
-              ))}
+            <div className="ibiol-value-pillars">
+              <div className="ibiol-value-pillars__item"><span>+ Talento</span></div>
+              <div className="ibiol-value-pillars__item"><span>+ Capacidades</span></div>
+              <div className="ibiol-value-pillars__item"><span>+ Innovación</span></div>
+              <div className="ibiol-value-pillars__item"><span>+ Impacto</span></div>
             </div>
-            <div className="value-row">
-              <span>+ Talento</span>
-              <span>+ Capacidades</span>
-              <span>+ Innovación</span>
-              <span>+ Impacto</span>
-            </div>
-            <ContinueStory />
           </StoryCopy>
         </section>
 

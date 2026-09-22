@@ -169,6 +169,26 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
 .impact-line { margin-top: 3.5rem; text-transform: uppercase; letter-spacing: .35em; font-size: .63rem; color: #d0e2f4; }
 .engine-note { max-width: 32rem; color: #9fb3c9; }
 
+/* ─── SCENE 08 IBIOL DOM COMPOSITION ───────────────────────────────────── */
+.ibiol-value-pillars { display: flex; gap: .75rem; margin: 2rem 0 1.6rem; flex-wrap: wrap; }
+.ibiol-value-pillars__item { padding: .6rem .9rem; border: 1px solid rgba(80,170,255,.28); border-radius: .32rem; background: rgba(4,18,40,.38); }
+.ibiol-value-pillars__item span { text-transform: uppercase; letter-spacing: .16em; font-size: .58rem; color: #a8d4f0; }
+
+/* ─── WebGL IBIOL VALUE SCENE Html labels ───────────────────────────────── */
+.ibiol-source-label { text-transform: uppercase; letter-spacing: .2em; font-size: .54rem; font-weight: 550; color: #88c4ff; background: rgba(2,10,26,.72); border: 1px solid rgba(60,140,255,.32); border-radius: .25rem; padding: .28rem .45rem; white-space: nowrap; pointer-events: none; text-align: center; }
+.ibiol-core-label { text-transform: uppercase; letter-spacing: .32em; font-size: 1.05rem; font-weight: 650; color: #d8eeff; text-shadow: 0 0 18px rgba(40,145,255,.7); pointer-events: none; white-space: nowrap; }
+.ibiol-pillar-label { text-transform: uppercase; letter-spacing: .16em; font-size: .5rem; font-weight: 500; color: #9ad0f0; background: rgba(2,12,30,.75); border: 1px solid rgba(60,160,255,.28); border-radius: .24rem; padding: .26rem .44rem; white-space: nowrap; pointer-events: none; }
+
+/* ─── WebGL VALUE OUTCOME LABEL (legacy compat) ─────────────────────────── */
+.value-outcome-label { text-transform: uppercase; letter-spacing: .14em; font-size: .52rem; font-weight: 500; color: #a8dcff; background: rgba(2,12,28,.78); border: 1px solid rgba(80,170,255,.32); border-radius: .28rem; padding: .3rem .5rem; white-space: nowrap; pointer-events: none; text-shadow: 0 0 8px rgba(60,160,255,.4); }
+.engine-core--ibiol { font-size: 1.1rem; color: #c4e6ff; }
+
+/* ─── WebGL VALUE OUTCOME LABEL ──────────────────────────────────────────── */
+.value-outcome-label { text-transform: uppercase; letter-spacing: .14em; font-size: .52rem; font-weight: 500; color: #a8dcff; background: rgba(2,12,28,.78); border: 1px solid rgba(80,170,255,.32); border-radius: .28rem; padding: .3rem .5rem; white-space: nowrap; pointer-events: none; text-shadow: 0 0 8px rgba(60,160,255,.4); }
+
+/* ─── engine-core IBIOL variant ─────────────────────────────────────────── */
+.engine-core--ibiol { font-size: 1.1rem; color: #c4e6ff; }
+
 /* ─── CAPABILITY ORBIT LIST ────────────────────────────────────────────── */
 .capability-orbit-list { margin: 3rem auto 0; display: flex; flex-wrap: wrap; justify-content: center; gap: .55rem; max-width: 54rem; }
 .capability-orbit-list button { padding: .6rem .85rem; border: 1px solid rgba(132,193,255,.25); border-radius: 999px; color: #acc8e3; text-transform: uppercase; letter-spacing: .1em; font-size: .58rem; background: rgba(2,9,18,.52); cursor: pointer; transition: all .2s; }
