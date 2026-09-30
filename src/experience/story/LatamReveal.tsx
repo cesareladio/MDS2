@@ -12,8 +12,8 @@ export function LatamReveal({ active }: { active: boolean }) {
     loadSouthAmericaGeo().then(setGeo)
   }, [])
 
-  // Progress: 0→1 as scroll moves through latam phase (0.25..0.45)
-  const progress = Math.min(1, Math.max(0, (scroll - 0.25) / 0.12))
+  // Progress: 0→1 as scroll moves through the Chile+Perú reveal (0.09..0.22)
+  const progress = Math.min(1, Math.max(0, (scroll - 0.09) / 0.13))
   const peruActive = active
   const chileActive = active
   const subduedProgress = Math.min(0.08, progress)

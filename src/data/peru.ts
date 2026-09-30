@@ -17,11 +17,6 @@ export const peruData = {
     totalHC: 1408,
     totalLabel: 'Personas',
     femalePercentage: 22,
-    roles: [
-      { name: 'Rising Software Engineer', hc: 358, percentage: 25 },
-      { name: 'Software Engineer', hc: 297, percentage: 21 },
-      { name: 'Senior Software Engineer', hc: 243, percentage: 17 },
-    ],
   },
   gender: { malePercent: 78, femalePercent: 22, maleHC: 1099, femaleHC: 309 },
   deliveryModel: {
@@ -44,6 +39,24 @@ export const peruData = {
     { value: 1500, label: 'Proyección al cierre de Q3', status: 'target' as const },
   ],
 }
+
+export const peruTalentPyramid = {
+  contributor: { status: 'pending_validation' as const },
+  lead: { status: 'pending_validation' as const },
+  executive: { status: 'pending_validation' as const },
+}
+
+export const peruTalentFamilies = [
+  { name: 'Engineering', hc: 365 + 77 + 78, percent: 26 + 5 + 6, status: 'current' as const },
+  { name: 'Quality Assurance', hc: 276, percent: 20, status: 'current' as const },
+  { name: 'Enterprise Solutions Engineering', hc: 230 + 116, percent: 16 + 8, status: 'current' as const },
+]
+
+export const peruStudios = [
+  { name: 'Full Stack / Backend / Frontend', hc: 365 + 77, focus: 'Escala de ingeniería en Perú', status: 'current' as const },
+  { name: 'QA', hc: 276, focus: 'Testing & calidad', status: 'current' as const },
+  { name: 'SAP', hc: 230, focus: 'Diferenciador de Perú · Enterprise Solutions', status: 'current' as const },
+]
 
 export const peruHubs: Hub[] = [
   { id: 'trujillo', name: 'Trujillo', lat: -8.11, lon: -79.03, hc: null, note: 'Primera oficina de GDN-e Perú · 2016' },

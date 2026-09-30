@@ -1,10 +1,8 @@
 import { useThree } from '@react-three/fiber'
 import { useEffect } from 'react'
-import { useExperienceStore } from '../../store/experienceStore'
 
 export function WebGLDiagnostics() {
   const { gl } = useThree()
-  const phase = useExperienceStore((state) => state.phase)
 
   useEffect(() => {
     const canvas = gl.domElement
@@ -26,14 +24,6 @@ export function WebGLDiagnostics() {
       canvas.removeEventListener('webglcontextrestored', onContextRestored)
     }
   }, [gl])
-
-  useEffect(() => {
-    if (phase !== 'engine') return
-    console.debug('[WEBGL ENGINE INFO]', {
-      memory: gl.info.memory,
-      render: gl.info.render,
-    })
-  }, [gl, phase])
 
   return null
 }

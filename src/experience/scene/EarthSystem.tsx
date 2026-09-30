@@ -13,7 +13,7 @@ import { Closing } from '../story/Closing'
 
 const GEO_DEBUG = false
 
-export function EarthSystem({ showLatam, showClose }: { showLatam: boolean; showClose: boolean }) {
+export function EarthSystem({ showCountryHighlight, showHubs, showClose }: { showCountryHighlight: boolean; showHubs: boolean; showClose: boolean }) {
   const group = useRef<THREE.Group>(null)
   const scroll = useExperienceStore((state) => state.scrollProgress)
   const reduced = useExperienceStore((state) => state.reducedMotion)
@@ -22,10 +22,10 @@ export function EarthSystem({ showLatam, showClose }: { showLatam: boolean; show
   useFrame(() => {
     if (!group.current) return
     group.current.position.y = THREE.MathUtils.lerp(-3.55, 0, introProgress)
-    const globalProgress = THREE.MathUtils.smoothstep(scroll, 0.1, 0.24)
-    const globalScale = THREE.MathUtils.lerp(1, 0.86, globalProgress)
-    group.current.scale.setScalar(THREE.MathUtils.lerp(0.6, 0.82, introProgress) * globalScale)
-    group.current.position.x = THREE.MathUtils.lerp(0.08, 0.16, Math.min(1, Math.max(0, (scroll - 0.1) / 0.15)))
+    const revealProgress = THREE.MathUtils.smoothstep(scroll, 0.09, 0.22)
+    const revealScale = THREE.MathUtils.lerp(1, 0.86, revealProgress)
+    group.current.scale.setScalar(THREE.MathUtils.lerp(0.6, 0.82, introProgress) * revealScale)
+    group.current.position.x = THREE.MathUtils.lerp(0.08, 0.16, Math.min(1, Math.max(0, (scroll - 0.09) / 0.13)))
   })
 
   const atmosphereIntensity = THREE.MathUtils.lerp(0.05, 1, introProgress)
@@ -36,8 +36,8 @@ export function EarthSystem({ showLatam, showClose }: { showLatam: boolean; show
       <GeoParticles />
       <Atmosphere intensity={atmosphereIntensity} />
       <GlobeGlow intensity={atmosphereIntensity} />
-      <LatamReveal active={showLatam} />
-      <CountryExplorer />
+      <LatamReveal active={showCountryHighlight} />
+      {showHubs && <CountryExplorer />}
       <Closing active={showClose} />
     </group>
   )

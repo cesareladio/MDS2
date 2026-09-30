@@ -25,29 +25,23 @@ const waypoints: Waypoint[] = [
   // INTRO – wide establishing view, slightly above equator
   { at: 0.00, lat:  12,  lon:  -15, distance: 10.0, fov: 44, roll:  0.000 },
 
-  // GLOBAL – pull toward Japan, slight roll into the arc
-  { at: 0.10, lat:  36,  lon:  134, distance:  6.4, fov: 40, roll: -0.018 },
+  // CHILE + PERÚ – direct arc south-west toward the Andean region
+  { at: 0.09, lat: -22,  lon:  -74, distance:  5.8, fov: 36, roll: -0.010 },
 
-  // GLOBAL → SPAIN – sweeping orbital arc over Europe
-  { at: 0.19, lat:  42,  lon:  -4,  distance:  6.0, fov: 38, roll:  0.012 },
+  // HISTORY – settle over Peru/Chile, slightly closer
+  { at: 0.22, lat: -22,  lon:  -74, distance:  5.4, fov: 36, roll:  0.000 },
 
-  // LATAM reveal – long arc south-west toward Andean region
-  { at: 0.28, lat: -22,  lon:  -74, distance:  5.8, fov: 36, roll: -0.010 },
+  // TERRITORY – close West-face of South America
+  { at: 0.35, lat: -23,  lon:  -75, distance:  5.1, fov: 36, roll:  0.004 },
 
-  // SNAPSHOT – settle over Peru/Chile, slightly closer
-  { at: 0.38, lat: -22,  lon:  -74, distance:  5.4, fov: 36, roll:  0.000 },
-
-  // EXPLORE (country selection active) – close West-face of South America
+  // EXPLORE (country selection active)
   { at: 0.48, lat: -23,  lon:  -75, distance:  5.0, fov: 36, roll:  0.004 },
 
-  // COMPLEMENTARITY – pull back slightly for bilateral geometry
-  { at: 0.60, lat: -20,  lon:  -72, distance:  5.4, fov: 40, roll:  0.000 },
+  // EFFICIENCY – pull back slightly for bilateral geometry
+  { at: 0.62, lat: -20,  lon:  -72, distance:  5.4, fov: 40, roll:  0.000 },
 
-  // ENGINE – move off globe toward abstract 3D space
-  { at: 0.72, lat: -18,  lon:  -68, distance:  6.2, fov: 44, roll:  0.008 },
-
-  // IBIOL – drift further back, tilt slightly
-  { at: 0.82, lat: -16,  lon:  -66, distance:  6.8, fov: 46, roll: -0.006 },
+  // CHALLENGES – drift further back, tilt slightly
+  { at: 0.76, lat: -18,  lon:  -68, distance:  6.4, fov: 44, roll:  0.006 },
 
   // CLOSING – return to South America, twilight view
   { at: 1.00, lat: -28,  lon:  -68, distance:  5.6, fov: 40, roll:  0.000 },
@@ -166,8 +160,7 @@ export function CameraRig() {
       posCurve.getPoint(t)
     targetPos.copy(curvePos)
 
-    const interactivePhase = phase === 'engine' || phase === 'ibiol'
-    if (!reduced && !interactivePhase) {
+    if (!reduced) {
       targetPos.x += pointer.x * 0.08
       targetPos.y += pointer.y * 0.05
     }

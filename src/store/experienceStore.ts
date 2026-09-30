@@ -3,13 +3,12 @@ import type { CountryId } from '../data/types'
 
 export type ExperiencePhase =
   | 'intro'
-  | 'global'
-  | 'latam'
-  | 'snapshot'
-  | 'explore'
-  | 'complementarity'
-  | 'engine'      // ← distinct 3D capability-engine phase (was merged with 'ibiol')
-  | 'ibiol'       // IBIOL proposition (network transforms)
+  | 'chilePeru'   // 03 · Chile + Perú entry (replaces global/latam)
+  | 'history'     // 04 · Nuestra historia (promoted out of Explore)
+  | 'territory'   // 05 · Territorio (merge snapshot + territory)
+  | 'explore'     // 06 · Explore (talent / studios / capacidades)
+  | 'efficiency'  // 07 · Eficiencia (replaces complementarity)
+  | 'challenges'  // 08 · Desafíos / Oportunidades (replaces ibiol)
   | 'closing'
 export type DeviceQuality = 'HIGH' | 'MEDIUM' | 'LOW'
 
@@ -20,7 +19,6 @@ interface ExperienceState {
   selectedHub: string | null
   visitedCountries: CountryId[]
   explorationMode: boolean
-  selectedCapability: string | null
   reducedMotion: boolean
   deviceQuality: DeviceQuality
   setPhase: (phase: ExperiencePhase) => void
@@ -28,7 +26,6 @@ interface ExperienceState {
   selectCountry: (country: CountryId | null) => void
   selectHub: (hub: string | null) => void
   setExplorationMode: (active: boolean) => void
-  selectCapability: (capability: string | null) => void
   setReducedMotion: (active: boolean) => void
   setDeviceQuality: (quality: DeviceQuality) => void
 }
@@ -40,7 +37,6 @@ export const useExperienceStore = create<ExperienceState>((set) => ({
   selectedHub: null,
   visitedCountries: [],
   explorationMode: false,
-  selectedCapability: null,
   reducedMotion: false,
   deviceQuality: 'HIGH',
   setPhase: (phase) => set({ phase }),
@@ -56,7 +52,6 @@ export const useExperienceStore = create<ExperienceState>((set) => ({
     })),
   selectHub: (selectedHub) => set({ selectedHub }),
   setExplorationMode: (explorationMode) => set({ explorationMode }),
-  selectCapability: (selectedCapability) => set({ selectedCapability }),
   setReducedMotion: (reducedMotion) => set({ reducedMotion }),
   setDeviceQuality: (deviceQuality) => set({ deviceQuality }),
 }))

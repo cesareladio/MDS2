@@ -1,19 +1,29 @@
 import { useEffect, useState } from 'react'
-import { chileCertifications, chileData, chileHistory, chileHubs } from '../data/chile'
-import { peruData, peruHistory, peruHubs } from '../data/peru'
+import { presentationData } from '../data/presentation'
 import { countryIdentity } from '../data/countryIdentity'
+import { scrollToChapter } from '../lib/storyNavigation'
 import { useExperienceStore } from '../store/experienceStore'
 import { HubTooltip } from './HubTooltip'
 
-type Layer = 'territory' | 'talent' | 'capabilities' | 'training' | 'history'
+type Layer = 'talent' | 'studios' | 'capabilities'
 
 const layers: Array<{ id: Layer; label: string; num: string }> = [
-  { id: 'territory', label: 'Territorio', num: '01' },
-  { id: 'talent', label: 'Talento', num: '02' },
+  { id: 'talent', label: 'Talento', num: '01' },
+  { id: 'studios', label: 'Studios', num: '02' },
   { id: 'capabilities', label: 'Capacidades', num: '03' },
-  { id: 'training', label: 'Formación', num: '04' },
-  { id: 'history', label: 'Historia', num: '05' },
 ]
+
+const PYRAMID_TIERS = ['executive', 'lead', 'contributor'] as const
+const PYRAMID_LABEL: Record<(typeof PYRAMID_TIERS)[number], string> = {
+  executive: 'Executive',
+  lead: 'Lead',
+  contributor: 'Contributor',
+}
+const PYRAMID_WIDTH: Record<(typeof PYRAMID_TIERS)[number], string> = {
+  executive: '36%',
+  lead: '64%',
+  contributor: '100%',
+}
 
 function Column({ country, children }: { country: 'peru' | 'chile'; children: React.ReactNode }) {
   const identity = countryIdentity[country]
@@ -28,119 +38,126 @@ function Column({ country, children }: { country: 'peru' | 'chile'; children: Re
   )
 }
 
-function TerritoryComparison() {
-  return <>
-    <Column country="peru">
-      <p className="comparison-label">DISTRIBUCIÓN TERRITORIAL</p>
-      <ul className="comparison-list">
-        {peruData.territoryDistribution.regions.map((region) => (
-          <li key={region.name}>
-            <span>{region.name}</span>
-            <strong>{region.hc} · {region.percentage}%</strong>
-          </li>
-        ))}
-        <li className="comparison-total"><span>TOTAL</span><strong>{peruData.territoryDistribution.total} · 100%</strong></li>
-      </ul>
-    </Column>
-    <Column country="chile">
-      <p className="comparison-label">DISTRIBUCIÓN TERRITORIAL</p>
-      <ul className="comparison-list">
-        {chileData.territoryDistribution.regions.map((region) => (
-          <li key={region.name}>
-            <span>{region.name}</span>
-            <strong>{region.hc} · {region.percentage}%</strong>
-          </li>
-        ))}
-        <li className="comparison-total"><span>TOTAL</span><strong>{chileData.territoryDistribution.total} · 100%</strong></li>
-      </ul>
-    </Column>
-  </>
+function TalentPyramid({ country }: { country: 'peru' | 'chile' }) {
+  const pyramid = presentationData[country].talent.pyramid
+  return (
+    <div className="talent-pyramid">
+      {PYRAMID_TIERS.map((tier) => {
+        const tierData = pyramid[tier] as { status: string; hc?: number }
+        const value = tierData.status === 'current' && typeof tierData.hc === 'number' ? tierData.hc : null
+        return (
+          <div key={tier} className={`talent-pyramid__tier talent-pyramid__tier--${tier}`} style={{ width: PYRAMID_WIDTH[tier] }}>
+            <span className="talent-pyramid__label">{PYRAMID_LABEL[tier]}</span>
+            <strong>{value !== null ? value : 'Validación pendiente'}</strong>
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
+function TalentFamilies({ country }: { country: 'peru' | 'chile' }) {
+  const families = presentationData[country].talent.families
+  return (
+    <ul className="comparison-list talent-families">
+      {families.map((family) => (
+        <li key={family.name}>
+          <span>{family.name}</span>
+          <strong>{family.hc} · {Math.round(family.percent * 10) / 10}%</strong>
+        </li>
+      ))}
+    </ul>
+  )
+}
 
 function TalentComparison() {
   return <>
     <Column country="peru">
-      <div className="comparison-stat"><strong>{peruData.hc.toLocaleString('es-PE')}</strong><span>HC</span></div>
-      <div className="comparison-stat"><strong>{peruData.gender.femalePercent}%</strong><span>HC femenino</span></div>
-      {Array.isArray(peruData.talent?.roles) && peruData.talent.roles.length > 0 && (
-  <ul className="comparison-list">
-    {peruData.talent.roles.map(role => (
-      <li key={role.name}><span>{role.name}</span><strong>{role.hc} · {role.percentage}%</strong></li>
-    ))}
-  </ul>
-)}
+      <TalentPyramid country="peru" />
+      <TalentFamilies country="peru" />
     </Column>
     <Column country="chile">
-      <div className="comparison-stat"><strong>{chileData.gdneHC}</strong><span>GDN-e</span></div>
-      <div className="comparison-stat"><strong>{chileData.peopleUnderManagement}</strong><span>Bajo gestión</span></div>
-      <div className="comparison-stat"><strong>{chileData.femalePercent}%</strong><span>HC femenino</span></div>
+      <TalentPyramid country="chile" />
+      <TalentFamilies country="chile" />
     </Column>
   </>
+}
+
+function StudiosList({ country }: { country: 'peru' | 'chile' }) {
+  const studios = presentationData[country].studios
+  return (
+    <ul className="studios-list">
+      {studios.map((studio) => (
+        <li key={studio.name}>
+          <div className="studios-list__row">
+            <span>{studio.name}</span>
+            {studio.status === 'current' && 'hc' in studio && <strong>{studio.hc}</strong>}
+          </div>
+          <small>{studio.focus}</small>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function StudiosComparison() {
+  return <>
+    <Column country="peru"><StudiosList country="peru" /></Column>
+    <Column country="chile"><StudiosList country="chile" /></Column>
+  </>
+}
+
+function CapabilitiesFunnel({ country }: { country: 'peru' | 'chile' }) {
+  const data = presentationData[country]
+  const funnel = presentationData.capabilities.funnel
+  return (
+    <div className="capabilities-funnel">
+      <ol className="capabilities-funnel__stages">
+        {funnel.map((stage) => <li key={stage}>{stage}</li>)}
+      </ol>
+      <ul className="comparison-timeline">
+        {data.certifications.map((item) => {
+          const label = 'label' in item ? item.label : item.title
+          const value = 'value' in item ? item.value : item.year
+          return (
+            <li key={`${label}-${value}`}>
+              <small>{item.status ?? 'current'}</small>
+              <strong>{value}</strong>
+              <span>{label}{'detail' in item ? ` · ${item.detail}` : ''}</span>
+            </li>
+          )
+        })}
+      </ul>
+      {country === 'chile' && (
+        <p className="comparison-note">
+          Foco de especialización (pendiente de validación): {presentationData.chile.certificationFocus.areas.join(' · ')}
+        </p>
+      )}
+      {country === 'peru' && (
+        <p className="comparison-note">Foco estratégico: SAP &amp; Enterprise Solutions</p>
+      )}
+    </div>
+  )
 }
 
 function CapabilitiesComparison() {
-  const peruCapabilities = Array.isArray(peruData.capabilities) ? peruData.capabilities : [];
-  const chileCapabilities = Array.isArray(chileData.capabilities) ? chileData.capabilities : [];
   return <>
-    <Column country="peru">
-      <ul className="comparison-list">
-        {peruCapabilities.map((item) => (
-          <li key={item.name}>
-            <span>{item.name}</span>
-            <strong>{item.hc} · {item.percent}%</strong>
-          </li>
-        ))}
-      </ul>
-    </Column>
-    <Column country="chile">
-      <ul className="comparison-list">
-        {chileCapabilities.map((item) => (
-          <li key={item.name}>
-            <span>{item.name}</span>
-            <strong>{item.hc} · {item.percent}%</strong>
-          </li>
-        ))}
-      </ul>
-    </Column>
-  </>
-}
-
-function TrainingComparison() {
-  return <>
-    <Column country="peru">
-      <ul className="comparison-timeline">{peruData.certifications.map((item) => <li key={item.label}><small>{item.status}</small><strong>{item.value.toLocaleString('es-PE')}</strong><span>{item.label}</span></li>)}</ul>
-    </Column>
-    <Column country="chile">
-      <ul className="comparison-timeline">{chileCertifications.map((item) => <li key={item.title}><small>{item.status ?? 'current'}</small><strong>{item.year}</strong><span>{item.title} · {item.detail}</span></li>)}</ul>
-    </Column>
-  </>
-}
-
-function HistoryComparison() {
-  return <>
-    <Column country="peru">
-      <ul className="comparison-timeline">{peruHistory.map((item) => <li key={`${item.year}-${item.title}`}><strong>{item.year}</strong><span>{item.title} · {item.detail}</span></li>)}</ul>
-    </Column>
-    <Column country="chile">
-      <ul className="comparison-timeline">{chileHistory.map((item) => <li key={`${item.year}-${item.title}`}><strong>{item.year}</strong><span>{item.title} · {item.detail}</span></li>)}</ul>
-    </Column>
+    <Column country="peru"><CapabilitiesFunnel country="peru" /></Column>
+    <Column country="chile"><CapabilitiesFunnel country="chile" /></Column>
   </>
 }
 
 function ComparisonLayer({ layer }: { layer: Layer }) {
-  const content = layer === 'territory' ? <TerritoryComparison />
-    : layer === 'talent' ? <TalentComparison />
-      : layer === 'capabilities' ? <CapabilitiesComparison />
-        : layer === 'training' ? <TrainingComparison />
-          : <HistoryComparison />
+  const content = layer === 'talent' ? <TalentComparison />
+    : layer === 'studios' ? <StudiosComparison />
+      : <CapabilitiesComparison />
   return <div className="compare-stack">{content}</div>
 }
 
 export function CountryHUD() {
   const phase = useExperienceStore((state) => state.phase)
   const selectHub = useExperienceStore((state) => state.selectHub)
-  const [layer, setLayer] = useState<Layer>('territory')
+  const [layer, setLayer] = useState<Layer>('talent')
   const [exploreVisible, setExploreVisible] = useState(false)
 
   // Sync with physical #explore section visibility
@@ -173,7 +190,7 @@ export function CountryHUD() {
 
   const continueStory = () => {
     requestAnimationFrame(() => {
-      document.getElementById('complementarity')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      scrollToChapter('efficiency')
     })
   }
 
