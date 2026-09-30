@@ -12,8 +12,9 @@ export function EarthScene() {
   const phase   = useExperienceStore((state) => state.phase)
   const quality = useExperienceStore((state) => state.deviceQuality)
 
-  const showCountryHighlight = ['chilePeru', 'history', 'territory', 'explore'].includes(phase)
-  const showHubs  = phase === 'territory' || phase === 'explore'
+  const oneGdneSection = useExperienceStore((state) => state.selectedOneGdneSection)
+  const showCountryHighlight = ['chilePeru', 'oneGdne'].includes(phase)
+  const showHubs = phase === 'oneGdne' && oneGdneSection === 'territory'
   const showClose = phase === 'closing'
 
   return (

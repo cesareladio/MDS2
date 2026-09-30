@@ -1,4 +1,4 @@
-import type { Hub, TimelineEvent } from './types'
+import type { Hub, TimelineEvent, Studios } from './types'
 
 export const chileData = {
   gdneHC: 510,
@@ -59,10 +59,10 @@ export const chileTalentFamilies = [
   { name: 'Enterprise Solutions Functional / Others', hc: 66, percent: 12.9, status: 'current' as const },
 ]
 
-export const chileStudios = [
-  { name: 'Full Stack / Backend / Frontend', hc: 227 + 47, focus: 'Base de ingeniería en Chile', status: 'current' as const },
-  { name: 'QA', hc: 53, focus: 'Testing & calidad', status: 'current' as const },
-]
+export const chileStudios: Studios = {
+  status: 'pending_validation',
+  focusCount: 3,
+}
 
 export const chileHubs: Hub[] = [
   { id: 'temuco', name: 'Temuco', lat: -38.74, lon: -72.59, hc: 281, note: 'La Araucanía · principal concentración regional' },

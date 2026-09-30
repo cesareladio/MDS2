@@ -1,4 +1,4 @@
-import type { Hub, TimelineEvent } from './types'
+import type { Hub, TimelineEvent, Studios } from './types'
 
 export const peruData = {
   hc: 1408,
@@ -52,11 +52,35 @@ export const peruTalentFamilies = [
   { name: 'Enterprise Solutions Engineering', hc: 230 + 116, percent: 16 + 8, status: 'current' as const },
 ]
 
-export const peruStudios = [
-  { name: 'Full Stack / Backend / Frontend', hc: 365 + 77, focus: 'Escala de ingeniería en Perú', status: 'current' as const },
-  { name: 'QA', hc: 276, focus: 'Testing & calidad', status: 'current' as const },
-  { name: 'SAP', hc: 230, focus: 'Diferenciador de Perú · Enterprise Solutions', status: 'current' as const },
-]
+export const peruStudios: Studios = {
+  status: 'validated',
+  totalTalent: 1049,
+  focusCount: 3,
+  groups: [
+    {
+      id: 'software-engineering',
+      name: 'Software Engineering',
+      totalHc: 531,
+      percent: 38,
+      subgroups: [
+        { name: 'Backend',  hc: 343, percent: 25 },
+        { name: 'Frontend', hc: 188, percent: 13 },
+      ],
+    },
+    {
+      id: 'quality-engineering',
+      name: 'Quality Engineering',
+      totalHc: 286,
+      percent: 20,
+    },
+    {
+      id: 'enterprise-platform',
+      name: 'Enterprise Platform',
+      totalHc: 232,
+      percent: 17,
+    },
+  ],
+}
 
 export const peruHubs: Hub[] = [
   { id: 'trujillo', name: 'Trujillo', lat: -8.11, lon: -79.03, hc: null, note: 'Primera oficina de GDN-e Perú · 2016' },

@@ -16,3 +16,32 @@ export interface TimelineEvent {
   detail: string
   status?: DataStatus
 }
+
+export interface StudioSubgroup {
+  name: string
+  hc: number
+  percent: number
+}
+
+export interface StudioGroup {
+  id: string
+  name: string
+  totalHc: number
+  percent: number
+  subgroups?: StudioSubgroup[]
+}
+
+export interface StudioBlock {
+  status: 'validated'
+  totalTalent: number
+  focusCount: number
+  groups: StudioGroup[]
+}
+
+export interface StudioBlockPending {
+  status: 'pending_validation'
+  focusCount: number
+}
+
+export type Studios = StudioBlock | StudioBlockPending
+

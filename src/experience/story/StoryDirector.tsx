@@ -33,11 +33,13 @@ export function StoryDirector() {
   const setScrollProgress = useExperienceStore((state) => state.setScrollProgress)
   const setExploration = useExperienceStore((state) => state.setExplorationMode)
   const selectHub = useExperienceStore((state) => state.selectHub)
+  const resetOneGdneSection = useExperienceStore((state) => state.resetOneGdneSection)
 
   useEffect(() => {
-    setExploration(phase === 'explore')
-    if (phase !== 'explore') selectHub(null)
-  }, [phase, setExploration, selectHub])
+    setExploration(false)
+    selectHub(null)
+    if (phase !== 'oneGdne') resetOneGdneSection()
+  }, [phase, resetOneGdneSection, selectHub, setExploration])
 
   useLayoutEffect(() => {
     const story = document.querySelector<HTMLElement>('#story')

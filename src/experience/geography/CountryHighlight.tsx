@@ -102,16 +102,14 @@ export function CountryHighlight({
       ))}
 
 
-      {phase !== 'explore' && (
-        <CountryInteractionMesh
-          geo={geo as FeatureCollection}
-          countryId={countryId}
-          active={active && progress > 0.02}
-          onEnter={() => { setHovered(true); gl.domElement.style.cursor = 'default' }}
-          onLeave={() => { setHovered(false); gl.domElement.style.cursor = 'default' }}
-          onClick={() => undefined}
-        />
-      )}
+      <CountryInteractionMesh
+        geo={geo as FeatureCollection}
+        countryId={countryId}
+        active={active && progress > 0.02}
+        onEnter={() => { setHovered(true); gl.domElement.style.cursor = 'default' }}
+        onLeave={() => { setHovered(false); gl.domElement.style.cursor = 'default' }}
+        onClick={() => undefined}
+      />
 
       {/* Glow overlay on globe surface */}
       {glowTexture && (
