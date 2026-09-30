@@ -25,9 +25,9 @@ export const countryPhotos = {
   },
   peru: {
     photos: [
-      '/photos/peru/team-01.jpg',
-      '/photos/peru/team-02.jpg',
-      '/photos/peru/office-01.jpg',
+      '/photos/peru/peru-team-01.jpg',
+      '/photos/peru/peru-team-02.jpg',
+      '/photos/peru/peru-team-03.jpg',
     ],
   },
 } as const

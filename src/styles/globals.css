@@ -205,6 +205,28 @@ button:focus-visible, a:focus-visible { outline: 2px solid #72bcff; outline-offs
   .cpcard:hover .cpcard__photo--visible { transform: none; }
 }
 
+/* Peru gallery: real photography — subtle automatic drift (Ken Burns) per
+   visible image, plus a light blue-toned overlay to integrate warm/bright
+   source photos with the cinematic palette. Scoped to Peru only. */
+.cpcard--peru .cpcard__photo {
+  transition: opacity 1s ease-in-out;
+}
+.cpcard--peru .cpcard__photo--visible {
+  animation: cpPeruDrift 6s ease-out forwards;
+}
+@keyframes cpPeruDrift {
+  from { transform: scale(1); }
+  to { transform: scale(1.035); }
+}
+.cpcard--peru .cpcard__gradient {
+  background:
+    linear-gradient(to top, rgba(1, 4, 10, .88) 0%, rgba(1, 4, 10, .44) 40%, transparent 72%),
+    linear-gradient(180deg, rgba(8, 24, 46, .22), rgba(8, 24, 46, .1));
+}
+@media (prefers-reduced-motion: reduce) {
+  .cpcard--peru .cpcard__photo--visible { animation: none; transform: none; }
+}
+
 /* Dark gradient from bottom for text readability */
 .cpcard__gradient {
   position: absolute;

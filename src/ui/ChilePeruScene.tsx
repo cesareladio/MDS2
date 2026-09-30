@@ -4,15 +4,17 @@ import { countryPhotos } from '../data/photos'
 import { useExperienceStore } from '../store/experienceStore'
 
 const HOLD_MS = 4500
+const PERU_HOLD_MS = 6000
 const STAGGER_MS = 2200
 
 type Country = 'chile' | 'peru'
 
-function GalleryCard({ country, staggerMs, active, reducedMotion }: {
+function GalleryCard({ country, staggerMs, active, reducedMotion, holdMs = HOLD_MS }: {
   country: Country
   staggerMs: number
   active: boolean
   reducedMotion: boolean
+  holdMs?: number
 }) {
   const identity = countryIdentity[country]
   const sources = countryPhotos[country].photos
@@ -48,14 +50,14 @@ function GalleryCard({ country, staggerMs, active, reducedMotion }: {
     if (timerRef.current) clearTimeout(timerRef.current)
     if (!active || reducedMotion || loaded.length < 2) return
 
-    const delay = staggerMs || HOLD_MS
+    const delay = staggerMs || holdMs
     const schedule = (wait: number) => {
       timerRef.current = setTimeout(() => {
         setCurrent((previous) => {
           const currentPosition = loaded.indexOf(previous)
           return loaded[(currentPosition + 1) % loaded.length]
         })
-        schedule(HOLD_MS)
+        schedule(holdMs)
       }, wait)
     }
 
@@ -63,7 +65,7 @@ function GalleryCard({ country, staggerMs, active, reducedMotion }: {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current)
     }
-  }, [active, loaded, reducedMotion, staggerMs])
+  }, [active, loaded, reducedMotion, staggerMs, holdMs])
 
   const validPhotos = loaded.map((index) => ({ index, source: sources[index] }))
 
@@ -122,7 +124,7 @@ export function ChilePeruScene() {
       </header>
       <div className="cp-scene__cards">
         <GalleryCard country="chile" staggerMs={0} active={active} reducedMotion={reducedMotion} />
-        <GalleryCard country="peru" staggerMs={STAGGER_MS} active={active} reducedMotion={reducedMotion} />
+        <GalleryCard country="peru" staggerMs={STAGGER_MS} active={active} reducedMotion={reducedMotion} holdMs={PERU_HOLD_MS} />
       </div>
     </div>
   )
