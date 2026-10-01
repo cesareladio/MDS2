@@ -20,7 +20,9 @@ export const countryPhotos = {
     photos: [
       '/photos/chile/team-01.jpg',
       '/photos/chile/team-02.jpg',
-      '/photos/chile/office-01.jpg',
+      '/photos/chile/team-03.jpg',
+      '/photos/chile/team-04.jpg',
+      '/photos/chile/team-05.jpg',
     ],
   },
   peru: {
