@@ -12,7 +12,7 @@ export function ClosingMessage() {
         Fortalezas complementarias.<br />
         Un mismo propósito para IBIOL.
       </div>
-      <BrandLogo className="closing-message__logo" decorative />
+
     </div>
   )
 }

@@ -4407,14 +4407,14 @@ html {
   text-transform: uppercase;
   letter-spacing: .1em;
   color: #8199ad;
-  font-size: .6rem;
+  font-size: .8rem;
 }
 
 .efficiency-maturity__head strong {
   text-transform: uppercase;
   letter-spacing: .08em;
   color: #78dbff;
-  font-size: .6rem;
+  font-size: .8rem;
   font-weight: 700;
 }
 
@@ -4426,7 +4426,7 @@ html {
 
 .efficiency-maturity__metrics strong {
   display: block;
-  font-size: 1.55rem;
+  font-size: 1.95rem;
   font-weight: 350;
   color: #eaf4ff;
   line-height: 1;
@@ -4438,7 +4438,7 @@ html {
   color: #9fb6cb;
   text-transform: uppercase;
   letter-spacing: .05em;
-  font-size: .58rem;
+  font-size: .8rem;
   line-height: 1.3;
 }
 
