@@ -120,7 +120,7 @@ export function ChilePeruScene() {
           Fortalezas complementarias.<br />
           Un mismo propósito para IBIOL.
         </p>
-        <strong className="cp-scene__gdne">One GDN-e</strong>
+        <strong className="cp-scene__gdne">ONE GDN-e</strong>
       </header>
       <div className="cp-scene__cards">
         <GalleryCard country="chile" staggerMs={0} active={active} reducedMotion={reducedMotion} />

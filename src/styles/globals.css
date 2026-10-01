@@ -2465,7 +2465,7 @@ html {
   align-items: center;
   gap: .7rem;
   margin: 0;
-  text-transform: uppercase;
+
   letter-spacing: .18em;
   color: #a8c6de;
   font-size: .62rem;
@@ -2942,15 +2942,6 @@ html {
   margin: 0 0 1rem;
 }
 
-.og-capability-pipeline li {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  color: #bedcf2;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  font-size: .52rem;
-}
 
 .og-capability-pipeline li:not(:last-child)::after {
   content: '↓';
@@ -2966,7 +2957,7 @@ html {
 .og-capability-card>span {
   display: block;
   color: #bed2e5;
-  font-size: .55rem;
+  font-size: .68rem;
   text-transform: uppercase;
 }
 
@@ -3008,9 +2999,161 @@ html {
     font-size: .46rem;
   }
 
+  .og-highlights li {
+    font-size: .78rem;
+  }
+
   .og-history-grid {
     gap: .7rem;
   }
+}
+
+.og-talent-funnel {
+  display: flex;
+  flex-direction: column;
+  gap: .32rem;
+  margin-top: .55rem;
+}
+
+.og-talent-funnel__title {
+  color: #7bbce4;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-size: .56rem;
+  font-weight: 400;
+}
+
+.og-talent-funnel__pyramid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .34rem;
+}
+
+.og-talent-funnel__level {
+  display: flex;
+  justify-content: center;
+}
+
+.og-talent-funnel__level-surface {
+  width: 100%;
+  min-height: 2.25rem;
+  padding: .3rem .55rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .12rem;
+  border: 1px solid rgba(92, 184, 255, .42);
+  background: linear-gradient(180deg, rgba(40, 117, 170, .24), rgba(8, 22, 37, .48));
+  clip-path: polygon(8% 0, 92% 0, 100% 100%, 0 100%);
+  text-align: center;
+}
+
+.og-talent-funnel--peru .og-talent-funnel__level-surface {
+  border-color: rgba(255, 173, 66, .42);
+  background: linear-gradient(180deg, rgba(160, 100, 25, .24), rgba(34, 18, 5, .48));
+}
+
+.og-talent-funnel__level span {
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: .68rem;
+  color: #afc7d9;
+}
+
+.og-talent-funnel__level strong {
+  font-size: .7rem;
+  color: #edf8ff;
+  line-height: 1.15;
+}
+
+.og-highlights {
+  margin-top: .72rem;
+}
+
+.og-highlights__title {
+  display: block;
+  margin-bottom: .38rem;
+  color: #b8cbdc;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: .27rem;
+  font-weight: 500;
+}
+
+.og-highlights__subtitle {
+  display: block;
+  margin-bottom: .38rem;
+  color: #b8cbdc;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: 1.3rem !important;
+  font-weight: 750 !important;
+}
+
+.og-highlights ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.og-highlights li {
+  display: grid;
+  grid-template-columns: .45rem 1fr;
+  gap: .35rem;
+  align-items: start;
+  color: #d7eaf7;
+  font-size: .78rem;
+  line-height: 1.36;
+}
+
+.og-highlights li::before {
+  content: '';
+  width: .24rem;
+  height: .24rem;
+  margin-top: .24rem;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px color-mix(in srgb, currentColor 35%, transparent);
+}
+
+.og-capability-card--peru .og-highlights li::before {
+  color: #ffc16b;
+}
+
+.og-capability-card--chile .og-highlights li::before {
+  color: #78dbff;
+}
+
+.og-capability-partners {
+  margin-top: .95rem;
+}
+
+.og-capability-partners>span {
+  display: block;
+  margin-bottom: .25rem;
+  color: #829db4;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .4rem;
+}
+
+.og-capability-partners>div {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 1rem;
+}
+
+.og-capability-partners img {
+  height: .9rem;
+  width: auto;
+  object-fit: contain;
+  opacity: .78;
 }
 
 @media (max-width: 900px) {
@@ -3159,13 +3302,17 @@ html {
 
 .og-capability-pipeline li {
   position: relative;
-  flex: 1;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  flex: 1;
   padding: .55rem .35rem;
   border: 1px solid rgba(96, 183, 255, .25);
   background: rgba(10, 38, 67, .3);
   color: #ccecff;
-  font-size: .8rem;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: .68rem;
 }
 
 .og-capability-pipeline li:first-child {
@@ -3305,40 +3452,6 @@ html {
   font-size: .56rem;
 }
 
-.og-talent-funnel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .25rem;
-  margin-top: .8rem;
-}
-
-.og-talent-funnel>div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: .3rem .5rem;
-  min-height: 1.35rem;
-  border: 1px solid rgba(92, 184, 255, .35);
-  background: rgba(40, 117, 170, .14);
-}
-
-.og-talent-funnel--peru>div {
-  border-color: rgba(255, 173, 66, .38);
-  background: rgba(160, 100, 25, .12);
-}
-
-.og-talent-funnel span {
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  font-size: .46rem;
-  color: #afc7d9;
-}
-
-.og-talent-funnel strong {
-  font-size: .58rem;
-  color: #edf8ff;
-}
 
 .og-capability-concepts {
   display: grid;
@@ -3348,88 +3461,10 @@ html {
   color: #6fa9cf;
   text-transform: uppercase;
   letter-spacing: .13em;
-  font-size: .68rem;
+  font-size: .60rem;
 }
 
-.og-capability-progress {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: .45rem;
-  margin: .5rem 0 .65rem;
-}
 
-.og-capability-progress b {
-  color: #d9efff;
-  font-size: .72rem;
-  font-weight: 500;
-}
-
-.og-capability-progress i {
-  height: 2px;
-  background: rgba(105, 183, 236, .22);
-}
-
-.og-capability-progress i em {
-  display: block;
-  height: 100%;
-  width: 57%;
-  background: linear-gradient(90deg, #ffad42, #6ac7ff);
-}
-
-.og-capability-card--chile .og-capability-progress i em {
-  width: 82%;
-  background: linear-gradient(90deg, #37c9ff, #8cddff);
-}
-
-.og-capability-tiles {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: .5rem;
-}
-
-.og-capability-tiles div {
-  padding: .45rem .5rem;
-  border: 1px solid rgba(111, 194, 244, .2);
-  background: rgba(20, 74, 112, .14);
-}
-
-.og-capability-card--peru .og-capability-tiles div {
-  border-color: rgba(255, 180, 75, .24);
-}
-
-.og-capability-tiles strong {
-  font-size: 1rem;
-  color: #eefaff;
-}
-
-.og-capability-tiles span {
-  display: block;
-  margin-top: .12rem;
-  color: #8faec4;
-  font-size: .42rem;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-}
-
-.og-capability-card p {
-  font-size: .48rem;
-  line-height: 1.5;
-}
-
-@media (max-height: 820px) {
-  .og-territory-card__insight strong {
-    font-size: 2.25rem;
-  }
-
-  .og-capability-tiles strong {
-    font-size: .85rem;
-  }
-
-  .og-capability-card p {
-    font-size: .43rem;
-  }
-}
 
 /* ─── SCENE 03 TERRITORY · GEOGRAPHIC HUD ──────────────────────────────── */
 .og-view--territory-map {
@@ -3573,6 +3608,10 @@ html {
   font-size: .55rem;
 }
 
+.og-territory-hud__regions li.is-primary {
+  color: color-mix(in srgb, currentColor 74%, #eef9ff);
+}
+
 .og-territory-hud__regions li span {
   min-width: 0;
   overflow: hidden;
@@ -3580,11 +3619,21 @@ html {
   white-space: nowrap;
 }
 
+.og-territory-hud__regions li.is-primary span {
+  font-weight: 600;
+}
+
 .og-territory-hud__regions li strong {
   color: #edf8ff;
   font-size: .57rem;
   font-weight: 500;
   text-align: right;
+}
+
+.og-territory-hud__regions li.is-primary strong,
+.og-territory-hud__regions li.is-primary b {
+  color: #f3fbff;
+  font-weight: 600;
 }
 
 .og-territory-hud__regions li b {

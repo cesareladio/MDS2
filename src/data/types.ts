@@ -31,16 +31,28 @@ export interface StudioGroup {
   subgroups?: StudioSubgroup[]
 }
 
+export interface HighlightList {
+  title: string
+  items: string[]
+}
+
+export interface PartnerLogo {
+  name: string
+  logo: string
+}
+
 export interface StudioBlock {
   status: 'validated'
   totalTalent: number
   focusCount: number
   groups: StudioGroup[]
+  highlights?: HighlightList
 }
 
 export interface StudioBlockPending {
   status: 'pending_validation'
   focusCount: number
+  highlights?: HighlightList
 }
 
 export type Studios = StudioBlock | StudioBlockPending

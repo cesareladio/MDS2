@@ -16,7 +16,7 @@ export function Experience() {
 
   return (
     <div className="experience">
-      <a className="skip-link" href="#oneGdne">Saltar a One GDN-e</a>
+      <a className="skip-link" href="#oneGdne">Saltar a ONE GDN-e</a>
       <EarthScene />
       <StoryDirector />
 

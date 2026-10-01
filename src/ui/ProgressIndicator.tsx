@@ -10,7 +10,7 @@ export function ProgressIndicator() {
     <nav className="progress-nav" aria-label="Navegación de la historia">
       <div className="progress-brand">
         <BrandLogo className="progress-brand__logo" decorative />
-        <span>Chile + Perú · One GDN-e</span>
+        <span>Chile + Perú · ONE GDN-e</span>
       </div>
       <div className="progress-track">
         {storyChapters.map((chapter) => (

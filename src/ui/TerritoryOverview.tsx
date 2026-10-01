@@ -46,7 +46,7 @@ export function TerritoryOverview() {
     <div className="territory-overview">
       <div className="territory-overview__combined">
         <strong>{combined.toLocaleString('es-PE')}</strong>
-        <span>Personas · One GDN-e</span>
+        <span>Personas · ONE GDN-e</span>
       </div>
       <div className="territory-overview__grid">
         <TerritoryCard country="peru" topN={3} />
