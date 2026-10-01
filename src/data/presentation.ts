@@ -64,11 +64,11 @@ export const presentationData = {
       ],
     },
     territory: {
-      chile: { total: { value: 609, status: 'pending_validation' as const }, principalShare: { value: 72, status: 'pending_validation' as const }, locations: ['Temuco / Araucanía', 'Concepción / Biobío'], regions: [{ name: 'Araucanía', value: 48, status: 'pending_validation' as const }, { name: 'Biobío', value: 24, status: 'pending_validation' as const }, { name: 'Resto Chile', value: null, status: 'pending_validation' as const }], message: 'Una capacidad tecnológica fuertemente conectada con el sur de Chile.' },
+      chile: { total: { value: 609, status: 'pending_validation' as const }, principalShare: { value: 72, status: 'pending_validation' as const }, locations: ['Temuco / Araucanía', 'Concepción / Biobío'], regions: [{ name: 'Araucanía', value: 281, percent: 55, status: 'validated' as const }, { name: 'Biobío', value: 97, percent: 17, status: 'validated' as const }, { name: 'Chile y Otras Zonas', value: 231, percent: 28, status: 'validated' as const }], message: 'Una capacidad tecnológica fuertemente conectada con el sur de Chile.' },
       peru: { total: { value: 1434, status: 'pending_validation' as const }, principalShare: { value: 51, status: 'pending_validation' as const }, locations: ['La Libertad / Trujillo', 'Arequipa'], regions: [{ name: 'La Libertad (Trujillo)', value: 511, percent: 36, status: 'validated' as const }, { name: 'Arequipa', value: 214, percent: 15, status: 'validated' as const }, { name: 'Lima', value: 189, percent: 13, status: 'validated' as const }, { name: 'Resto Perú', value: 520, percent: 36, status: 'validated' as const }], message: 'Una capacidad distribuida que amplía el acceso al talento más allá de las capitales.' },
     },
     talent: {
-      peru: { total: { value: 1434, status: 'pending_validation' as const }, femaleRepresentation: { value: '22%', status: 'validated' as const }, families: [{ name: 'Engineer', value: 958, percent: 67, status: 'pending_validation' as const }, { name: 'Enterprise Solutions Engineering', value: 187, percent: 13, status: 'pending_validation' as const }, { name: 'Quality Assurance', value: 119, percent: 8, status: 'pending_validation' as const }, { name: 'Enterprise Solutions Functional A.', value: 102, percent: 7, status: 'pending_validation' as const }] },
+      peru: { total: { value: 1434, status: 'pending_validation' as const }, femaleRepresentation: { value: '22%', status: 'validated' as const }, families: [{ name: 'Engineer', value: 958, percent: 67, status: 'pending_validation' as const }, { name: 'Enterprise Solutions Engineering', value: 187, percent: 13, status: 'pending_validation' as const }, { name: 'Quality Assurance', value: 119, percent: 8, status: 'pending_validation' as const }, { name: 'Enterprise Solutions Functional A.', value: 102, percent: 7, status: 'pending_validation' as const }], pyramid: [{ name: 'Executive', value: 9, percent: 1, status: 'validated' as const }, { name: 'Leaders', value: 108, percent: 7, status: 'validated' as const }, { name: 'Contributor', value: 1317, percent: 92, status: 'validated' as const }] },
       chile: { total: { value: 605, status: 'pending_validation' as const }, femaleRepresentation: { value: '15,9%', status: 'validated' as const }, families: [{ name: 'Engineer', value: 363, percent: 75, status: 'validated' as const }, { name: 'Enterprise Solutions Eng.', value: 44, percent: 9, status: 'validated' as const }, { name: 'Quality Assurance', value: 34, percent: 7, status: 'validated' as const }, { name: 'Otros', value: 41, percent: 9, status: 'validated' as const }], pyramid: [{ name: 'Executive', value: 6, percent: 1, status: 'validated' as const }, { name: 'Leaders', value: 43, percent: 8, status: 'validated' as const }, { name: 'Contributor', value: 457, percent: 91, status: 'validated' as const }] },
     },
     studios: {
@@ -128,9 +128,8 @@ export const presentationData = {
       adoption: { label: '', status: 'pending_validation' as const },
     },
     chile: {
-      clients: ['ANASAC', 'COPEC', 'RedSalud', 'Metrogas', 'Clínica Alemana'],
       initiatives: [
-        { id: 'dispatcher', name: 'AXET.Dispatcher (ES)', detail: 'Evaluación en USA (CTS)' },
+        { id: 'dispatcher', name: 'AXET.Dispatcher (ES)', clients: ['ANASAC', 'COPEC', 'RedSalud', 'Metrogas', 'Clínica Alemana'], detail: 'Evaluación en USA (CTS)' },
         { id: 'migracion-ia', name: 'Migración con IA (DA)', detail: 'Cliente: AFP Capital' },
         { id: 'propuestas', name: 'Propuestas (BPS)', detail: '3 propuestas: Banco Estado · 1 propuesta: GCR' },
         { id: 'poc-agentica', name: 'PoC Agéntica (AS)', detail: 'CTS · Cintra Tools Services' },
@@ -157,12 +156,16 @@ export const presentationData = {
       clientsStatus: 'pending_validation' as const,
     },
     chile: {
-      local: chileData.delivery[0].percent,
-      offshore: chileData.delivery[2].percent,
-      nearshore: chileData.delivery[1].percent,
+      local: 51,
+      offshore: 49,
+      nearshore: 0,
       strength: 'Mix entre capacidad local y participación internacional (offshore).',
-      clients: [] as ValueClient[],
-      clientsStatus: 'pending_validation' as const,
+      clients: [
+        { id: 'caser', name: 'Caser', country: 'España', logo: '/clients/chile/caser.png' },
+        { id: 'clinica-alemana', name: 'Clínica Alemana', country: 'Chile', logo: '/clients/chile/clinica-alemana.png' },
+        { id: 'world-bank', name: 'Banco Mundial', country: 'USA', logo: '/clients/chile/world-bank.png' },
+      ] as ChileClient[],
+      clientsStatus: 'validated' as const,
     },
     network: { core: 'One GDN-e', target: 'Clientes / Mercados' },
   },
@@ -183,4 +186,11 @@ export interface ValueClient {
   id: string
   name: string
   logo: string
+}
+
+export interface ChileClient {
+  id: string
+  name: string
+  country: string
+  logo: string | null
 }

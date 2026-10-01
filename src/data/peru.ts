@@ -57,28 +57,10 @@ export const peruStudios: Studios = {
   totalTalent: 1049,
   focusCount: 3,
   groups: [
-    {
-      id: 'software-engineering',
-      name: 'Software Engineering',
-      totalHc: 531,
-      percent: 38,
-      subgroups: [
-        { name: 'Backend',  hc: 343, percent: 25 },
-        { name: 'Frontend', hc: 188, percent: 13 },
-      ],
-    },
-    {
-      id: 'quality-engineering',
-      name: 'Quality Engineering',
-      totalHc: 286,
-      percent: 20,
-    },
-    {
-      id: 'enterprise-platform',
-      name: 'Enterprise Platform',
-      totalHc: 232,
-      percent: 17,
-    },
+    { id: 'backend', name: 'Backend', totalHc: 343, percent: 25 },
+    { id: 'quality', name: 'Quality', totalHc: 286, percent: 20 },
+    { id: 'enterprise-platform', name: 'Enterprise Platform', totalHc: 232, percent: 17 },
+    { id: 'frontend', name: 'Frontend', totalHc: 188, percent: 13 },
   ],
   goals: {
     title: 'GOALS',

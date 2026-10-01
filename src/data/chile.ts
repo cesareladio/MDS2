@@ -12,7 +12,7 @@ export const chileData = {
       { name: 'Los Ríos', hc: 20, percentage: 4 },
       { name: 'Otros', hc: 60, percentage: 12 },
     ],
-  }, 
+  },
   subco: 99,
   peopleUnderManagement: 609,
   talent: {
@@ -34,7 +34,7 @@ export const chileData = {
   ],
   capabilitiesSummary: { hc: 393, percent: 77 },
   delivery: [
-    { name: 'Local', hc: 272, percent: 47 },
+    { name: 'Local', hc: 272, percent: 51 },
     { name: 'Nearshore', hc: 49, percent: 9 },
     { name: 'Offshore', hc: 252, percent: 44 },
   ],
@@ -61,8 +61,8 @@ export const chileTalentFamilies = [
 
 export const chileStudios: Studios = {
   status: 'validated' as const,
-  totalTalent: 629,
-  specialistTotal: 514,
+  totalTalent: 514,
+  specialistTotal: 0,
   focusCount: 3,
   groups: [
     { id: 'backend', name: 'Backend', totalHc: 235, percent: 46 },

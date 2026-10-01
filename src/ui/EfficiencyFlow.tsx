@@ -34,12 +34,28 @@ function ChilePanel() {
   return (
     <article className="efficiency-country efficiency-country--chile">
       <span className="efficiency-country__name">{countryIdentity.chile.name}</span>
-      <div className="efficiency-clients">
-        <span>{data.clients.length} clientes</span>
-        <div className="efficiency-clients__list">{data.clients.map((client) => <i key={client}>{client}</i>)}</div>
-      </div>
       <ul className="efficiency-initiatives">
-        {data.initiatives.map((item) => <li key={item.id}><strong>{item.name}</strong><span>{item.detail}</span></li>)}
+        {data.initiatives.map((item) => {
+          const hasClients = 'clients' in item && item.clients && item.clients.length > 0
+          return (
+            <li key={item.id} className={hasClients ? 'efficiency-initiatives__li--dispatcher' : undefined}>
+              {hasClients ? (
+                <>
+                  <strong>{item.name}</strong>
+                  <div className="efficiency-dispatcher__right">
+                    <span className="efficiency-dispatcher__clients">{(item as { clients: string[] }).clients.join(' · ')}</span>
+                    <span className="efficiency-dispatcher__detail">{item.detail}</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <strong>{item.name}</strong>
+                  <span>{item.detail}</span>
+                </>
+              )}
+            </li>
+          )
+        })}
       </ul>
       <div className="efficiency-maturity">
         <div className="efficiency-maturity__head"><span>{tracker.title}</span><strong>{tracker.subtitle}</strong></div>

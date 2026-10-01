@@ -10,9 +10,9 @@ import { BrandLogo } from './BrandLogo'
  * No hard cut: it dissolves continuously with scroll.
  */
 export function IntroBrand() {
-  const root   = useRef<HTMLDivElement>(null)
-  const light  = useRef<HTMLDivElement>(null)
-  const phase  = useExperienceStore((state) => state.phase)
+  const root = useRef<HTMLDivElement>(null)
+  const light = useRef<HTMLDivElement>(null)
+  const phase = useExperienceStore((state) => state.phase)
   const scroll = useExperienceStore((state) => state.scrollProgress)
   const reduced = useExperienceStore((state) => state.reducedMotion)
 
@@ -23,7 +23,7 @@ export function IntroBrand() {
     gsap.fromTo(
       el.querySelectorAll('.intro-eyebrow, .intro-title, .intro-claim'),
       { opacity: 0, y: 22, filter: 'blur(6px)' },
-      { opacity: 1, y: 0,  filter: 'blur(0px)', stagger: 0.18, duration: 1.2, ease: 'power3.out', delay: 0.3 }
+      { opacity: 1, y: 0, filter: 'blur(0px)', stagger: 0.18, duration: 1.2, ease: 'power3.out', delay: 0.3 }
     )
     gsap.fromTo(
       el.querySelector('.intro-light'),
@@ -52,7 +52,7 @@ export function IntroBrand() {
       <div className="intro-title intro-brand-logo">
         <BrandLogo />
       </div>
-      <p className="intro-claim">Technology<br />for a brighter society</p>
+      <p className="intro-claim">Ignite tomorrow<br />today</p>
 
       {/* The light line that "becomes" the Earth horizon */}
       <div
