@@ -100,12 +100,12 @@ function Talent() {
 }
 
 function StudiosHighlights({ title, items }: { title: string; items: string[] }) {
-  if (items.length === 0) return null
-  return <div className="og-highlights"><strong className="og-highlights__title">{title}</strong><ul>{items.slice(0, 3).map((item) => <li key={item}>{item}</li>)}</ul></div>
+  const hasItems = items.length > 0
+  return <div className="og-highlights og-highlights--studios"><strong className="og-highlights__title">{title}</strong>{hasItems ? <ul>{items.slice(0, 3).map((item) => <li key={item}>{item}</li>)}</ul> : <div className="og-highlights__pending"><span>DATA POR CONFIRMAR</span><i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" /></div>}</div>
 }
 
 function StudiosCard({ country, studios }: { country: 'peru' | 'chile'; studios: Studios }) {
-  if (studios.status === 'pending_validation') return <article className={`og-studios-card og-studios-card--${country}`}><CountryLabel country={country} /><div className="og-studios-card__meta"><strong>{studios.focusCount} Studios</strong></div><p className="og-studios-card__pending-copy">Distribución de talento<br />en validación</p><div className="og-studios-card__modules" aria-hidden="true"><i /><i /><i /></div>{studios.highlights && <StudiosHighlights title={studios.highlights.title} items={studios.highlights.items} />}</article>
+  if (studios.status === 'pending_validation') return <article className={`og-studios-card og-studios-card--${country}`}><CountryLabel country={country} /><div className="og-studios-card__meta"><strong>{studios.focusCount} Studios</strong></div><p className="og-studios-card__pending-copy">Distribución de talento<br />DATA POR CONFIRMAR</p>{studios.highlights && <StudiosHighlights title={studios.highlights.title} items={studios.highlights.items} />}</article>
   return <article className={`og-studios-card og-studios-card--${country}`}><CountryLabel country={country} /><div className="og-studios-card__meta"><strong>{studios.focusCount} Studios</strong><span>{studios.totalTalent.toLocaleString('es-PE')} talentos</span></div><ul>{studios.groups.map((group) => <li key={group.id}><div><span>{group.name}</span><strong>{group.totalHc}</strong></div>{group.subgroups && <small>{group.subgroups.map((sub) => `${sub.name} ${sub.hc}`).join(' · ')}</small>}</li>)}</ul>{studios.highlights && <StudiosHighlights title={studios.highlights.title} items={studios.highlights.items} />}</article>
 }
 
@@ -116,12 +116,12 @@ function StudiosView() {
 
 function CapabilityHighlights({ title, items }: { title: string; items: string[] }) {
   if (items.length === 0) return null
-  return <div className="og-highlights og-highlights--capabilities"><strong className="og-highlights__subtitle">{title}</strong><ul>{items.slice(0, 3).map((item) => <li key={item}>{item}</li>)}</ul></div>
+  return <div className="og-highlights og-highlights--studios"><strong className="og-highlights__title">{title}</strong><ul>{items.slice(0, 3).map((item) => <li key={item}>{item}</li>)}</ul></div>
 }
 
 function CapabilityPartners({ partners }: { partners?: PartnerLogo[] }) {
   if (!partners || partners.length === 0) return null
-  return <div className="og-capability-partners"><span>Partners</span><div>{partners.map((partner) => <img key={partner.name} src={partner.logo} alt={partner.name} />)}</div></div>
+  return <div className="og-capability-partners"><span>Tecnologías / Certificaciones</span><div>{partners.map((partner) => <img key={partner.name} src={partner.logo} alt={partner.name} />)}</div></div>
 }
 
 function Capabilities() {

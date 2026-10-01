@@ -17,10 +17,7 @@ export function FutureChallenges() {
           </div>
         ))}
       </div>
-      <p className="future-challenges__closing">
-        El próximo salto no depende solo de nuestro talento,<br />
-        sino de <strong>cómo conectamos nuestras capacidades.</strong>
-      </p>
+
     </div>
   )
 }

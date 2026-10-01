@@ -24,7 +24,7 @@ export function Experience() {
         <section id="intro" className="chapter chapter--intro" aria-label="Introducción de marca"><IntroBrand /></section>
         <section id="chilePeru" className="chapter chapter--chilePeru"><ChilePeruScene /></section>
         <section id="oneGdne" className="chapter chapter--oneGdne"><OneGdneScene /></section>
-        <section id="efficiency" className="chapter chapter--efficiency"><StoryCopy index="04" kicker="Eficiencia" title={<>Del talento tecnológico<br /><em>a soluciones de impacto</em></>} align="center"><EfficiencyFlow /></StoryCopy></section>
+        <section id="efficiency" className="chapter chapter--efficiency"><StoryCopy index="04" kicker="Eficiencia" title={<>AI + <em>Automation</em></>} align="center"><EfficiencyFlow /></StoryCopy></section>
         <section id="value" className="chapter chapter--value"><StoryCopy index="05" kicker="Valor" title={<>Dónde creamos valor<br /><em>y hacia dónde crecemos</em></>} align="center"><ValueOverview /></StoryCopy></section>
         <section id="challenges" className="chapter chapter--challenges"><StoryCopy index="06" kicker="Desafíos futuros" title={<>Una red conectada<br /><em>para los desafíos del futuro</em></>} align="center"><FutureChallenges /></StoryCopy></section>
         <section id="closing" className="chapter chapter--closing"><ClosingMessage /></section>

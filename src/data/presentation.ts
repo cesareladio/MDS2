@@ -1,6 +1,7 @@
 import { globalData } from './global'
 import { countryIdentity } from './countryIdentity'
 import { countryPhotos } from './photos'
+import type { PartnerLogo } from './types'
 import {
   chileData,
   chileHubs,
@@ -76,9 +77,9 @@ export const presentationData = {
         totalTalent: 1049,
         focusCount: 3,
         groups: [{ id: 'backend', name: 'Backend', totalHc: 343, percent: 25 }, { id: 'quality', name: 'Quality', totalHc: 286, percent: 20 }, { id: 'enterprise-platform', name: 'Enterprise Platform', totalHc: 232, percent: 17 }, { id: 'frontend', name: 'Frontend', totalHc: 188, percent: 13 }],
-        highlights: { title: 'HIGHLIGHTS', items: [] },
+        highlights: { title: 'HIGHLIGHTS 2022–2024', items: [] },
       },
-      chile: { ...chileStudios, highlights: { title: 'HIGHLIGHTS', items: [] } },
+      chile: { ...chileStudios, highlights: { title: 'HIGHLIGHTS 2022–2024', items: [] } },
       editorialLine: 'La escala importa. La especialización nos diferencia.',
     },
     capabilities: {
@@ -89,7 +90,13 @@ export const presentationData = {
         currentRate: { value: '57%', status: 'validated' as const },
         objective: { value: '70%', status: 'pending_validation' as const },
         highlights: ['+1.300 certificaciones OpenAI, acelerando capacidades en IA.', '878 certificaciones técnicas vigentes registradas.'],
-        partners: [],
+        partners: [
+          { name: 'AWS', logo: '/partners/aws.png' },
+          { name: 'Microsoft', logo: '/partners/microsoft.png' },
+          { name: 'Google Cloud', logo: '/partners/google-cloud.png' },
+          { name: 'ISTQB', logo: '/partners/istqb.png' },
+          { name: 'SAP', logo: '/partners/sap.png' },
+        ] as PartnerLogo[],
         strategicFocus: ['Cloud', 'AI', 'Data', 'QA'],
         ecosystems: 'AWS · Microsoft · Google · ISTQB · SAP · entre otras',
         progression: 'Fundamentals → Associate → Expert',
@@ -99,7 +106,12 @@ export const presentationData = {
         currentRate: { value: '82%', status: 'validated' as const },
         objective: { value: '>85%', status: 'pending_validation' as const },
         highlights: ['GDN-e Chile, mayor tasa de profesionales certificados FY25 en IBIOL.', '+517 certificaciones OpenAI, acelerando capacidades en IA.', '206 certificaciones técnicas vigentes registradas.'],
-        partners: [],
+        partners: [
+          { name: 'AWS', logo: '/partners/aws.png' },
+          { name: 'Microsoft', logo: '/partners/microsoft.png' },
+          { name: 'Google Cloud', logo: '/partners/google-cloud.png' },
+          { name: 'ISTQB', logo: '/partners/istqb.png' },
+        ] as PartnerLogo[],
         strategicFocus: ['Cloud', 'AI / Automation', 'Data', 'QA'],
         ecosystems: 'AWS · Microsoft · Google · ISTQB · entre otras',
         progression: 'Fundamentals → Associate → Expert',
@@ -149,7 +161,7 @@ export const presentationData = {
       { id: 'mobilize', number: '03', title: 'Movilizar el talento', body: 'Facilitar colaboración, formación, certificación y participación cross-country / cross-project.', status: 'stakeholder_draft' as const },
       { id: 'scale', number: '04', title: 'Escalar nuestro impacto', body: 'Aumentar nuestra capacidad de responder ante oportunidades locales, offshore y globales.', status: 'stakeholder_draft' as const },
     ],
-    closing: 'El próximo salto no depende solo de nuestro talento, sino de cómo conectamos nuestras capacidades.',
+    closing: '',
   },
 }
 
