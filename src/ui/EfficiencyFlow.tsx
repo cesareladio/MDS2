@@ -1,44 +1,65 @@
-import { presentationData, type EfficiencyCase } from '../data/presentation'
+import { presentationData } from '../data/presentation'
+import { countryIdentity } from '../data/countryIdentity'
 
-const PENDING_LABEL = 'Caso en validación'
+function AdoptionTag({ label }: { label: string }) {
+  return <div className="efficiency-adoption-tag"><span>{label}</span></div>
+}
 
-function ImpactCaseCard({ item, country }: { item: Omit<EfficiencyCase, 'country'>; country: 'peru' | 'chile' }) {
-  const identity = presentationData[country].identity
-  const projectName = item.client ?? item.project ?? PENDING_LABEL
-  const impact = item.impactValue === null ? PENDING_LABEL : `${item.impactValue}${item.impactUnit}`
+function PeruPanel() {
+  const data = presentationData.efficiency.peru
   return (
-    <article className={`impact-case impact-case--${country}`}>
-      <header className="impact-case__header"><span className="impact-case__country">{identity.name}</span></header>
-      <div className="impact-case__project">
-        <span>Caso / Proyecto</span>
-        <strong className={item.client === null && item.project === null ? 'is-pending' : undefined}>{projectName}</strong>
+    <article className="efficiency-country efficiency-country--peru">
+      <span className="efficiency-country__name">{countryIdentity.peru.name}</span>
+      <div className="efficiency-clusters">
+        {data.clusters.map((cluster) => (
+          <div className="efficiency-cluster" key={cluster.id}>
+            <div className="efficiency-cluster__head"><strong>{cluster.name}</strong><span>{cluster.items.length} iniciativa{cluster.items.length > 1 ? 's' : ''}</span></div>
+            <ul>{cluster.items.map((item) => <li key={item}>{item}</li>)}</ul>
+          </div>
+        ))}
       </div>
-      <dl className="impact-case__detail">
-        <div>
-          <dt>Desafío</dt>
-          <dd className={item.challenge === null ? 'is-pending' : undefined}>{item.challenge ?? PENDING_LABEL}</dd>
+      <div className="efficiency-collab">
+        <span>Trabajo en conjunto con unidades</span>
+        <div className="efficiency-collab__tags">{data.collaborationUnits.map((unit) => <i key={unit}>{unit}</i>)}</div>
+      </div>
+      <AdoptionTag label={data.adoption.label} />
+      <p className="efficiency-country__message">{data.message}</p>
+    </article>
+  )
+}
+
+function ChilePanel() {
+  const data = presentationData.efficiency.chile
+  const tracker = data.maturityTracker
+  return (
+    <article className="efficiency-country efficiency-country--chile">
+      <span className="efficiency-country__name">{countryIdentity.chile.name}</span>
+      <div className="efficiency-clients">
+        <span>{data.clients.length} clientes</span>
+        <div className="efficiency-clients__list">{data.clients.map((client) => <i key={client}>{client}</i>)}</div>
+      </div>
+      <ul className="efficiency-initiatives">
+        {data.initiatives.map((item) => <li key={item.id}><strong>{item.name}</strong><span>{item.detail}</span></li>)}
+      </ul>
+      <div className="efficiency-maturity">
+        <div className="efficiency-maturity__head"><span>{tracker.title}</span><strong>{tracker.subtitle}</strong></div>
+        <div className="efficiency-maturity__metrics">
+          <div><strong>{tracker.servicesEvaluated.value}</strong><span>{tracker.servicesEvaluated.label}</span></div>
+          <div><strong>{tracker.peopleEvaluated.value}</strong><span>{tracker.peopleEvaluated.label}</span></div>
         </div>
-        <div>
-          <dt>Solución</dt>
-          <dd className={item.solution === null ? 'is-pending' : undefined}>{item.solution ?? PENDING_LABEL}</dd>
-        </div>
-        <div>
-          <dt>Impacto</dt>
-          <dd className={item.impactValue === null ? 'is-pending' : undefined}>{impact}</dd>
-          {item.impactValue !== null && <small>{item.impactLabel}</small>}
-        </div>
-      </dl>
+      </div>
+      <AdoptionTag label={data.adoption.label} />
+      <p className="efficiency-country__message">{data.message}</p>
     </article>
   )
 }
 
 export function EfficiencyFlow() {
-  const data = presentationData.efficiency
   return (
     <div className="efficiency-story">
-      <div className="impact-case-grid">
-        <ImpactCaseCard item={data.cases.peru} country="peru" />
-        <ImpactCaseCard item={data.cases.chile} country="chile" />
+      <div className="efficiency-grid">
+        <PeruPanel />
+        <ChilePanel />
       </div>
     </div>
   )

@@ -72,14 +72,8 @@ export const presentationData = {
       chile: { total: { value: 605, status: 'pending_validation' as const }, femaleRepresentation: { value: '15,9%', status: 'validated' as const }, families: [{ name: 'Engineer', value: 363, percent: 75, status: 'validated' as const }, { name: 'Enterprise Solutions Eng.', value: 44, percent: 9, status: 'validated' as const }, { name: 'Quality Assurance', value: 34, percent: 7, status: 'validated' as const }, { name: 'Otros', value: 41, percent: 9, status: 'validated' as const }], pyramid: [{ name: 'Executive', value: 6, percent: 1, status: 'validated' as const }, { name: 'Leaders', value: 43, percent: 8, status: 'validated' as const }, { name: 'Contributor', value: 457, percent: 91, status: 'validated' as const }] },
     },
     studios: {
-      peru: {
-        status: 'validated' as const,
-        totalTalent: 1049,
-        focusCount: 3,
-        groups: [{ id: 'backend', name: 'Backend', totalHc: 343, percent: 25 }, { id: 'quality', name: 'Quality', totalHc: 286, percent: 20 }, { id: 'enterprise-platform', name: 'Enterprise Platform', totalHc: 232, percent: 17 }, { id: 'frontend', name: 'Frontend', totalHc: 188, percent: 13 }],
-        highlights: { title: 'HIGHLIGHTS 2022–2024', items: [] },
-      },
-      chile: { ...chileStudios, highlights: { title: 'HIGHLIGHTS 2022–2024', items: [] } },
+      peru: peruStudios,
+      chile: chileStudios,
       editorialLine: 'La escala importa. La especialización nos diferencia.',
     },
     capabilities: {
@@ -96,6 +90,7 @@ export const presentationData = {
           { name: 'Google Cloud', logo: '/partners/google-cloud.png' },
           { name: 'ISTQB', logo: '/partners/istqb.png' },
           { name: 'SAP', logo: '/partners/sap.png' },
+          { name: 'OpenAI', logo: '/partners/openai.png' },
         ] as PartnerLogo[],
         strategicFocus: ['Cloud', 'AI', 'Data', 'QA'],
         ecosystems: 'AWS · Microsoft · Google · ISTQB · SAP · entre otras',
@@ -111,6 +106,7 @@ export const presentationData = {
           { name: 'Microsoft', logo: '/partners/microsoft.png' },
           { name: 'Google Cloud', logo: '/partners/google-cloud.png' },
           { name: 'ISTQB', logo: '/partners/istqb.png' },
+          { name: 'OpenAI', logo: '/partners/openai.png' },
         ] as PartnerLogo[],
         strategicFocus: ['Cloud', 'AI / Automation', 'Data', 'QA'],
         ecosystems: 'AWS · Microsoft · Google · ISTQB · entre otras',
@@ -119,18 +115,36 @@ export const presentationData = {
     },
   },
   efficiency: {
-    headline: 'Del talento tecnológico a soluciones de impacto',
     concept: 'AI + Automation',
-    status: 'pending_validation' as const,
-    cases: {
-      peru: { country: 'Perú', client: null, project: null, logo: null, challenge: null, solution: null, impactValue: null, impactUnit: '%', impactLabel: 'mejora / ahorro / eficiencia', status: 'pending_validation' as const },
-      chile: { country: 'Chile', client: null, project: null, logo: null, challenge: null, solution: null, impactValue: null, impactUnit: '%', impactLabel: 'mejora / ahorro / eficiencia', status: 'pending_validation' as const },
+    peru: {
+      clusters: [
+        { id: 'finanzas', name: 'Finanzas', items: ['Carta Fianza', 'Solicitud de Facturación', 'LBs'] },
+        { id: 'people', name: 'People', items: ['Annual Go', 'Recompensa Total', 'Vacaciones'] },
+        { id: 'cross', name: 'Iniciativas Cross', items: ['Team Core', 'Fluxmind'] },
+        { id: 'bps', name: 'BPS', items: ['Reembolsos', 'Lectura de Facturas'] },
+      ],
+      collaborationUnits: ['BPS', 'AS', 'BSA'],
+      message: 'Capacidad madura de construcción de soluciones y automatización (principalmente local).',
+      adoption: { label: '', status: 'pending_validation' as const },
     },
-    adoption: {
-      peru: { label: 'Adopción AI', value: null, status: 'pending_validation' as const, supporting: 'Capacidad madura de construcción de soluciones y automatización (principalmente local).' },
-      chile: { label: 'Adopción AI', value: null, status: 'pending_validation' as const, supporting: 'Capacidad aplicada de AI + Automation por validar.' },
+    chile: {
+      clients: ['ANASAC', 'COPEC', 'RedSalud', 'Metrogas', 'Clínica Alemana'],
+      initiatives: [
+        { id: 'dispatcher', name: 'AXET.Dispatcher (ES)', detail: 'Evaluación en USA (CTS)' },
+        { id: 'migracion-ia', name: 'Migración con IA (DA)', detail: 'Cliente: AFP Capital' },
+        { id: 'propuestas', name: 'Propuestas (BPS)', detail: '3 propuestas: Banco Estado · 1 propuesta: GCR' },
+        { id: 'poc-agentica', name: 'PoC Agéntica (AS)', detail: 'CTS · Cintra Tools Services' },
+        { id: 'seguimientos', name: 'Seguimientos semanales', detail: 'BPS – IS – IS2' },
+      ],
+      maturityTracker: {
+        title: 'Catastro y madurez IA',
+        subtitle: 'AI Maturity Tracker',
+        servicesEvaluated: { value: 117, label: 'Servicios evaluados (proyectos)' },
+        peopleEvaluated: { value: 504, label: 'Personas evaluadas' },
+      },
+      message: 'Capacidad técnica en crecimiento, con participación en requerimientos de clientes y oportunidades de mayor escalamiento.',
+      adoption: { label: '', status: 'pending_validation' as const },
     },
-    closing: 'No solo desarrollamos capacidades. Las convertimos en soluciones.',
   },
   value: {
     headline: { line1: 'Dónde creamos valor', line2: 'y hacia dónde crecemos' },
@@ -170,18 +184,3 @@ export interface ValueClient {
   name: string
   logo: string
 }
-
-export interface EfficiencyCase {
-  country: 'Perú' | 'Chile'
-  client: string | null
-  project: string | null
-  logo: string | null
-  challenge: string | null
-  solution: string | null
-  impactValue: number | null
-  impactUnit: string
-  impactLabel: string
-  status: 'pending_validation'
-}
-
-export interface EfficiencyInitiative { id: string; initiative: string; challenge: string; solution: string; impact: string; kpi?: string }

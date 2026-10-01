@@ -29,6 +29,7 @@ export interface StudioGroup {
   totalHc: number
   percent: number
   subgroups?: StudioSubgroup[]
+  note?: string
 }
 
 export interface HighlightList {
@@ -44,9 +45,12 @@ export interface PartnerLogo {
 export interface StudioBlock {
   status: 'validated'
   totalTalent: number
+  specialistTotal?: number
   focusCount: number
   groups: StudioGroup[]
   highlights?: HighlightList
+  goals?: HighlightList
+  challenges?: HighlightList
 }
 
 export interface StudioBlockPending {

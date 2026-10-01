@@ -60,8 +60,34 @@ export const chileTalentFamilies = [
 ]
 
 export const chileStudios: Studios = {
-  status: 'pending_validation',
+  status: 'validated' as const,
+  totalTalent: 629,
+  specialistTotal: 514,
   focusCount: 3,
+  groups: [
+    { id: 'backend', name: 'Backend', totalHc: 235, percent: 46 },
+    { id: 'data', name: 'Data', totalHc: 77, percent: 15 },
+    { id: 'enterprise-platform', name: 'Enterprise Platform', totalHc: 82, percent: 16 },
+    { id: 'qa', name: 'QA', totalHc: 58, percent: 11 },
+    { id: 'otros', name: 'Otros', totalHc: 62, percent: 12, note: 'Frontend · Agile · Mainframe' },
+  ],
+  goals: {
+    title: 'GOALS',
+    items: [
+      'DT + GDN-e: integración temprana en oportunidades.',
+      'Minería: mayor extensión desde Oficina.',
+      'Banco Mundial: +30 HC | 75% extensión GDN-e.',
+      'Staff + SUBCO: cobertura de capacidades críticas.',
+    ],
+  },
+  challenges: {
+    title: 'DESAFÍOS',
+    items: [
+      'Minería: avanzar hacia 40% extensión en Q4.',
+      'DT Argentina: colaboración desde Chile.',
+      'AI Engineering: upskilling + reskilling.',
+    ],
+  },
 }
 
 export const chileHubs: Hub[] = [

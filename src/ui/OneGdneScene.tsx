@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { presentationData } from '../data/presentation'
 import { countryIdentity } from '../data/countryIdentity'
-import type { PartnerLogo, Studios } from '../data/types'
+import type { HighlightList, PartnerLogo, Studios } from '../data/types'
 import { scrollToChapter } from '../lib/storyNavigation'
 import { useExperienceStore, type OneGdneSection } from '../store/experienceStore'
 
@@ -104,9 +104,13 @@ function StudiosHighlights({ title, items }: { title: string; items: string[] })
   return <div className="og-highlights og-highlights--studios"><strong className="og-highlights__title">{title}</strong>{hasItems ? <ul>{items.slice(0, 3).map((item) => <li key={item}>{item}</li>)}</ul> : <div className="og-highlights__pending"><span>DATA POR CONFIRMAR</span><i aria-hidden="true" /><i aria-hidden="true" /><i aria-hidden="true" /></div>}</div>
 }
 
+function StudiosGoalsChallenges({ goals, challenges }: { goals: HighlightList; challenges: HighlightList }) {
+  return <div className="og-highlights og-highlights--studios og-studios-goals"><div><strong className="og-highlights__title">{goals.title}</strong><ul>{goals.items.map((item) => <li key={item}>{item}</li>)}</ul></div><div><strong className="og-highlights__title">{challenges.title}</strong><ul>{challenges.items.map((item) => <li key={item}>{item}</li>)}</ul></div></div>
+}
+
 function StudiosCard({ country, studios }: { country: 'peru' | 'chile'; studios: Studios }) {
   if (studios.status === 'pending_validation') return <article className={`og-studios-card og-studios-card--${country}`}><CountryLabel country={country} /><div className="og-studios-card__meta"><strong>{studios.focusCount} Studios</strong></div><p className="og-studios-card__pending-copy">Distribución de talento<br />DATA POR CONFIRMAR</p>{studios.highlights && <StudiosHighlights title={studios.highlights.title} items={studios.highlights.items} />}</article>
-  return <article className={`og-studios-card og-studios-card--${country}`}><CountryLabel country={country} /><div className="og-studios-card__meta"><strong>{studios.focusCount} Studios</strong><span>{studios.totalTalent.toLocaleString('es-PE')} talentos</span></div><ul>{studios.groups.map((group) => <li key={group.id}><div><span>{group.name}</span><strong>{group.totalHc}</strong></div>{group.subgroups && <small>{group.subgroups.map((sub) => `${sub.name} ${sub.hc}`).join(' · ')}</small>}</li>)}</ul>{studios.highlights && <StudiosHighlights title={studios.highlights.title} items={studios.highlights.items} />}</article>
+  return <article className={`og-studios-card og-studios-card--${country}`}><CountryLabel country={country} /><div className="og-studios-card__meta"><strong>{studios.focusCount} Studios</strong><span className="og-studios-card__meta-totals"><strong>{studios.totalTalent.toLocaleString('es-PE')} talentos</strong>{studios.specialistTotal !== undefined && <small>{studios.specialistTotal.toLocaleString('es-PE')} especialistas</small>}</span></div><ul>{studios.groups.map((group) => <li key={group.id}><div><span>{group.name}</span><strong>{group.totalHc}<small>{group.percent}%</small></strong></div>{group.note && <small className="og-studios-card__note">{group.note}</small>}{group.subgroups && <small>{group.subgroups.map((sub) => `${sub.name} ${sub.hc}`).join(' · ')}</small>}</li>)}</ul>{studios.goals && studios.challenges ? <StudiosGoalsChallenges goals={studios.goals} challenges={studios.challenges} /> : studios.highlights && <StudiosHighlights title={studios.highlights.title} items={studios.highlights.items} />}</article>
 }
 
 function StudiosView() {

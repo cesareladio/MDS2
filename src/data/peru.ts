@@ -80,6 +80,23 @@ export const peruStudios: Studios = {
       percent: 17,
     },
   ],
+  goals: {
+    title: 'GOALS',
+    items: [
+      'DT + GDN-e: apertura de colaboración para revisión de oportunidades.',
+      'Quality: +285 HC | 35% de extensión GDN-e mediante formación de talento del mercado.',
+      'Conocimiento: upskilling y reskilling para cobertura de demanda en Data, Backend y Frontend.',
+      'Capacidades: fortalecimiento del pipeline interno mediante reconversión y desarrollo de talento.',
+    ],
+  },
+  challenges: {
+    title: 'DESAFÍOS',
+    items: [
+      'DT Lima: Cobertura de necesidades MarTech.',
+      'Data: incrementar el % de aceptación de perfiles a través de programas de formación previa a la incorporación.',
+      'Conocimiento: mejorar la madurez y calidad de la información en las herramientas corporativas.',
+    ],
+  },
 }
 
 export const peruHubs: Hub[] = [
