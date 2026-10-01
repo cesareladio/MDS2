@@ -152,8 +152,13 @@ export const presentationData = {
       offshore: peruData.deliveryModel.offshore.percent,
       nearshore: peruData.deliveryModel.nearshore.percent,
       strength: 'Alta participación en proyectos del mercado local.',
-      clients: [] as ValueClient[],
-      clientsStatus: 'pending_validation' as const,
+      clients: [
+        { id: 'bcp', name: 'BCP', logo: '/clients/peru/bcp.png' },
+        { id: 'scotiabank', name: 'Scotiabank', logo: '/clients/peru/scotiabank.png' },
+        { id: 'interbank', name: 'Interbank', logo: '/clients/peru/interbank.png' },
+        { id: 'caser', name: 'Caser', logo: '/clients/peru/caser.png' },
+      ] as PeruClient[],
+      clientsStatus: 'validated' as const,
     },
     chile: {
       local: 51,
@@ -193,4 +198,10 @@ export interface ChileClient {
   name: string
   country: string
   logo: string | null
+}
+
+export interface PeruClient {
+  id: string
+  name: string
+  logo: string
 }

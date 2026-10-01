@@ -4571,13 +4571,17 @@ html {
   letter-spacing: .08em;
 }
 
-.value-panel__chile-clients {
+.value-panel__clients-section {
   margin: .8rem 0 0;
   padding-top: .6rem;
   border-top: 1px solid rgba(85, 211, 255, .18);
 }
 
-.value-panel__chile-clients-label {
+.value-panel__clients-section--peru {
+  border-top-color: rgba(255, 173, 66, .18);
+}
+
+.value-panel__clients-label {
   display: block;
   margin-bottom: .5rem;
   text-transform: uppercase;
@@ -4587,10 +4591,26 @@ html {
   font-weight: 600;
 }
 
+.value-panel__clients-section--peru .value-panel__clients-label {
+  color: #ffad42;
+}
+
 .value-client-row {
   display: flex;
   gap: .6rem;
   flex-wrap: wrap;
+}
+
+.value-client-row--peru {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  gap: .8rem;
+}
+
+@media (max-width: 1440px) {
+  .value-client-row--peru {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .value-client {
@@ -4600,6 +4620,11 @@ html {
   gap: .15rem;
   flex: 1;
   min-width: 5rem;
+}
+
+.value-client-row--peru .value-client {
+  align-items: center;
+  text-align: center;
 }
 
 .value-client__logo {
