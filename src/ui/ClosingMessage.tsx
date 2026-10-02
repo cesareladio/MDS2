@@ -3,11 +3,16 @@ import { BrandLogo } from './BrandLogo'
 export function ClosingMessage() {
   return (
     <div className="closing-message">
-      <p>Perú <span>×</span> Chile</p>
-      <h2>One team</h2>
-      <div>Two identities.<br />One capability.<br />One ambition.</div>
-      <small>Built to scale.<br />Ready for what’s next.</small>
-      <BrandLogo className="closing-message__logo" decorative />
+
+      <h2>ONE GDN-e</h2>
+      <div>
+        Una capacidad que construimos juntos.
+        <br /><br />
+        Diferentes historias.<br />
+        Fortalezas complementarias.<br />
+        Un mismo propósito para IBIOL.
+      </div>
+
     </div>
   )
 }

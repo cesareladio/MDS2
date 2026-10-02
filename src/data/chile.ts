@@ -1,4 +1,4 @@
-import type { Hub, TimelineEvent } from './types'
+import type { Hub, TimelineEvent, Studios } from './types'
 
 export const chileData = {
   gdneHC: 510,
@@ -12,7 +12,7 @@ export const chileData = {
       { name: 'Los Ríos', hc: 20, percentage: 4 },
       { name: 'Otros', hc: 60, percentage: 12 },
     ],
-  }, 
+  },
   subco: 99,
   peopleUnderManagement: 609,
   talent: {
@@ -34,7 +34,7 @@ export const chileData = {
   ],
   capabilitiesSummary: { hc: 393, percent: 77 },
   delivery: [
-    { name: 'Local', hc: 272, percent: 47 },
+    { name: 'Local', hc: 272, percent: 51 },
     { name: 'Nearshore', hc: 49, percent: 9 },
     { name: 'Offshore', hc: 252, percent: 44 },
   ],
@@ -47,8 +47,52 @@ export const chileData = {
   ],
 }
 
+export const chileTalentPyramid = {
+  contributor: { status: 'pending_validation' as const },
+  lead: { status: 'pending_validation' as const },
+  executive: { hc: 6, femalePercent: 33, status: 'current' as const },
+}
+
+export const chileTalentFamilies = [
+  { name: 'Engineering', hc: 227 + 47, percent: 44.5 + 9.2, status: 'current' as const },
+  { name: 'Quality Assurance', hc: 53, percent: 10.4, status: 'current' as const },
+  { name: 'Enterprise Solutions Functional / Others', hc: 66, percent: 12.9, status: 'current' as const },
+]
+
+export const chileStudios: Studios = {
+  status: 'validated' as const,
+  totalTalent: 514,
+  specialistTotal: 0,
+  focusCount: 3,
+  groups: [
+    { id: 'backend', name: 'Backend', totalHc: 235, percent: 46 },
+    { id: 'data', name: 'Data', totalHc: 77, percent: 15 },
+    { id: 'enterprise-platform', name: 'Enterprise Platform', totalHc: 82, percent: 16 },
+    { id: 'qa', name: 'QA', totalHc: 58, percent: 11 },
+    { id: 'otros', name: 'Otros', totalHc: 62, percent: 12, note: 'Frontend · Agile · Mainframe' },
+  ],
+  goals: {
+    title: 'GOALS',
+    items: [
+      'DT + GDN-e: integración temprana en oportunidades.',
+      'Minería: mayor extensión desde Oficina.',
+      'Banco Mundial: +30 HC | 75% extensión GDN-e.',
+      'Staff + SUBCO: cobertura de capacidades críticas.',
+    ],
+  },
+  challenges: {
+    title: 'DESAFÍOS',
+    items: [
+      'Minería: avanzar hacia 40% extensión en Q4.',
+      'DT Argentina: colaboración desde Chile.',
+      'AI Engineering: upskilling + reskilling.',
+    ],
+  },
+}
+
 export const chileHubs: Hub[] = [
   { id: 'temuco', name: 'Temuco', lat: -38.74, lon: -72.59, hc: 281, note: 'La Araucanía · principal concentración regional' },
+  { id: 'concepcion', name: 'Concepción', lat: -36.83, lon: -73.05, hc: 87, note: 'Biobío · segundo hub regional' },
 ]
 
 

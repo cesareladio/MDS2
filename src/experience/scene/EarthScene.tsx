@@ -7,20 +7,15 @@ import { Lighting } from './Lighting'
 import { PostProcessing } from './PostProcessing'
 import { Stars } from './Stars'
 import { WebGLDiagnostics } from './WebGLDiagnostics'
-import { GeoParticles } from '../geography/GeoParticles'
-import { GlobalJourney } from '../story/GlobalJourney'
-import { Complementarity } from '../story/Complementarity'
-import { CapabilityEngine } from '../story/CapabilityEngine'
-import { IbiolValueScene } from '../story/IbiolValueScene'
 
 export function EarthScene() {
   const phase   = useExperienceStore((state) => state.phase)
   const quality = useExperienceStore((state) => state.deviceQuality)
 
-  const showLatam  = ['latam', 'snapshot', 'explore'].includes(phase)
-  const showEngine = phase === 'engine'
-  const showIbiol  = phase === 'ibiol'
-  const showClose  = phase === 'closing'
+  const oneGdneSection = useExperienceStore((state) => state.selectedOneGdneSection)
+  const showCountryHighlight = ['chilePeru', 'oneGdne'].includes(phase)
+  const showHubs = phase === 'oneGdne' && oneGdneSection === 'territory'
+  const showClose = phase === 'closing'
 
   return (
     <div className="canvas-shell" aria-hidden="true">
@@ -36,13 +31,7 @@ export function EarthScene() {
           <WebGLDiagnostics />
           <Lighting />
           <Stars />
-          <EarthSystem showLatam={showLatam} showClose={showClose} />
-
-          {/* Story components — keep mounted during neighbouring phases, fade internally */}
-          <GlobalJourney active={phase === 'global'} />
-          <Complementarity active={phase === 'complementarity'} />
-          <CapabilityEngine active={showEngine} />
-          <IbiolValueScene active={showIbiol} />
+          <EarthSystem showCountryHighlight={showCountryHighlight} showHubs={showHubs} showClose={showClose} />
 
           <CameraRig />
           <PostProcessing />

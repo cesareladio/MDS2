@@ -3,14 +3,21 @@ import type { CountryId } from '../data/types'
 
 export type ExperiencePhase =
   | 'intro'
-  | 'global'
-  | 'latam'
-  | 'snapshot'
-  | 'explore'
-  | 'complementarity'
-  | 'engine'      // ← distinct 3D capability-engine phase (was merged with 'ibiol')
-  | 'ibiol'       // IBIOL proposition (network transforms)
+  | 'chilePeru'
+  | 'oneGdne'
+  | 'efficiency'
+  | 'value'
+  | 'challenges'
   | 'closing'
+
+export type OneGdneSection =
+  | 'overview'
+  | 'history'
+  | 'territory'
+  | 'talent'
+  | 'studios'
+  | 'capabilities'
+
 export type DeviceQuality = 'HIGH' | 'MEDIUM' | 'LOW'
 
 interface ExperienceState {
@@ -20,7 +27,7 @@ interface ExperienceState {
   selectedHub: string | null
   visitedCountries: CountryId[]
   explorationMode: boolean
-  selectedCapability: string | null
+  selectedOneGdneSection: OneGdneSection
   reducedMotion: boolean
   deviceQuality: DeviceQuality
   setPhase: (phase: ExperiencePhase) => void
@@ -28,7 +35,8 @@ interface ExperienceState {
   selectCountry: (country: CountryId | null) => void
   selectHub: (hub: string | null) => void
   setExplorationMode: (active: boolean) => void
-  selectCapability: (capability: string | null) => void
+  setSelectedOneGdneSection: (section: OneGdneSection) => void
+  resetOneGdneSection: () => void
   setReducedMotion: (active: boolean) => void
   setDeviceQuality: (quality: DeviceQuality) => void
 }
@@ -40,7 +48,7 @@ export const useExperienceStore = create<ExperienceState>((set) => ({
   selectedHub: null,
   visitedCountries: [],
   explorationMode: false,
-  selectedCapability: null,
+  selectedOneGdneSection: 'overview',
   reducedMotion: false,
   deviceQuality: 'HIGH',
   setPhase: (phase) => set({ phase }),
@@ -56,7 +64,8 @@ export const useExperienceStore = create<ExperienceState>((set) => ({
     })),
   selectHub: (selectedHub) => set({ selectedHub }),
   setExplorationMode: (explorationMode) => set({ explorationMode }),
-  selectCapability: (selectedCapability) => set({ selectedCapability }),
+  setSelectedOneGdneSection: (selectedOneGdneSection) => set({ selectedOneGdneSection }),
+  resetOneGdneSection: () => set({ selectedOneGdneSection: 'overview' }),
   setReducedMotion: (reducedMotion) => set({ reducedMotion }),
   setDeviceQuality: (deviceQuality) => set({ deviceQuality }),
 }))

@@ -25,13 +25,12 @@ function NetworkLine({ start, end, color }: { start: THREE.Vector3; end: THREE.V
 function NetworkTraveler({ positions, color }: { positions: THREE.Vector3[]; color: string }) {
   const particle = useRef<THREE.Mesh>(null)
   const reduced = useExperienceStore((state) => state.reducedMotion)
-  const phase = useExperienceStore((state) => state.phase)
   const path = useMemo(() => {
     if (positions.length < 2) return null
     return new THREE.CatmullRomCurve3(positions)
   }, [positions])
 
-  const visible = !reduced && phase !== 'explore'
+  const visible = !reduced
 
   useFrame(({ clock }) => {
     if (!particle.current || !path || !visible) return
