@@ -34,12 +34,14 @@ export function StoryDirector() {
   const setExploration = useExperienceStore((state) => state.setExplorationMode)
   const selectHub = useExperienceStore((state) => state.selectHub)
   const resetOneGdneSection = useExperienceStore((state) => state.resetOneGdneSection)
+  const resetEfficiencySection = useExperienceStore((state) => state.resetEfficiencySection)
 
   useEffect(() => {
     setExploration(false)
     selectHub(null)
     if (phase !== 'oneGdne') resetOneGdneSection()
-  }, [phase, resetOneGdneSection, selectHub, setExploration])
+    if (phase !== 'efficiency') resetEfficiencySection()
+  }, [phase, resetOneGdneSection, resetEfficiencySection, selectHub, setExploration])
 
   useLayoutEffect(() => {
     const story = document.querySelector<HTMLElement>('#story')

@@ -18,6 +18,14 @@ export type OneGdneSection =
   | 'studios'
   | 'capabilities'
 
+export type EfficiencySection =
+  | 'adoption'
+  | 'aiEvolution'
+  | 'initiatives'
+  | 'capabilities'
+  | 'upskilling'
+  | 'results'
+
 export type DeviceQuality = 'HIGH' | 'MEDIUM' | 'LOW'
 
 interface ExperienceState {
@@ -28,6 +36,7 @@ interface ExperienceState {
   visitedCountries: CountryId[]
   explorationMode: boolean
   selectedOneGdneSection: OneGdneSection
+  selectedEfficiencySection: EfficiencySection
   reducedMotion: boolean
   deviceQuality: DeviceQuality
   setPhase: (phase: ExperiencePhase) => void
@@ -37,6 +46,8 @@ interface ExperienceState {
   setExplorationMode: (active: boolean) => void
   setSelectedOneGdneSection: (section: OneGdneSection) => void
   resetOneGdneSection: () => void
+  setSelectedEfficiencySection: (section: EfficiencySection) => void
+  resetEfficiencySection: () => void
   setReducedMotion: (active: boolean) => void
   setDeviceQuality: (quality: DeviceQuality) => void
 }
@@ -49,6 +60,7 @@ export const useExperienceStore = create<ExperienceState>((set) => ({
   visitedCountries: [],
   explorationMode: false,
   selectedOneGdneSection: 'overview',
+  selectedEfficiencySection: 'adoption',
   reducedMotion: false,
   deviceQuality: 'HIGH',
   setPhase: (phase) => set({ phase }),
@@ -66,6 +78,8 @@ export const useExperienceStore = create<ExperienceState>((set) => ({
   setExplorationMode: (explorationMode) => set({ explorationMode }),
   setSelectedOneGdneSection: (selectedOneGdneSection) => set({ selectedOneGdneSection }),
   resetOneGdneSection: () => set({ selectedOneGdneSection: 'overview' }),
+  setSelectedEfficiencySection: (selectedEfficiencySection) => set({ selectedEfficiencySection }),
+  resetEfficiencySection: () => set({ selectedEfficiencySection: 'adoption' }),
   setReducedMotion: (reducedMotion) => set({ reducedMotion }),
   setDeviceQuality: (deviceQuality) => set({ deviceQuality }),
 }))

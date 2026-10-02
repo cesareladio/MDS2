@@ -20,6 +20,79 @@ import {
   peruStudios,
 } from './peru'
 
+/**
+ * CHILE · EFFICIENCY PLACEHOLDER
+ * ────────────────────────────────────────────────────────────────────────
+ * Centralized, single-source placeholder for the Chile side of the
+ * Scene 04 (Eficiencia / AI + Automation) comparative story.
+ *
+ * Chile does NOT yet have validated stakeholder data equivalent to Peru's
+ * for this chapter. Every value below is illustrative / demo content for
+ * layout purposes only (status: 'pending', isDemo: true) and MUST render
+ * with a visible "POR VALIDAR" marker — see EfficiencyFlow.tsx.
+ *
+ * When validated Chile data arrives: replace the values in this object
+ * only. No other file should contain Chile placeholder numbers.
+ */
+export const chileEfficiencyPlaceholder = {
+  status: 'pending' as const,
+  isDemo: true as const,
+  tag: 'CHILE · DATA POR VALIDAR',
+  adoption: {
+    onboarded: { value: 'XXXX', label: 'Usuarios onboarded' },
+    active: { value: 'XXXX', label: 'Usuarios activos' },
+    onboardingRate: { value: 'XX,X%', label: 'Onboarding' },
+    activeRate: { value: 'XX,X%', label: 'Active users' },
+  },
+  aiEvolution: {
+    stages: [
+      { id: 'etapa-01', label: 'ETAPA 01' },
+      { id: 'etapa-02', label: 'ETAPA 02' },
+      { id: 'etapa-03', label: 'ETAPA 03' },
+      { id: 'etapa-04', label: 'ETAPA 04' },
+    ],
+  },
+  initiatives: {
+    primary: { value: 'XX', label: 'Iniciativas' },
+    explorations: { value: 'XX', label: 'Exploraciones' },
+    fronts: [
+      { id: 'frente-01', label: 'FRENTE 01' },
+      { id: 'frente-02', label: 'FRENTE 02' },
+      { id: 'frente-03', label: 'FRENTE 03' },
+      { id: 'frente-04', label: 'FRENTE 04' },
+    ],
+  },
+  capabilities: {
+    aiBuildTeam: [
+      { code: 'AI-901', value: 'XX%' },
+      { code: 'GH-300', value: 'XX%' },
+      { code: 'AI-103', value: 'XX%' },
+    ],
+    groups: [
+      { category: 'Capacidades', value: 'POR VALIDAR' },
+      { category: 'IA Generativa', value: 'POR VALIDAR' },
+      { category: 'Frameworks', value: 'POR VALIDAR' },
+    ],
+  },
+  upskilling: {
+    items: [
+      { code: 'AI-901', percent: 'XX%', certified: 'XXX' },
+      { code: 'GH-300', percent: 'XX%', certified: 'XXX' },
+      { code: 'AI-103', percent: 'XX%', certified: 'XXX' },
+    ],
+    openAI: { certifications: 'XXX', fte: 'XXX' },
+  },
+  results: {
+    kpis: [
+      { id: 'rentabilidad', value: 'XX,X%', label: 'Rentabilidad' },
+      { id: 'cumplimiento', value: 'XX,X%', label: 'Cumplimiento YTD' },
+      { id: 'avance', value: 'XX,X%', label: 'Avance anual' },
+      { id: 'cierre', value: 'XX,X%', label: 'Cierre previsto' },
+    ],
+    economicLabel: 'DATA FINANCIERA',
+  },
+}
+
 export const presentationData = {
   peru: {
     identity: countryIdentity.peru, hc: peruData.hc, hubs: peruHubs, history: peruHistory,
@@ -117,29 +190,88 @@ export const presentationData = {
   efficiency: {
     concept: 'AI + Automation',
     peru: {
-      initiativeGroups: [
-        { id: 'ibiol', name: 'IBIOL', count: 4, countLabel: 'iniciativas implementadas', items: ['Talent Up', 'Team Core', 'Fluxmind', 'Nexus'] },
-        { id: 'finanzas', name: 'Finanzas', count: 8, countLabel: 'iniciativas en producción', period: 'FY26', items: ['Carta Fianza', 'Solicitud de Facturación', 'LBs'] },
-        { id: 'people', name: 'People', count: 10, countLabel: 'iniciativas en producción', period: 'FY26', items: ['Annual Go', 'Recompensa Total', 'Vacaciones'] },
-        { id: 'legal', name: 'Legal', count: 3, countLabel: 'iniciativas en producción', period: 'FY26', items: ['Contratación de proveedores', 'Propuestas comerciales', 'Regalos e invitaciones'] },
-      ] as PeruInitiativeGroup[],
-      bps: {
-        exploration: { count: 4, items: [{ name: 'Pacífico Seguros', value: 3 }, { name: 'Entel', value: 1 }] },
-        production: { count: 2, items: [{ name: 'Pacífico Seguros', value: 2 }] },
-      } as PeruBps,
-      collaborationUnits: ['BPS', 'AS', 'BSA'],
-      upskilling: [
-        { code: 'AI-901', percent: 49, certified: 194 },
-        { code: 'GH-300', percent: 62, certified: 520 },
-        { code: 'AI-103', percent: 9, certified: 30 },
-      ] as PeruUpskillingItem[],
-      aiBuildTeam: [
-        { percent: 100, codes: ['AI-901', 'GH-300'] },
-        { percent: 6, codes: ['AI-103', 'Q3'] },
-      ] as PeruAiBuildRow[],
-      openAI: { certifications: '1.303', fte: 492 } as PeruOpenAI,
+      adoption: {
+        onboarded: { value: 1353, percentOfPeru: 23.4, sourceTotal: 5774 },
+        active: { value: 1118, percentOfPeru: 24.7, sourceTotal: 4525 },
+        onboardingRate: { percent: 99.19, deltaPp: 2.51 },
+        activeRate: { percent: 81.96, deltaPp: 6.19 },
+        insight: 'GDN-e concentra cerca de una cuarta parte de la adopción nacional y supera el promedio Perú en actividad.',
+      } as PeruAdoption,
+      aiEvolution: {
+        stages: [
+          { id: 'inicio', label: 'INICIO: ACTIVOS AXET', items: ['Flows', 'Maia', 'Talk', 'Code', 'Plugin', 'Oasis'] },
+          { id: 'eficiencia', label: 'EFICIENCIA INTERNA', detail: 'Plugin acelera el trabajo del equipo' },
+          { id: 'productividad', label: 'PRODUCTIVIDAD TÉCNICA', detail: 'Mayor foco en Axet Code' },
+          { id: 'ecosistema', label: 'ECOSISTEMA AMPLIADO', items: ['ChatGPT', 'Codex', 'Axet Code', 'Copilot'], detail: 'según caso de uso' },
+        ],
+      } as AiEvolution,
+      initiatives: {
+        implementedOrProduction: 27,
+        activeExplorations: 4,
+        collaborationUnits: ['BPS', 'AS', 'BSA'],
+        groups: [
+          { id: 'ibiol', name: 'IBIOL / Cross', count: 4, countLabel: 'iniciativas implementadas', items: ['Talent Up', 'Team Core', 'Fluxmind', 'Nexus'] },
+          { id: 'finanzas', name: 'Finanzas', count: 8, countLabel: 'iniciativas en producción', period: 'FY26', items: ['Carta Fianza', 'Solicitud de Facturación', 'LBs'] },
+          { id: 'people', name: 'People', count: 10, countLabel: 'iniciativas en producción', period: 'FY26', items: ['Annual Go', 'Recompensa Total', 'Vacaciones'] },
+          { id: 'legal', name: 'Legal', count: 3, countLabel: 'iniciativas en producción', period: 'FY26', items: ['Contratación de proveedores', 'Propuestas comerciales', 'Regalos e invitaciones'] },
+        ] as PeruInitiativeGroup[],
+        bps: {
+          exploration: { count: 4, items: [{ name: 'Pacífico Seguros', value: 3 }, { name: 'Entel', value: 1 }] },
+          production: { count: 2, items: [{ name: 'Pacífico Seguros', value: 2 }] },
+        } as PeruBps,
+        conclusion: {
+          title: 'DE PERÚ PARA EL MUNDO',
+          levelLabel: 'Nivel IBIOL / País',
+          count: 4,
+          countLabel: 'iniciativas presentadas o implementadas',
+          items: ['Talent Up', 'Team Core', 'Fluxmind', 'Nexus'],
+        },
+      } as PeruInitiatives,
+      capabilities: {
+        aiBuildTeam: [
+          { code: 'AI-901', percent: 100 },
+          { code: 'GH-300', percent: 100 },
+          { code: 'AI-103', percent: 8 },
+        ] as PeruAiBuildTeamRow[],
+        supporting: [
+          { category: 'Avanzado', items: ['Axet', 'Power Automate'] },
+          { category: 'IA Generativa', items: ['OpenAI / ChatGPT', 'Gemini'] },
+          { category: 'Frameworks IA', items: ['LangChain', 'LangGraph'] },
+          { category: 'Datos', items: ['Relacionales intermedio / avanzado', 'No relacionales intermedio'] },
+          { category: 'Full Stack', items: ['React', 'Express', 'NestJS'] },
+        ],
+      } as PeruCapabilities,
+      upskilling: {
+        items: [
+          { code: 'AI-901', percent: 49, certified: 194 },
+          { code: 'GH-300', percent: 62, certified: 520 },
+          { code: 'AI-103', percent: 9, certified: 30 },
+        ] as PeruUpskillingItem[],
+        openAI: { certifications: '1.303', fte: 492 } as PeruOpenAI,
+        aiBuildTeamSummary: '100% AI-901 · 100% GH-300 · 8% AI-103',
+      } as PeruUpskilling,
+      results: {
+        kpis: [
+          { id: 'rentabilidad', value: '22,4%', label: 'Rentabilidad', detail: 'Abr–Sep 2026' },
+          { id: 'cumplimiento', value: '100,5%', label: 'Cumplimiento YTD', detail: 'vs presupuesto acumulado' },
+          { id: 'avance', value: '65,2%', label: 'Avance anual', detail: 'ingreso real Abr–Sep' },
+          { id: 'cierre', value: '127,4%', label: 'Cierre previsto', detail: 'proyección FY26' },
+        ],
+        budget: {
+          annualBudget: 'S/ 1.145.974',
+          annualProjectedRevenue: 'S/ 1.460.095,95',
+          overperformance: { value: 'S/ 314.121,95', percent: '+27,4%' },
+        },
+        detail: {
+          accumulatedBudget: 'S/ 743.475',
+          actualRevenue: 'S/ 746.948',
+          costs: 'S/ 579.312',
+          margin: 'S/ 167.636',
+          projection: 'S/ 713.147,95',
+        },
+      } as PeruResults,
       message: 'Capacidad madura de construcción de soluciones y automatización (principalmente local).',
-      adoption: { label: '', status: 'pending_validation' as const },
+      adoptionTag: { label: '', status: 'pending_validation' as const },
     },
     chile: {
       initiatives: [
@@ -158,6 +290,7 @@ export const presentationData = {
       message: 'Capacidad técnica en crecimiento, con participación en requerimientos de clientes y oportunidades de mayor escalamiento.',
       adoption: { label: '', status: 'pending_validation' as const },
     },
+    chilePlaceholder: chileEfficiencyPlaceholder,
   },
   value: {
     headline: { line1: 'Dónde creamos valor', line2: 'y hacia dónde crecemos' },
@@ -245,12 +378,89 @@ export interface PeruUpskillingItem {
   certified: number
 }
 
-export interface PeruAiBuildRow {
+export interface PeruAiBuildTeamRow {
+  code: string
   percent: number
-  codes: string[]
 }
 
 export interface PeruOpenAI {
   certifications: string
   fte: number
 }
+
+export interface PeruAdoption {
+  onboarded: { value: number; percentOfPeru: number; sourceTotal: number }
+  active: { value: number; percentOfPeru: number; sourceTotal: number }
+  onboardingRate: { percent: number; deltaPp: number }
+  activeRate: { percent: number; deltaPp: number }
+  insight: string
+}
+
+export interface AiEvolutionStage {
+  id: string
+  label: string
+  items?: string[]
+  detail?: string
+}
+
+export interface AiEvolution {
+  stages: AiEvolutionStage[]
+}
+
+export interface PeruInitiativesConclusion {
+  title: string
+  levelLabel: string
+  count: number
+  countLabel: string
+  items: string[]
+}
+
+export interface PeruInitiatives {
+  implementedOrProduction: number
+  activeExplorations: number
+  collaborationUnits: string[]
+  groups: PeruInitiativeGroup[]
+  bps: PeruBps
+  conclusion: PeruInitiativesConclusion
+}
+
+export interface PeruCapabilitySupportGroup {
+  category: string
+  items: string[]
+}
+
+export interface PeruCapabilities {
+  aiBuildTeam: PeruAiBuildTeamRow[]
+  supporting: PeruCapabilitySupportGroup[]
+}
+
+export interface PeruUpskilling {
+  items: PeruUpskillingItem[]
+  openAI: PeruOpenAI
+  aiBuildTeamSummary: string
+}
+
+export interface PeruResultKpi {
+  id: string
+  value: string
+  label: string
+  detail: string
+}
+
+export interface PeruResults {
+  kpis: PeruResultKpi[]
+  budget: {
+    annualBudget: string
+    annualProjectedRevenue: string
+    overperformance: { value: string; percent: string }
+  }
+  detail: {
+    accumulatedBudget: string
+    actualRevenue: string
+    costs: string
+    margin: string
+    projection: string
+  }
+}
+
+export type ChileEfficiencyPlaceholder = typeof chileEfficiencyPlaceholder
