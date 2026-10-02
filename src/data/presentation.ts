@@ -117,13 +117,27 @@ export const presentationData = {
   efficiency: {
     concept: 'AI + Automation',
     peru: {
-      clusters: [
-        { id: 'finanzas', name: 'Finanzas', items: ['Carta Fianza', 'Solicitud de Facturación', 'LBs'] },
-        { id: 'people', name: 'People', items: ['Annual Go', 'Recompensa Total', 'Vacaciones'] },
-        { id: 'cross', name: 'Iniciativas Cross', items: ['Team Core', 'Fluxmind'] },
-        { id: 'bps', name: 'BPS', items: ['Reembolsos', 'Lectura de Facturas'] },
-      ],
+      initiativeGroups: [
+        { id: 'ibiol', name: 'IBIOL', count: 4, countLabel: 'iniciativas implementadas', items: ['Talent Up', 'Team Core', 'Fluxmind', 'Nexus'] },
+        { id: 'finanzas', name: 'Finanzas', count: 8, countLabel: 'iniciativas en producción', period: 'FY26', items: ['Carta Fianza', 'Solicitud de Facturación', 'LBs'] },
+        { id: 'people', name: 'People', count: 10, countLabel: 'iniciativas en producción', period: 'FY26', items: ['Annual Go', 'Recompensa Total', 'Vacaciones'] },
+        { id: 'legal', name: 'Legal', count: 3, countLabel: 'iniciativas en producción', period: 'FY26', items: ['Contratación de proveedores', 'Propuestas comerciales', 'Regalos e invitaciones'] },
+      ] as PeruInitiativeGroup[],
+      bps: {
+        exploration: { count: 4, items: [{ name: 'Pacífico Seguros', value: 3 }, { name: 'Entel', value: 1 }] },
+        production: { count: 2, items: [{ name: 'Pacífico Seguros', value: 2 }] },
+      } as PeruBps,
       collaborationUnits: ['BPS', 'AS', 'BSA'],
+      upskilling: [
+        { code: 'AI-901', percent: 49, certified: 194 },
+        { code: 'GH-300', percent: 62, certified: 520 },
+        { code: 'AI-103', percent: 9, certified: 30 },
+      ] as PeruUpskillingItem[],
+      aiBuildTeam: [
+        { percent: 100, codes: ['AI-901', 'GH-300'] },
+        { percent: 6, codes: ['AI-103', 'Q3'] },
+      ] as PeruAiBuildRow[],
+      openAI: { certifications: '1.303', fte: 492 } as PeruOpenAI,
       message: 'Capacidad madura de construcción de soluciones y automatización (principalmente local).',
       adoption: { label: '', status: 'pending_validation' as const },
     },
@@ -204,4 +218,39 @@ export interface PeruClient {
   id: string
   name: string
   logo: string
+}
+
+export interface PeruInitiativeGroup {
+  id: string
+  name: string
+  count: number
+  countLabel: string
+  period?: string
+  items: string[]
+}
+
+export interface PeruBpsEntry {
+  name: string
+  value: number
+}
+
+export interface PeruBps {
+  exploration: { count: number; items: PeruBpsEntry[] }
+  production: { count: number; items: PeruBpsEntry[] }
+}
+
+export interface PeruUpskillingItem {
+  code: string
+  percent: number
+  certified: number
+}
+
+export interface PeruAiBuildRow {
+  percent: number
+  codes: string[]
+}
+
+export interface PeruOpenAI {
+  certifications: string
+  fte: number
 }
