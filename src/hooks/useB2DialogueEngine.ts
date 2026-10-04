@@ -57,16 +57,37 @@ export function useB2DialogueEngine() {
     return useAvatarStore.subscribe((s) => { b2StateRef.current = s.b2State })
   }, [])
 
-  // ── RETURN TO WAITING ──────────────────────────────────────────────────
+  // ── FINISH B2 RESPONSE (centralizado) ──────────────────────────────────
 
-  const returnToWaiting = useCallback(() => {
+  const finishB2Response = useCallback(() => {
+    // Limpiar timers
+    if (thinkingTimer.current) clearTimeout(thinkingTimer.current)
+    if (postTimer.current) clearTimeout(postTimer.current)
     executingRef.current = false
+
+    // No volver a idle si B2 está en transiciones de entrada/salida
+    const currentState = b2StateRef.current
+    if (currentState === 'entering' || currentState === 'hidden' || currentState === 'exiting') {
+      return
+    }
+
+    // Volver a idle + waiting
     setTranscript('')
     setMicState('off')
     setCurrentText('')
     setB2State('waiting')
     setPose('executiveIdle')
+
+    // Activar realmente el clip idle en el mixer (no solamente el state)
+    const api = (window as unknown as Record<string, Record<string, () => void>>).__B2?.returnToIdle
+    if (api) api()
   }, [setB2State, setCurrentText, setMicState, setPose, setTranscript])
+
+  // ── RETURN TO WAITING (deprecated — usar finishB2Response) ────────────
+
+  const returnToWaiting = useCallback(() => {
+    finishB2Response()
+  }, [finishB2Response])
 
   // ── PLAY AUDIO SEQUENCE ────────────────────────────────────────────────
 
@@ -78,7 +99,7 @@ export function useB2DialogueEngine() {
     if (idx >= parts.length) {
       if (postTimer.current) clearTimeout(postTimer.current)
       postTimer.current = setTimeout(() => {
-        returnToWaiting()
+        finishB2Response()
       }, POST_AUDIO_MS)
       return
     }
@@ -112,7 +133,7 @@ export function useB2DialogueEngine() {
         playAudioSequence(parts, idx + 1, intent)
       }, POST_AUDIO_MS)
     })
-  }, [playAudioFile, returnToWaiting, setPose, setDebugInfo])
+  }, [playAudioFile, finishB2Response, setPose, setDebugInfo])
 
   // ── EXECUTE INTENT ─────────────────────────────────────────────────────
 
@@ -120,7 +141,7 @@ export function useB2DialogueEngine() {
     const response = B2_RESPONSES[intent]
     if (!response) {
       if (IS_DEV) console.warn('[B2] No response for intent:', intent)
-      returnToWaiting()
+      finishB2Response()
       return
     }
 
@@ -143,7 +164,7 @@ export function useB2DialogueEngine() {
     }
 
     playAudioSequence(response.audios, 0, intent)
-  }, [playAudioSequence, returnToWaiting, setB2State, setDebugInfo])
+  }, [playAudioSequence, finishB2Response, setB2State, setDebugInfo])
 
   // ── PROCESS TRANSCRIPT ─────────────────────────────────────────────────
 
@@ -193,7 +214,7 @@ export function useB2DialogueEngine() {
     }
 
     if (!result.accepted) {
-      returnToWaiting()
+      finishB2Response()
       return
     }
 
@@ -206,7 +227,7 @@ export function useB2DialogueEngine() {
     thinkingTimer.current = setTimeout(() => {
       executeIntent(result.best.intent)
     }, THINKING_MS)
-  }, [isPlaying, executeIntent, returnToWaiting, setB2State, setPose, setMicState, setTranscript, setDebugInfo])
+  }, [isPlaying, executeIntent, finishB2Response, setB2State, setPose, setMicState, setTranscript, setDebugInfo])
 
   // ── SCENE CONTEXT ─────────────────────────────────────────────────────
 

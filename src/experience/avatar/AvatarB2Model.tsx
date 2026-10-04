@@ -130,6 +130,17 @@ export function AvatarB2Model() {
     }
   }
 
+  // ── GET ACTIVE CLIP NAME (para debug) ──────────────────────────────────────
+
+  function getActiveClipName(): ClipName | null {
+    const active = clipActiveRef.current
+    if (!active) return null
+    for (const [name, clip] of Object.entries(clipsRef.current)) {
+      if (clip && active.getClip() === clip) return name as ClipName
+    }
+    return null
+  }
+
   // ── FACING (section 5-9) ──────────────────────────────────────────────────
   // Sólo facingGroup.rotation.y — AnimationMixer sigue siendo único owner del skeleton.
 
@@ -352,12 +363,22 @@ export function AvatarB2Model() {
         show: showB2,
         setFacing: setFacingTarget,
         replayEntrance: () => { hideB2(); setTimeout(() => enterB2(), 80) },
+        returnToIdle: () => go('idle', false),
+        getActiveClipName: getActiveClipName,
         // introduce() is wired from useB2IntroBootstrap via __B2 merge
       }
         ; (window as unknown as Record<string, unknown>).__B2 = Object.assign(
           (window as unknown as Record<string, unknown>).__B2 ?? {}, api,
         )
     }
+    // PROD: siempre exportar returnToIdle y getActiveClipName para dialogue engine
+    const api = {
+      returnToIdle: () => go('idle', false),
+      getActiveClipName: getActiveClipName,
+    }
+    ; (window as unknown as Record<string, unknown>).__B2 = Object.assign(
+      (window as unknown as Record<string, unknown>).__B2 ?? {}, api,
+    )
 
     // AUTO-ENTRANCE: iniciar la caminata automáticamente al cargar.
     // El subscribe captura re-entradas manuales posteriores (replayEntrance / enter()).

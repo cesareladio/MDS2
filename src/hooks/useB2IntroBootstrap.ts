@@ -129,6 +129,9 @@ export function useB2IntroBootstrap() {
         playAudioFile('s01b', () => {
           useAvatarStore.getState().setB2State('waiting')
           useAvatarStore.getState().setPose('executiveIdle')
+          // Activar clip idle en mixer
+          const api = (window as unknown as Record<string, Record<string, () => void>>).__B2?.returnToIdle
+          if (api) api()
           runningRef.current = false
           if (IS_DEV) console.log('[B2] Intro sequence complete → waiting')
         })

@@ -10,6 +10,7 @@ const IS_DEV = import.meta.env.DEV
 
 export function B2DebugOverlay() {
   const [visible, setVisible] = useState(IS_DEV)
+  const [activeClip, setActiveClip] = useState<string | null>(null)
 
   const b2State         = useAvatarStore((s) => s.b2State)
   const pose            = useAvatarStore((s) => s.pose)
@@ -29,6 +30,16 @@ export function B2DebugOverlay() {
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [])
+
+  // Actualizar clip activo cada frame
+  useEffect(() => {
+    if (!visible) return
+    const interval = setInterval(() => {
+      const api = (window as unknown as Record<string, Record<string, () => string | null>>).__B2?.getActiveClipName
+      if (api) setActiveClip(api())
+    }, 100)
+    return () => clearInterval(interval)
+  }, [visible])
 
   if (!IS_DEV || !visible) return null
 
@@ -59,7 +70,7 @@ export function B2DebugOverlay() {
       {/* Estado */}
       <div>FRAME: <b style={{ color: frameOk ? '#0f0' : '#f44' }}>{frameCount}</b>  MODEL VISIBLE: <b style={{ color: '#8ef' }}>check console</b></div>
       <div>STATE: <b style={{ color: b2State === 'entering' ? '#fa0' : b2State === 'speaking' ? '#afa' : b2State === 'listening' ? '#aaf' : b2State === 'hidden' ? '#f44' : '#0f0' }}>{b2State}</b>  MIC: <b style={{ color: micState === 'on' ? '#0f0' : '#888' }}>{micState}</b></div>
-      <div>POSE: <b style={{ color: '#8ef' }}>{pose}</b>  ENTERED: <b style={{ color: hasEntered ? '#0f0' : '#fa0' }}>{hasEntered ? 'yes' : 'no'}</b></div>
+      <div>POSE: <b style={{ color: '#8ef' }}>{pose}</b>  CLIP: <b style={{ color: activeClip === 'idle' ? '#0f0' : '#fa0' }}>{activeClip ?? '-'}</b>  ENTERED: <b style={{ color: hasEntered ? '#0f0' : '#fa0' }}>{hasEntered ? 'yes' : 'no'}</b></div>
       <div style={{ fontSize: '9px', color: '#666' }}>
         INTRO: {hasEntered ? 'done' : b2State === 'entering' ? 'running…' : 'armed — B key / __B2.introduce()'}
       </div>
