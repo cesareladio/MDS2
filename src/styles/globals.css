@@ -5058,11 +5058,16 @@ html {
   }
 }
 
+/* Ocultar stage de B2 durante page reload — evita frame congelado en Chrome */
+.b2-page-unloading .b2-widget__stage {
+  visibility: hidden !important;
+}
+
 .b2-widget {
   position: fixed;
   z-index: 90;
   right: 0;
-  bottom: 0;
+  bottom: 60px;
   display: flex;
   pointer-events: none;
 }
@@ -5072,7 +5077,7 @@ html {
    (b2-avatar6/public/b2-widget.js, sección 23 del plan de paridad). */
 .b2-widget__stage {
   position: relative;
-  width: min(360px, 40vw);
+  width: min(250px, 30vw);
   aspect-ratio: 5 / 6;
   background: transparent;
   border: 0;
@@ -5080,6 +5085,13 @@ html {
   pointer-events: none;
   transition: filter .25s ease;
   transform-origin: bottom right;
+  /* Oculto por defecto — reveal cuando b2State != 'hidden' (clase b2-stage-visible) */
+  visibility: hidden;
+}
+
+/* Revelar stage únicamente cuando el engine ha iniciado la entrada */
+.b2-widget__stage.b2-stage-visible {
+  visibility: visible;
 }
 
 .b2-widget__stage.is-clickable {

@@ -5,13 +5,13 @@ import { AvatarB2Placeholder } from './AvatarB2Placeholder'
 
 /**
  * AvatarB2 — punto único de entrada al avatar 3D.
- * Encapsula la resiliencia: sin avatar.glb (o con error) se degrada al
- * placeholder low-poly sin romper el widget ni el resto de la experiencia.
+ * El Suspense fallback es null: no mostrar placeholder mientras carga.
+ * El placeholder low-poly solo aparece si el GLB falla (ErrorBoundary).
  */
 export function AvatarB2() {
   return (
     <AvatarErrorBoundary fallback={<AvatarB2Placeholder />}>
-      <Suspense fallback={<AvatarB2Placeholder />}>
+      <Suspense fallback={null}>
         <AvatarB2Model />
       </Suspense>
     </AvatarErrorBoundary>

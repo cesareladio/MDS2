@@ -25,7 +25,7 @@ export const B2_RESPONSES: Record<B2Intent, B2Response> = {
   INTRODUCE_B2: {
     intent: 'INTRODUCE_B2',
     audios: [
-      { id: 'hola', pose: 'wave' },
+
       { id: 's01b', pose: 'talking' },
     ],
   },

@@ -10,7 +10,7 @@
  *   Canvas (R3F)        → pointer-events: none  (sin orbit/controls)
  */
 
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import { AvatarB2Scene } from '../experience/avatar/AvatarB2Scene'
 import { useB2Controller } from '../hooks/useB2Controller'
 import { useAvatarStore } from '../store/avatarStore'
@@ -25,6 +25,24 @@ export function B2Widget() {
   const isClickable = b2State === 'waiting' || b2State === 'listening'
   const isSpeaking  = b2State === 'speaking'
   const isListening = b2State === 'listening'
+  // Stage visible en cuanto el engine inicia la entrada (b2State != 'hidden')
+  const isStageVisible = b2State !== 'hidden'
+
+  // Ocultar stage de B2 sincrónicamente durante page reload/navigation.
+  // Evita que Chrome conserve un frame congelado de B2 visible al recargar.
+  // NO llama hideB2() — no modifica state, mixer ni entrada.
+  useEffect(() => {
+    const hide = () => document.documentElement.classList.add('b2-page-unloading')
+    const show = () => document.documentElement.classList.remove('b2-page-unloading')
+    window.addEventListener('beforeunload', hide)
+    window.addEventListener('pagehide',     hide)
+    window.addEventListener('pageshow',     show)
+    return () => {
+      window.removeEventListener('beforeunload', hide)
+      window.removeEventListener('pagehide',     hide)
+      window.removeEventListener('pageshow',     show)
+    }
+  }, [])
 
   return (
     <>
@@ -34,7 +52,11 @@ export function B2Widget() {
         isListening ? 'is-listening' : '',
       ].filter(Boolean).join(' ')}>
         <div
-          className={`b2-widget__stage${isClickable ? ' is-clickable' : ''}`}
+          className={[
+            'b2-widget__stage',
+            isClickable    ? 'is-clickable' : '',
+            isStageVisible ? 'b2-stage-visible' : '',
+          ].filter(Boolean).join(' ')}
           onClick={handleAvatarClick}
           role="button"
           aria-label={isListening ? 'B2 escuchando — click para cancelar' : 'Activar B2'}

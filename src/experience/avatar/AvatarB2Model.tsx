@@ -29,6 +29,12 @@ const IS_DEV = import.meta.env.DEV
 // Velocidad de damping del facingGroup hacia target (en rad/s aprox)
 const FACING_DAMP = 8.0  // tau ≈ 125ms → frontal en ~350ms
 
+// Orientación de presentación: B2 mira ligeramente hacia el centro/izquierda.
+// Positivo = gira hacia la izquierda (CCW mirando desde arriba) = mira hacia el
+// contenido cuando B2 está posicionada a la derecha de la slide.
+// Ajustar el signo si visualmente gira al lado incorrecto.
+const PRESENTATION_FACING_YAW = THREE.MathUtils.degToRad(-12)
+
 type EntPhase = 'walk' | 'turn'
 interface EntranceRuntime {
   t0: number
@@ -39,61 +45,61 @@ interface EntranceRuntime {
   t1?: number
 }
 
-const CAM_TARGET   = { x: 0, y: 0.82, z: 0 }
+const CAM_TARGET = { x: 0, y: 0.82, z: 0 }
 const CAM_DISTANCE = 3.5
-const CAM_FOV      = 30
+const CAM_FOV = 30
 
 export function AvatarB2Model() {
   const { scene: model } = useGLTF(AVATAR_URL)
   const fbxResults = useLoader(FBXLoader, CLIP_NAMES.map((n) => CLIP_URLS[n]))
 
-  const setFrame            = useAvatarStore((s) => s.setFrame)
-  const setFrameCount       = useAvatarStore((s) => s.setFrameCount)
+  const setFrame = useAvatarStore((s) => s.setFrame)
+  const setFrameCount = useAvatarStore((s) => s.setFrameCount)
   const setHasAvatarEntered = useAvatarStore((s) => s.setHasAvatarEntered)
 
   const setupDoneRef = useRef(false)
-  const skinnedRef   = useRef<THREE.SkinnedMesh | null>(null)
-  const frameRef     = useRef(0)
+  const skinnedRef = useRef<THREE.SkinnedMesh | null>(null)
+  const frameRef = useRef(0)
 
   // facingGroup: controla orientación GLOBAL (section 5-8)
   // avatarGroup: posición durante entrance
   const facingGroupRef = useRef<THREE.Group>(null)
   const avatarGroupRef = useRef<THREE.Group>(null)
-  const basePosRef     = useRef(new THREE.Vector3())
+  const basePosRef = useRef(new THREE.Vector3())
 
   // facing damping
-  const facingYawRef    = useRef(0)   // current
+  const facingYawRef = useRef(0)   // current
   const facingTargetRef = useRef(0)   // target (siempre 0 post-entrance)
 
   // ── Motor de clips ────────────────────────────────────────────────────────
-  const mixerRef      = useRef<THREE.AnimationMixer | null>(null)
-  const clipsRef      = useRef<Partial<Record<ClipName, THREE.AnimationClip>>>({})
+  const mixerRef = useRef<THREE.AnimationMixer | null>(null)
+  const clipsRef = useRef<Partial<Record<ClipName, THREE.AnimationClip>>>({})
   const clipActiveRef = useRef<THREE.AnimationAction | null>(null)
-  const clipModeRef   = useRef(false)
-  const onceARef      = useRef<THREE.AnimationAction | null>(null)
-  const boneMapRef    = useRef<Record<string, THREE.Bone>>({})
+  const clipModeRef = useRef(false)
+  const onceARef = useRef<THREE.AnimationAction | null>(null)
+  const boneMapRef = useRef<Record<string, THREE.Bone>>({})
 
   // ── Entrance ─────────────────────────────────────────────────────────────
-  const entRef     = useRef<EntranceRuntime | null>(null)
+  const entRef = useRef<EntranceRuntime | null>(null)
   const enteredRef = useRef(false)
 
   // ── Fallback procedural ───────────────────────────────────────────────────
-  const engineRef        = useRef(createAvatarPoseEngine())
-  const poseNameRef      = useRef<B2Pose | null>(null)
+  const engineRef = useRef(createAvatarPoseEngine())
+  const poseNameRef = useRef<B2Pose | null>(null)
   const poseStartedAtRef = useRef(0)
-  const energyRef        = useRef(0)
-  const directPoseRef    = useRef<B2Pose | null>(null)
+  const energyRef = useRef(0)
+  const directPoseRef = useRef<B2Pose | null>(null)
 
   // ── GO ────────────────────────────────────────────────────────────────────
 
   function go(name: ClipName, once: boolean): THREE.AnimationAction | null {
-    const clip  = clipsRef.current[name]
+    const clip = clipsRef.current[name]
     const mixer = mixerRef.current
     if (!clip || !mixer) return null
     if (entRef.current && entRef.current.phase === 'walk' && name !== ENTRANCE_CLIP) return null
 
     const action = mixer.clipAction(clip)
-    const prev   = clipActiveRef.current
+    const prev = clipActiveRef.current
     if (prev === action && !once) return action
 
     action.reset()
@@ -157,10 +163,20 @@ export function AvatarB2Model() {
     facingTargetRef.current = yaw0
     go(ENTRANCE_CLIP, false)
     model.visible = true
+
+    if (IS_DEV) {
+      console.group('[B2 FIRST REVEAL]')
+      console.log('state', useAvatarStore.getState().b2State)
+      console.log('clip', ENTRANCE_CLIP)
+      console.log('model.visible', model.visible)
+      console.log('position', ag.position.toArray().map((v) => +v.toFixed(3)))
+      console.log('facingYaw', +(yaw0 * 180 / Math.PI).toFixed(1) + '°')
+      console.groupEnd()
+    }
   }
 
   function stepEnt(t: number): void {
-    const e  = entRef.current
+    const e = entRef.current
     const ag = avatarGroupRef.current
     if (!e || !ag) return
 
@@ -177,8 +193,8 @@ export function AvatarB2Model() {
         e.phase = 'turn'
         e.t1 = t
         go('idle', false)
-        // target: frontal (0)
-        facingTargetRef.current = 0
+        // target: orientación de presentación (hacia el centro)
+        facingTargetRef.current = PRESENTATION_FACING_YAW
       }
       return
     }
@@ -187,8 +203,8 @@ export function AvatarB2Model() {
     const k = Math.min(1, (t - (e.t1 ?? t)) / ENTRANCE_CONFIG.turnMs)
     if (k >= 1) {
       ag.position.copy(basePosRef.current)
-      facingYawRef.current   = 0
-      facingTargetRef.current = 0
+      facingYawRef.current = PRESENTATION_FACING_YAW
+      facingTargetRef.current = PRESENTATION_FACING_YAW
       entRef.current = null
       useAvatarStore.getState().setB2State('waiting')
       setHasAvatarEntered(true)
@@ -203,8 +219,8 @@ export function AvatarB2Model() {
     enteredRef.current = true
     const ag = avatarGroupRef.current
     if (ag) ag.position.copy(basePosRef.current)
-    facingYawRef.current    = 0
-    facingTargetRef.current = 0
+    facingYawRef.current = PRESENTATION_FACING_YAW
+    facingTargetRef.current = PRESENTATION_FACING_YAW
     model.visible = true
     go('idle', false)
     useAvatarStore.getState().setB2State('waiting')
@@ -289,8 +305,8 @@ export function AvatarB2Model() {
     mixer.addEventListener('finished', (e) => {
       if (e.action !== onceARef.current) return
       onceARef.current = null
-      // Reset facing to frontal after any one-shot (section 9)
-      setFacingTarget(0)
+      // Reset facing a orientación de presentación tras one-shot (sección 5)
+      setFacingTarget(PRESENTATION_FACING_YAW)
       if (clipModeRef.current) {
         const speaking = useAvatarStore.getState().b2State === 'speaking'
         go(speaking ? 'talking' : 'idle', false)
@@ -302,7 +318,7 @@ export function AvatarB2Model() {
 
     let matched = 0
     CLIP_NAMES.forEach((name, i) => {
-      const fbx  = fbxResults[i]
+      const fbx = fbxResults[i]
       const clip = fbx?.animations?.[0]
       if (!clip) {
         if (IS_DEV) console.warn('[B2] FBX sin animations[0]:', CLIP_URLS[name])
@@ -325,22 +341,22 @@ export function AvatarB2Model() {
     model.visible = false
     useAvatarStore.getState().setHasAvatarEntered(false)
 
-    ;(window as unknown as Record<string, unknown>).__B2RequestPose =
-      (pose: string) => { directPoseRef.current = pose as B2Pose; gesture(pose as B2Pose) }
+      ; (window as unknown as Record<string, unknown>).__B2RequestPose =
+        (pose: string) => { directPoseRef.current = pose as B2Pose; gesture(pose as B2Pose) }
 
     if (IS_DEV) {
       const api = {
-        playClip:       (name: string) => go(name as ClipName, !LOOP_CLIPS.has(name as ClipName)),
-        enter:          enterB2,
-        hide:           (opts?: { animated?: boolean }) => hideB2(opts),
-        show:           showB2,
-        setFacing:      setFacingTarget,
+        playClip: (name: string) => go(name as ClipName, !LOOP_CLIPS.has(name as ClipName)),
+        enter: enterB2,
+        hide: (opts?: { animated?: boolean }) => hideB2(opts),
+        show: showB2,
+        setFacing: setFacingTarget,
         replayEntrance: () => { hideB2(); setTimeout(() => enterB2(), 80) },
         // introduce() is wired from useB2IntroBootstrap via __B2 merge
       }
-      ;(window as unknown as Record<string, unknown>).__B2 = Object.assign(
-        (window as unknown as Record<string, unknown>).__B2 ?? {}, api,
-      )
+        ; (window as unknown as Record<string, unknown>).__B2 = Object.assign(
+          (window as unknown as Record<string, unknown>).__B2 ?? {}, api,
+        )
     }
 
     // AUTO-ENTRANCE: iniciar la caminata automáticamente al cargar.
@@ -356,7 +372,7 @@ export function AvatarB2Model() {
     enterWalk()
 
     return unsub
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [model, fbxResults])
 
   // ── TECLADO DEV ──────────────────────────────────────────────────────────
@@ -375,7 +391,7 @@ export function AvatarB2Model() {
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // ── FRAME LOOP ────────────────────────────────────────────────────────────
@@ -384,7 +400,7 @@ export function AvatarB2Model() {
     frameRef.current++
     if (frameRef.current % 20 === 0) setFrameCount(frameRef.current)
 
-    const now       = state.clock.elapsedTime
+    const now = state.clock.elapsedTime
     const safeDelta = Math.min(delta, 0.05)
 
     stepEnt(performance.now())
@@ -414,15 +430,15 @@ export function AvatarB2Model() {
     const engine = engineRef.current
     if (!engine.ready) return
 
-    const b2State   = useAvatarStore.getState().b2State
+    const b2State = useAvatarStore.getState().b2State
     const storePose = useAvatarStore.getState().pose
-    const direct    = directPoseRef.current
-    const resolved  = direct ?? storePose
+    const direct = directPoseRef.current
+    const resolved = direct ?? storePose
 
     if (b2State !== 'speaking' && b2State !== 'thinking') directPoseRef.current = null
 
     if (resolved !== poseNameRef.current) {
-      poseNameRef.current      = resolved
+      poseNameRef.current = resolved
       poseStartedAtRef.current = now
     }
 
