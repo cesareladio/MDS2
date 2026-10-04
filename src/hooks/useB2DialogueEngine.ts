@@ -89,6 +89,50 @@ export function useB2DialogueEngine() {
     finishB2Response()
   }, [finishB2Response])
 
+  // ── HANDLE NO MATCH (fallback para transcripts no reconocidos) ──────────
+
+  const handleNoMatch = useCallback((transcript: string) => {
+    // Solo reproducir fallback si hay contenido (no silencio)
+    if (!transcript || !transcript.trim()) {
+      finishB2Response()
+      return
+    }
+
+    executingRef.current = true
+    lastExecutedAtRef.current = Date.now()
+
+    setB2State('speaking')
+    setMicState('off')
+
+    if (IS_DEV) {
+      setDebugInfo({
+        state: 'speaking',
+        turn: -1,
+        mic: 'off',
+        transcript: '',
+        match: { label: 'NO_MATCH', confidence: 0 },
+        audioId: 'no_entendi',
+        pose: 'talking',
+      })
+    }
+
+    // Solicitar pose talking
+    const reqPose = (window as unknown as Record<string, (p: string) => void>).__B2RequestPose
+    if (reqPose) {
+      reqPose('talking')
+    } else {
+      setPose('talking')
+    }
+
+    // Reproducir audio fallback
+    playAudioFile('no_entendi', () => {
+      if (postTimer.current) clearTimeout(postTimer.current)
+      postTimer.current = setTimeout(() => {
+        finishB2Response()
+      }, POST_AUDIO_MS)
+    })
+  }, [playAudioFile, finishB2Response, setB2State, setMicState, setPose, setDebugInfo])
+
   // ── PLAY AUDIO SEQUENCE ────────────────────────────────────────────────
 
   const playAudioSequence = useCallback((
@@ -214,7 +258,7 @@ export function useB2DialogueEngine() {
     }
 
     if (!result.accepted) {
-      finishB2Response()
+      handleNoMatch(transcript)
       return
     }
 
@@ -227,7 +271,7 @@ export function useB2DialogueEngine() {
     thinkingTimer.current = setTimeout(() => {
       executeIntent(result.best.intent)
     }, THINKING_MS)
-  }, [isPlaying, executeIntent, finishB2Response, setB2State, setPose, setMicState, setTranscript, setDebugInfo])
+  }, [isPlaying, executeIntent, handleNoMatch, setB2State, setPose, setMicState, setTranscript, setDebugInfo])
 
   // ── SCENE CONTEXT ─────────────────────────────────────────────────────
 
