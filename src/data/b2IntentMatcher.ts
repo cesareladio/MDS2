@@ -96,6 +96,8 @@ const STEM_MAP: [RegExp, string][] = [
   [/\binvit(ad|amos|ar|a|o|ando)\b/g,                             'invit'],
   [/\bconoc(en|er|es|e|amos)\b/g,                                 'conoc'],
   [/\bgracias\b/g,                                                 'graci'],
+  [/\bagradezco\b/g,                                               'agrade'],
+  [/\bagradec(e|es|emos|ido|iendo)?\b/g,                           'agrade'],
 ]
 
 export function stemText(normalized: string): string {
@@ -115,7 +117,7 @@ const STOP = new Set([
 ])
 
 function tokenize(s: string): Set<string> {
-  return new Set(s.split(/\s+/).filter((w) => w.length > 2 && !STOP.has(w)))
+  return new Set(s.split(/\s+/).filter((w) => (w.length > 2 || w === 'b2') && !STOP.has(w)))
 }
 
 function jaccard(a: Set<string>, b: Set<string>): number {
@@ -140,6 +142,13 @@ interface IntentDef {
   concepts: string[][]
   /** Tokens de alta especificidad (ponderan fuerte en anchorScore) */
   anchors: string[]
+  /**
+   * Expresiones multi-palabra controladas (no tokens sueltos) que, si están
+   * presentes literalmente en el transcript normalizado, elevan anchorScore
+   * al máximo. Evita falsos positivos de palabras aisladas (p.ej. "toca")
+   * exigiendo la frase completa con límites de palabra.
+   */
+  phraseAnchors?: string[]
   /** Intents que dan context bonus cuando son previousIntent */
   contextFrom?: B2Intent[]
   /**
@@ -190,14 +199,23 @@ const DEFS: IntentDef[] = [
       'b2 saluda a todos',
       'saluda a los ejecutivos',
       'presenta b2',
+      'vamos contigo b2',
+      'tu turno b2',
+      'es tu turno',
+      'puedes comenzar',
+      'ahora tu',
+      'b2 comienza',
+      'empieza tu b2',
     ],
     concepts: [
       ['present', 'salud', 'conoc', 'invit'],
       ['equip', 'ejecutiv', 'ejecutivo', 'equipo', 'todos', 'gente', 'team'],
       ['b2'],
       ['refuerz', 'refuerzo', 'refuerzos'],
+      ['turno', 'comienza', 'comenzar'],
     ],
-    anchors: ['present', 'salud', 'b2', 'equip', 'ejecutiv', 'refuerz', 'invit'],
+    anchors: ['present', 'salud', 'b2', 'equip', 'ejecutiv', 'refuerz', 'invit', 'turno'],
+    phraseAnchors: ['te toca'],
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -220,13 +238,16 @@ const DEFS: IntentDef[] = [
       'que quieres decir con eso',
       'por que cute',
       'que quieres decir con cute',
+      'explicame eso',
+      'aclarame eso',
     ],
     concepts: [
       ['refier', 'decir', 'signific', 'quisist'],
       ['explica', 'explicate', 'explicar'],
       ['cute'],
+      ['aclara', 'entendi'],
     ],
-    anchors: ['refier', 'explica', 'cute', 'signific', 'quisist'],
+    anchors: ['refier', 'explica', 'cute', 'signific', 'quisist', 'aclara'],
     contextFrom: ['INTRODUCE_B2'],
   },
 
@@ -247,10 +268,15 @@ const DEFS: IntentDef[] = [
       'eso explica que seas digital',
       'claramente eres digital',
       'tipico de alguien digital',
+      'ahora entiendo que eres digital',
+      'con eso ya quedo claro',
+      'eso lo confirma',
+      'no hay duda de que eres digital',
+      'ya veo que si eres digital',
     ],
     concepts: [
       ['digital'],
-      ['confirm', 'claro', 'veo', 'explica', 'tipico'],
+      ['confirm', 'claro', 'veo', 'explica', 'tipico', 'duda', 'entiendo'],
     ],
     anchors: ['digital', 'confirm'],
     contextFrom: ['INTRODUCE_B2', 'ASK_CUTE'],
@@ -276,6 +302,9 @@ const DEFS: IntentDef[] = [
       'cuéntame cual es el problem',
       'y ahora que paso',
       'cuéntame que sucede',
+      'cual es tu dilem',
+      'que dilem',
+      'a ver que paso',
     ],
     concepts: [
       ['dilem', 'problem'],
@@ -305,13 +334,16 @@ const DEFS: IntentDef[] = [
       'tranquila con eso',
       'no generemos problem',
       'no con el pisco',
+      'evitemos problem',
+      'mejor no hablemos de eso',
     ],
     concepts: [
       ['conflict', 'discut', 'pele'],
       ['pisco', 'tranquil', 'quieto', 'tema'],
       ['mejor', 'cambiem'],
+      ['evitemos', 'hablemos'],
     ],
-    anchors: ['conflict', 'discut', 'pisco', 'pele'],
+    anchors: ['conflict', 'discut', 'pisco', 'pele', 'evitemos'],
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -333,6 +365,8 @@ const DEFS: IntentDef[] = [
       'parece bien',
       'me parece correcto',
       'asi esta mejor',
+      'eso esta mejor',
+      'perfecto entonces',
     ],
     concepts: [
       ['sabia', 'buena', 'buen', 'correct', 'acuerd'],
@@ -365,6 +399,10 @@ const DEFS: IntentDef[] = [
       'trabajamos juntos',
       'ambos paises',
       'los dos juntos',
+      'eso es',
+      'esa es la idea',
+      'nos complement',
+      'construimos juntos',
     ],
     concepts: [
       ['complement'],
@@ -372,7 +410,7 @@ const DEFS: IntentDef[] = [
       ['chile', 'peru', 'paises', 'pais'],
       ['equip'],
     ],
-    anchors: ['complement', 'chile', 'peru', 'ambos', 'juntos'],
+    anchors: ['complement', 'ambos', 'juntos'],
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -387,11 +425,12 @@ const DEFS: IntentDef[] = [
       'bien graci',
       'graci b2',
       'gracias barbara',
+      'gracias por eso',
     ],
     concepts: [
-      ['graci'],
+      ['graci', 'agrade'],
     ],
-    anchors: ['graci'],
+    anchors: ['graci', 'agrade'],
     contextFrom: ['COMPLEMENTARITY', 'AVOID_CONFLICT', 'WISE_DECISION'],
     requiresContext: true,
   },
@@ -417,14 +456,23 @@ const DEFS: IntentDef[] = [
       'cómo está la gente',
       'update del equip',
       'cuéntanos un poco del equip',
+      'vamos a revisar a la gente',
+      'cómo estamos',
+      'cómo están chile y peru',
+      'veamos a la gente',
+      'danos los numeros del equip',
+      'cómo está nuestra gente',
+      'muéstranos los equip',
+      'danos un update de nuestros equip',
     ],
     concepts: [
       ['update', 'actualiz'],
       ['equip'],
       ['numero', 'datos', 'cifras'],
       ['chile', 'peru'],
+      ['gente', 'personas', 'persona'],
     ],
-    anchors: ['update', 'actualiz', 'equip', 'numero', 'cifras'],
+    anchors: ['update', 'actualiz', 'equip', 'numero', 'cifras', 'estamos', 'chile', 'peru', 'gente', 'personas'],
     sceneKeywords: ['equipos', 'chile', 'peru', 'one-gdne'],
   },
 
@@ -446,6 +494,8 @@ const DEFS: IntentDef[] = [
       'empecemos',
       'veamos los numeros',
       'listo vamos',
+      'vamos con los numeros',
+      'adelante con los numeros',
     ],
     concepts: [
       ['vamos', 'sigamos', 'continuemos', 'empecemos', 'comencemos'],
@@ -476,6 +526,8 @@ const DEFS: IntentDef[] = [
       'ya para cerr',
       'esto fue todo',
       'bueno creo que es todo',
+      'eso seria todo',
+      'ya para termin',
     ],
     concepts: [
       ['cerr', 'termin', 'final', 'cierre', 'conclusion'],
@@ -502,6 +554,9 @@ const DEFS: IntentDef[] = [
       'te dejo aqui',
       'ahora hay otros presentadores',
       'viene otra presentacion',
+      'vienen mas presentadores',
+      'como te saco',
+      'ya terminaste',
     ],
     concepts: [
       ['desconect', 'apag'],
@@ -525,6 +580,8 @@ const DEFS: IntentDef[] = [
       'las dos tenemos nuestro momento',
       'podemos brill las dos',
       'juntas brillamos',
+      'podemos complementarnos',
+      'hay espacio para las dos',
     ],
     concepts: [
       ['brill'],
@@ -554,10 +611,14 @@ const DEFS: IntentDef[] = [
       'no tanto b2',
       'para b2',
       'cuidate',
+      'ya te estas pasando',
+      'ya basta',
+      'te estas aprovechando',
     ],
     concepts: [
       ['abuses', 'abusando', 'exager', 'pases'],
       ['simpatia', 'controlat', 'suficient'],
+      ['basta', 'aprovechando'],
     ],
     anchors: ['abuses', 'simpatia', 'exager', 'pases', 'suficient'],
     contextFrom: ['SHINE_TOGETHER'],
@@ -621,6 +682,20 @@ function anchorScore(stemmedToks: Set<string>, anchors: string[]): number {
   return Math.min(1, hits / Math.max(1, Math.min(anchors.length, 3)))
 }
 
+/**
+ * Expresión multi-palabra exacta (con límites de palabra) presente en el
+ * texto normalizado completo — no en el set de tokens (que filtra stopwords
+ * y colapsaría "te toca" al token aislado "toca", reabriendo el riesgo de
+ * falso positivo que esta señal busca evitar).
+ */
+function phraseAnchorHit(stemmedNorm: string, phrases?: string[]): boolean {
+  if (!phrases || !phrases.length) return false
+  return phrases.some((p) => {
+    const escaped = p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    return new RegExp(`\\b${escaped}\\b`).test(stemmedNorm)
+  })
+}
+
 function contextBonus(def: IntentDef, ctx: MatchContext): number {
   let bonus = 0
   if (def.contextFrom && ctx.previousIntent && def.contextFrom.includes(ctx.previousIntent)) {
@@ -643,7 +718,8 @@ function computeBreakdown(
 ): ScoreBreakdown {
   const example = exampleScore(stemmedToks, def.examples)
   const concept = conceptScore(stemmedToks, def.concepts)
-  const anchor  = anchorScore(stemmedToks, def.anchors)
+  const anchorBase  = anchorScore(stemmedToks, def.anchors)
+  const anchor  = phraseAnchorHit(stemmedNorm, def.phraseAnchors) ? Math.max(anchorBase, 1) : anchorBase
   const context = contextBonus(def, ctx)
 
   // Substring exacto de algún ejemplo → fuerte señal
