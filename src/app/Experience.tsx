@@ -1,3 +1,4 @@
+import { B2Widget } from '../ui/B2Widget'
 import { ChilePeruScene } from '../ui/ChilePeruScene'
 import { ClosingMessage } from '../ui/ClosingMessage'
 import { EfficiencyFlow } from '../ui/EfficiencyFlow'
@@ -31,6 +32,7 @@ export function Experience() {
       </main>
 
       {phase !== 'intro' && <ProgressIndicator />}
+      <B2Widget />
       <div className="screen-grain" aria-hidden="true" />
     </div>
   )

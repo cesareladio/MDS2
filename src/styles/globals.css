@@ -5057,3 +5057,67 @@ html {
     text-align: center;
   }
 }
+
+.b2-widget {
+  position: fixed;
+  z-index: 90;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  pointer-events: none;
+}
+
+/* El stage es la única zona interactiva — el avatar ES el botón.
+   Aspect ratio ~5/6 (300/360), paridad con el widget de referencia
+   (b2-avatar6/public/b2-widget.js, sección 23 del plan de paridad). */
+.b2-widget__stage {
+  position: relative;
+  width: min(360px, 40vw);
+  aspect-ratio: 5 / 6;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  pointer-events: none;
+  transition: filter .25s ease;
+  transform-origin: bottom right;
+}
+
+.b2-widget__stage.is-clickable {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Sólo el tercio derecho del stage (zona del cuerpo final) responde a hover */
+.b2-widget__stage.is-clickable:hover {
+  filter: brightness(1.12) drop-shadow(0 0 8px rgba(100, 180, 255, .25));
+}
+
+/* Pulso sutil mientras escucha */
+.b2-widget.is-listening .b2-widget__stage {
+  filter: drop-shadow(0 0 6px rgba(80, 200, 255, .35));
+}
+
+/* Pulso sutil mientras habla */
+.b2-widget.is-speaking .b2-widget__stage {
+  filter: drop-shadow(0 0 10px rgba(80, 180, 255, .28));
+}
+
+.b2-widget__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .b2-widget {
+    right: 0;
+  }
+
+  .b2-widget__stage {
+    width: min(280px, 52vw);
+    aspect-ratio: 5 / 6;
+  }
+}
