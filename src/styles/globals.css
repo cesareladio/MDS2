@@ -3602,6 +3602,1034 @@ html {
   font-size: .60rem;
 }
 
+/* ─── SCENE 03 · LOCAL SUB-NAVIGATION (Talento / Capacidades) ──────────── */
+.og-subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: 0 0 .85rem;
+}
+
+.og-subnav button {
+  border: 1px solid rgba(148, 205, 255, .28);
+  border-radius: 999px;
+  padding: .32rem .85rem;
+  background: rgba(6, 18, 32, .55);
+  color: #9fb6cb;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .58rem;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+
+.og-subnav button:hover,
+.og-subnav button:focus-visible {
+  color: #eaf6ff;
+  border-color: rgba(148, 205, 255, .5);
+  outline: none;
+}
+
+.og-subnav button.is-active {
+  color: #04101e;
+  border-color: transparent;
+  background: linear-gradient(90deg, #ffc16b, #78dbff);
+  font-weight: 600;
+}
+
+/* ─── SCENE 03 · TALENTO · PROFUNDIDAD PERÚ ────────────────────────────── */
+.og-talent-depth {
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+  width: 100%;
+}
+
+.og-talent-depth__section {
+  padding: .7rem .85rem;
+  border: 1px solid rgba(255, 180, 75, .22);
+  border-radius: .55rem;
+  background: rgba(4, 15, 26, .6);
+}
+
+.og-talent-depth__section h3 {
+  margin: 0 0 .55rem;
+  color: #ffc16b;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .66rem;
+  font-weight: 600;
+}
+
+.og-talent-depth__composition-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+  gap: .5rem;
+}
+
+.og-talent-depth__composition-group header {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  margin-bottom: .35rem;
+  padding-bottom: .35rem;
+  border-bottom: 1px solid rgba(148, 205, 255, .18);
+}
+
+.og-talent-depth__composition-group header span {
+  color: #9fb6cb;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .5rem;
+}
+
+.og-talent-depth__composition-group header strong {
+  color: #edf8ff;
+  font-size: .78rem;
+  font-weight: 500;
+}
+
+.og-talent-depth__composition-group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .22rem;
+}
+
+.og-talent-depth__composition-group li {
+  display: flex;
+  justify-content: space-between;
+  gap: .4rem;
+  color: #c3d8e9;
+  font-size: .58rem;
+}
+
+.og-talent-depth__composition-group li strong {
+  color: #fff;
+  font-weight: 500;
+}
+
+.og-talent-depth__comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: .6rem;
+  align-items: stretch;
+}
+
+.og-talent-depth__comparison-card {
+  display: flex;
+  flex-direction: column;
+  gap: .18rem;
+  padding: .5rem .6rem;
+  border-radius: .4rem;
+  background: rgba(8, 24, 40, .5);
+}
+
+.og-talent-depth__comparison-card span {
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .54rem;
+  color: #9fb6cb;
+}
+
+.og-talent-depth__comparison-card--gdne span { color: #ffc16b; }
+.og-talent-depth__comparison-card--office span { color: #78dbff; }
+
+.og-talent-depth__comparison-card small {
+  color: #7c96ae;
+  font-size: .48rem;
+}
+
+.og-talent-depth__comparison-card strong {
+  font-size: 1.3rem;
+  font-weight: 350;
+  color: #edf8ff;
+}
+
+.og-talent-depth__comparison-card b {
+  font-weight: 400;
+  font-size: .52rem;
+  color: #c3d8e9;
+}
+
+.og-talent-depth__comparison-deltas {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .5rem;
+  min-width: 8rem;
+}
+
+.og-talent-depth__comparison-deltas div {
+  display: flex;
+  flex-direction: column;
+}
+
+.og-talent-depth__comparison-deltas strong {
+  font-size: .95rem;
+  color: #85e0a3;
+  font-weight: 500;
+}
+
+.og-talent-depth__comparison-deltas span {
+  color: #9fb6cb;
+  font-size: .5rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+.og-talent-depth__insight {
+  margin: .55rem 0 0;
+  padding-top: .4rem;
+  border-top: 1px solid rgba(148, 205, 255, .16);
+  color: #cfe3f2;
+  font-size: .6rem;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.og-talent-depth__sap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  gap: .5rem;
+  text-align: center;
+}
+
+.og-talent-depth__sap-grid>div {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  padding: .5rem .4rem;
+  border-radius: .4rem;
+  background: rgba(8, 24, 40, .5);
+}
+
+.og-talent-depth__sap-grid strong {
+  font-size: 1.3rem;
+  font-weight: 350;
+  color: #ffc16b;
+}
+
+.og-talent-depth__sap-grid span {
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .52rem;
+  color: #c3d8e9;
+}
+
+.og-talent-depth__sap-grid small {
+  color: #7c96ae;
+  font-size: .46rem;
+}
+
+/* ─── SCENE 03 · CAPACIDADES · APPROVAL SEQUENCE ───────────────────────── */
+.og-approval-sequence {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  margin: .25rem 0;
+}
+
+.og-approval-sequence__item {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+
+.og-approval-sequence__arrow {
+  color: #5e8daf;
+  font-size: .68rem;
+}
+
+.og-approval-sequence__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .05rem;
+  padding: .3rem .5rem;
+  border-radius: .35rem;
+  background: rgba(8, 24, 40, .45);
+}
+
+.og-approval-sequence__step strong {
+  font-size: .85rem;
+  font-weight: 500;
+  color: #c3d8e9;
+}
+
+.og-approval-sequence__step span {
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  font-size: .46rem;
+  color: #7c96ae;
+}
+
+.og-approval-sequence__step.is-current {
+  background: linear-gradient(135deg, rgba(255, 173, 66, .22), rgba(120, 219, 255, .14));
+}
+
+.og-approval-sequence__step.is-current strong {
+  color: #ffd79a;
+}
+
+.og-capability-card__approval {
+  margin-top: .65rem;
+  padding-top: .55rem;
+  border-top: 1px solid rgba(148, 205, 255, .16);
+}
+
+.og-capability-card__approval-label {
+  display: block;
+  margin-bottom: .3rem;
+  color: #829db4;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .42rem;
+}
+
+/* ─── SCENE 03 · CAPACIDADES · EVOLUCIÓN ───────────────────────────────── */
+.og-cert-evolution,
+.og-cert-progression,
+.og-cert-program {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+}
+
+.og-cert-evolution h3,
+.og-cert-progression h3,
+.og-cert-program h3 {
+  margin: 0;
+  color: #85c9ff;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .68rem;
+  font-weight: 600;
+}
+
+.og-cert-evolution__population {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 1.2rem;
+  padding: .65rem .9rem;
+  border: 1px solid rgba(255, 180, 75, .22);
+  border-radius: .55rem;
+  background: rgba(4, 15, 26, .6);
+}
+
+.og-cert-evolution__population-main {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  min-width: 0;
+}
+
+.og-cert-evolution__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .1rem;
+}
+
+.og-cert-evolution__step strong {
+  font-size: 1.7rem;
+  font-weight: 350;
+  color: #c3d8e9;
+}
+
+.og-cert-evolution__step.is-current strong {
+  color: #ffc16b;
+}
+
+.og-cert-evolution__step span {
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .5rem;
+  color: #9fb6cb;
+}
+
+.og-cert-evolution__step small {
+  color: #7c96ae;
+  font-size: .46rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.og-cert-evolution__arrow {
+  color: #5e8daf;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.og-cert-evolution__deltas {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-left: auto;
+  padding-left: 1rem;
+  border-left: 1px solid rgba(148, 205, 255, .18);
+  flex-shrink: 0;
+}
+
+.og-cert-evolution__deltas div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .05rem;
+}
+
+.og-cert-evolution__deltas strong {
+  font-size: 1.35rem;
+  color: #85e0a3;
+  font-weight: 500;
+}
+
+.og-cert-evolution__deltas span {
+  color: #9fb6cb;
+  font-size: .45rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  white-space: nowrap;
+}
+
+.og-cert-evolution__approval-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 1.2rem;
+  flex-wrap: nowrap;
+}
+
+.og-cert-evolution__approval-row .og-approval-sequence {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  flex: 1;
+  margin: 0;
+  min-width: 0;
+}
+
+.og-cert-evolution__approval-row .og-approval-sequence__item {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.og-cert-evolution__approval-row .og-approval-sequence__item:last-child {
+  flex: 1;
+}
+
+.og-cert-evolution__approval-row .og-approval-sequence__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .05rem;
+  padding: .3rem .5rem;
+  border-radius: .35rem;
+  background: rgba(8, 24, 40, .45);
+  flex: 0 0 auto;
+}
+
+.og-cert-evolution__approval-row .og-approval-sequence__step strong {
+  font-size: .85rem;
+  font-weight: 500;
+  color: #c3d8e9;
+}
+
+.og-cert-evolution__approval-row .og-approval-sequence__step span {
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  font-size: .45rem;
+  color: #7c96ae;
+}
+
+.og-cert-evolution__approval-row .og-approval-sequence__arrow {
+  color: #5e8daf;
+  font-size: .65rem;
+  flex-shrink: 0;
+}
+
+.og-cert-evolution__approval-row .og-cert-evolution__delta {
+  margin: 0;
+  flex-shrink: 0;
+  padding-left: 1rem;
+  border-left: 1px solid rgba(148, 205, 255, .18);
+}
+
+.og-cert-evolution__focus {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .6rem;
+}
+
+.og-cert-evolution__focus div {
+  padding: .5rem .6rem;
+  border-radius: .4rem;
+  background: rgba(8, 24, 40, .45);
+}
+
+.og-cert-evolution__focus strong {
+  display: block;
+  margin-bottom: .22rem;
+  color: #9fb6cb;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .5rem;
+}
+
+.og-cert-evolution__focus p {
+  margin: 0;
+  color: #cfe3f2;
+  font-size: .58rem;
+  line-height: 1.38;
+}
+
+.og-cert-evolution__approval {
+  padding: .65rem .8rem;
+  border: 1px solid rgba(148, 205, 255, .2);
+  border-radius: .55rem;
+  background: rgba(4, 15, 26, .6);
+}
+
+.og-cert-evolution__delta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .35rem;
+  margin: .2rem 0 .55rem;
+  font-size: .95rem;
+  color: #85e0a3;
+  font-weight: 500;
+}
+
+.og-cert-evolution__delta span {
+  color: #9fb6cb;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  font-size: .48rem;
+  font-weight: 400;
+}
+
+.og-cert-evolution__approval-notes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .5rem;
+}
+
+.og-cert-evolution__approval-notes strong {
+  display: block;
+  color: #78dbff;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .5rem;
+}
+
+.og-cert-evolution__approval-notes p {
+  margin: .2rem 0 0;
+  color: #b2c6d8;
+  font-size: .54rem;
+  line-height: 1.35;
+}
+
+/* ─── SCENE 03 · CAPACIDADES · PROGRESIÓN ──────────────────────────────── */
+.og-cert-funnel {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.og-cert-funnel__level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .1rem;
+  padding: .55rem .8rem;
+  border: 1px solid rgba(148, 205, 255, .22);
+  border-radius: .5rem;
+  background: rgba(4, 15, 26, .6);
+  text-align: center;
+}
+
+.og-cert-funnel__level strong {
+  font-size: 1.5rem;
+  font-weight: 350;
+  color: #edf8ff;
+}
+
+.og-cert-funnel__level span {
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .52rem;
+  color: #9fb6cb;
+}
+
+.og-cert-funnel__level b {
+  margin-top: .15rem;
+  font-weight: 500;
+  font-size: .46rem;
+  color: #85e0a3;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.og-cert-funnel__level--associate {
+  border-color: rgba(255, 180, 75, .35);
+}
+
+.og-cert-funnel__level--associate strong {
+  color: #ffc16b;
+}
+
+.og-cert-funnel>i {
+  color: #5e8daf;
+  font-size: .9rem;
+}
+
+.og-cert-focus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: .5rem;
+}
+
+.og-cert-focus-card {
+  padding: .55rem .65rem;
+  border: 1px solid rgba(148, 205, 255, .2);
+  border-radius: .45rem;
+  background: rgba(4, 15, 26, .55);
+}
+
+.og-cert-focus-card strong {
+  display: block;
+  color: #78dbff;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .64rem;
+}
+
+.og-cert-focus-card span {
+  display: block;
+  margin: .18rem 0 .3rem;
+  color: #9fb6cb;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: .46rem;
+}
+
+.og-cert-focus-card p {
+  margin: 0;
+  color: #cfe3f2;
+  font-size: .56rem;
+  line-height: 1.36;
+}
+
+/* ─── SCENE 03 · CAPACIDADES · PROGRAMA FY26 ───────────────────────────── */
+.og-cert-program__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: .55rem;
+}
+
+.og-cert-program__cell {
+  display: flex;
+  flex-direction: column;
+  gap: .18rem;
+  padding: .6rem .55rem;
+  border: 1px solid rgba(148, 205, 255, .22);
+  border-radius: .5rem;
+  background: rgba(4, 15, 26, .6);
+}
+
+.og-cert-program__cell--primary {
+  border-color: rgba(255, 180, 75, .35);
+}
+
+.og-cert-program__cell--primary strong {
+  color: #ffc16b;
+}
+
+.og-cert-program__cell strong {
+  font-size: 1.5rem;
+  font-weight: 350;
+  color: #edf8ff;
+}
+
+.og-cert-program__cell span {
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  font-size: .5rem;
+  color: #9fb6cb;
+}
+
+.og-cert-program__cell small {
+  color: #7c96ae;
+  font-size: .44rem;
+}
+
+@media (max-width: 1024px) {
+  .og-talent-depth__composition-grid,
+  .og-talent-depth__sap-grid,
+  .og-cert-evolution__approval-notes,
+  .og-cert-focus-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .og-talent-depth__comparison-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .og-talent-depth__comparison-deltas {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .og-cert-evolution__focus {
+    grid-template-columns: 1fr;
+  }
+
+  .og-cert-program__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-height: 820px) {
+  .og-talent-depth {
+    gap: .5rem;
+  }
+
+  .og-talent-depth__section {
+    padding: .5rem .6rem;
+  }
+
+  .og-cert-evolution,
+  .og-cert-progression,
+  .og-cert-program {
+    gap: .5rem;
+  }
+
+  .og-cert-evolution__population,
+  .og-cert-evolution__approval {
+    padding: .5rem .6rem;
+  }
+
+  .og-cert-evolution__step strong,
+  .og-cert-funnel__level strong,
+  .og-cert-program__cell strong {
+    font-size: 1.1rem;
+  }
+
+  .og-talent-depth__comparison-card strong,
+  .og-talent-depth__sap-grid strong {
+    font-size: 1rem;
+  }
+}
+
+/* ─── SCENE 03 · PERÚ vs CHILE COMPARATIVE RESTORATION ─────────────────── */
+.og-chile-marker {
+  display: inline-block;
+  margin: -.2rem 0 .4rem;
+  color: #6fa9c2;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: .5rem;
+}
+
+.og-talent-depth-compare,
+.og-cert-evolution-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.3rem;
+  width: 100%;
+}
+
+.og-talent-depth-col,
+.og-cert-evolution-col {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  min-width: 0;
+  padding-left: .9rem;
+  border-left: 2px solid rgba(255, 173, 66, .4);
+}
+
+.og-talent-depth-col--chile,
+.og-cert-evolution-col--chile,
+.og-cert-funnel-compare__col--chile,
+.og-cert-program-col--chile {
+  border-left-color: rgba(85, 211, 255, .4);
+}
+
+.og-talent-depth__section--pending {
+  border-color: rgba(130, 172, 210, .22);
+  background: rgba(4, 15, 26, .4);
+}
+
+.og-talent-depth__pending-note {
+  margin: 0;
+  color: #7c96ae;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .5rem;
+}
+
+.og-talent-depth__pending-note--large {
+  font-size: .62rem;
+  line-height: 1.5;
+}
+
+.og-talent-depth__comparison-grid--pending {
+  grid-template-columns: 1fr 1fr;
+}
+
+.og-talent-depth__comparison-card.is-pending {
+  opacity: .75;
+}
+
+.og-talent-depth__comparison-card.is-pending strong {
+  color: #5f84a6;
+}
+
+.og-talent-depth__comparison-card.is-pending b {
+  color: #7c96ae;
+}
+
+.og-talent-depth__comparison-deltas--pending strong {
+  color: #7c96ae;
+  font-size: .78rem;
+}
+
+.og-cert-evolution-col h3 {
+  margin-top: .3rem;
+}
+
+.og-cert-evolution__population--pending {
+  border-color: rgba(130, 172, 210, .2);
+  opacity: .8;
+}
+
+.og-cert-evolution__step.is-pending strong {
+  color: #5f84a6;
+}
+
+.og-cert-evolution__deltas--pending strong {
+  color: #7c96ae;
+}
+
+.og-approval-sequence--pending .og-approval-sequence__step {
+  background: rgba(8, 24, 40, .3);
+}
+
+.og-approval-sequence__step.is-pending strong {
+  color: #5f84a6;
+}
+
+.og-cert-evolution__delta--pending {
+  color: #7c96ae;
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.og-cert-progression-compare {
+  display: flex;
+  flex-direction: column;
+  gap: .7rem;
+  width: 100%;
+}
+
+.og-cert-funnel-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.3rem;
+}
+
+.og-cert-funnel-compare__col {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  min-width: 0;
+  padding-left: .9rem;
+  border-left: 2px solid rgba(255, 173, 66, .4);
+}
+
+.og-mini-funnel {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  flex-wrap: wrap;
+}
+
+.og-mini-funnel__level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .08rem;
+  padding: .4rem .55rem;
+  border: 1px solid rgba(148, 205, 255, .22);
+  border-radius: .4rem;
+  background: rgba(4, 15, 26, .6);
+  text-align: center;
+}
+
+.og-mini-funnel__level strong {
+  font-size: 1.05rem;
+  font-weight: 350;
+  color: #edf8ff;
+}
+
+.og-mini-funnel__level span {
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .46rem;
+  color: #9fb6cb;
+}
+
+.og-mini-funnel__level b {
+  margin-top: .1rem;
+  font-weight: 500;
+  font-size: .4rem;
+  color: #85e0a3;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.og-mini-funnel__level--highlight {
+  border-color: rgba(255, 180, 75, .4);
+}
+
+.og-mini-funnel__level--highlight strong {
+  color: #ffc16b;
+}
+
+.og-mini-funnel__level.is-pending strong {
+  color: #5f84a6;
+}
+
+.og-mini-funnel__level.is-pending b {
+  color: #7c96ae;
+}
+
+.og-mini-funnel>i {
+  color: #5e8daf;
+  font-size: .7rem;
+}
+
+.og-cert-focus-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.3rem;
+}
+
+.og-cert-focus-compare__col {
+  min-width: 0;
+}
+
+.og-cert-focus-card--pending {
+  display: flex;
+  flex-direction: column;
+  gap: .18rem;
+  border-style: dashed;
+  border-color: rgba(130, 172, 210, .3);
+}
+
+.og-cert-focus-card--pending strong {
+  color: #7c96ae;
+}
+
+.og-cert-focus-card--pending span {
+  color: #7c96ae;
+  font-size: .54rem;
+}
+
+.og-cert-program-compare {
+  width: 100%;
+}
+
+.og-cert-program-compare__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.3rem;
+  margin-top: .6rem;
+}
+
+.og-cert-program-col {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  min-width: 0;
+  padding-left: .9rem;
+  border-left: 2px solid rgba(255, 173, 66, .4);
+}
+
+.og-cert-program__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+}
+
+.og-cert-program__cell.is-pending {
+  opacity: .75;
+}
+
+.og-cert-program__cell.is-pending strong {
+  color: #5f84a6;
+}
+
+.og-cert-program__cell--primary.is-pending b {
+  display: block;
+  margin-top: .15rem;
+  color: #7c96ae;
+  font-size: .42rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+  .og-talent-depth-compare,
+  .og-cert-evolution-compare,
+  .og-cert-funnel-compare,
+  .og-cert-focus-compare,
+  .og-cert-program-compare__cols {
+    gap: .8rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .og-talent-depth-compare,
+  .og-cert-evolution-compare,
+  .og-cert-funnel-compare,
+  .og-cert-focus-compare,
+  .og-cert-program-compare__cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-height: 820px) {
+  .og-talent-depth-compare,
+  .og-cert-evolution-compare {
+    gap: .8rem;
+  }
+
+  .og-talent-depth-col,
+  .og-cert-evolution-col,
+  .og-cert-funnel-compare__col,
+  .og-cert-program-col {
+    gap: .4rem;
+  }
+
+  .og-mini-funnel__level strong {
+    font-size: .92rem;
+  }
+}
 
 
 /* ─── SCENE 03 TERRITORY · GEOGRAPHIC HUD ──────────────────────────────── */
@@ -4344,6 +5372,11 @@ html {
   margin-top: -.4rem;
 }
 
+.ef-compare--upskilling .ef-chile-marker {
+  color: #8fc2da;
+  font-weight: 600;
+}
+
 .ef-insight {
   margin: .8rem 0 0;
   color: #9fb6cb;
@@ -4794,15 +5827,18 @@ html {
 
 /* 05 · UPSKILLING */
 .ef-upskilling-items {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: clamp(1rem, 2vw, 1.8rem);
-  flex-wrap: wrap;
+  width: 100%;
 }
 
 .ef-upskilling-item {
   display: flex;
   flex-direction: column;
   gap: .15rem;
+  align-items: center;
+  text-align: center;
 }
 
 .ef-upskilling-item strong {
@@ -4828,6 +5864,7 @@ html {
   color: #9fb6cb;
   font-size: .86rem;
 }
+
 
 .ef-upskilling-proof {
   display: flex;
@@ -4871,6 +5908,73 @@ html {
   text-transform: uppercase;
   letter-spacing: .05em;
   margin-right: .4rem;
+}
+
+.ef-upskilling-program {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-bottom: 1rem;
+  padding-bottom: .9rem;
+  border-bottom: 1px solid rgba(255, 173, 66, .3);
+}
+
+.ef-upskilling-program__primary {
+  display: flex;
+  align-items: baseline;
+  gap: .6rem;
+}
+
+.ef-upskilling-program__primary strong {
+  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+  font-weight: 330;
+  color: #ffc16b;
+  letter-spacing: -.03em;
+  line-height: 1;
+}
+
+.ef-upskilling-program__primary span {
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #eaf4ff;
+  font-size: .72rem;
+}
+
+.ef-upskilling-program__meta {
+  display: flex;
+  gap: 1.6rem;
+}
+
+.ef-upskilling-program__meta div {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+}
+
+.ef-upskilling-program__meta strong {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #78dbff;
+}
+
+.ef-upskilling-program__meta span {
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #9fb6cb;
+  font-size: .62rem;
+}
+
+.ef-upskilling-program__meta small {
+  color: #7c96ae;
+  font-size: .58rem;
+}
+
+.ef-upskilling-program__narrative {
+  margin: 0;
+  color: #c3d8e9;
+  font-size: .68rem;
+  line-height: 1.4;
+  max-width: 32rem;
 }
 
 /* 06 · RESULTADOS */
@@ -5014,6 +6118,24 @@ html {
   .ef-view-title {
     font-size: clamp(1.1rem, 2vw, 1.7rem);
   }
+
+  .ef-upskilling-program {
+    gap: .35rem;
+    margin-bottom: .7rem;
+    padding-bottom: .6rem;
+  }
+
+  .ef-upskilling-program__primary strong {
+    font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+  }
+
+  .ef-upskilling-program__meta {
+    gap: 1rem;
+  }
+
+  .ef-upskilling-program__narrative {
+    font-size: .6rem;
+  }
 }
 
 @media (max-width: 1440px) {
@@ -5027,8 +6149,7 @@ html {
     gap: 1.1rem;
   }
 
-  .ef-adoption-kpis,
-  .ef-upskilling-items {
+  .ef-adoption-kpis {
     flex-wrap: wrap;
     gap: .9rem;
   }

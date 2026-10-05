@@ -93,6 +93,80 @@ export const chileEfficiencyPlaceholder = {
   },
 }
 
+/**
+ * CHILE · TALENT DEPTH PLACEHOLDER
+ * ────────────────────────────────────────────────────────────────────────
+ * Centralized pending-state object for the Chile side of Scene 03
+ * Talento > Profundidad. The pyramid totals (6 / 43 / 457) reuse the
+ * already-validated Chile pyramid (same numbers shown in Talento >
+ * Resumen) — everything else is explicitly unavailable and must render
+ * with "POR VALIDAR" / "DATA POR VALIDAR" markers, never invented values.
+ */
+export const chileTalentDepthPlaceholder = {
+  status: 'pending' as const,
+  tag: 'CHILE · DATA POR VALIDAR',
+  pyramidComposition: {
+    reused: true as const,
+    groups: [
+      { id: 'contributor', label: 'Contributor', total: 457, percent: 91 },
+      { id: 'leaders', label: 'Leaders', total: 43, percent: 8 },
+      { id: 'executive', label: 'Executive', total: 6, percent: 1 },
+    ],
+    breakdownNote: 'DATA POR VALIDAR',
+  },
+  contributorComparison: {
+    gdne: { label: 'GDN-e', value: 'XXX' },
+    office: { label: 'AS Oficina', value: 'XXX' },
+    deltaPp: 'XX,X pp',
+    note: 'POR VALIDAR',
+  },
+  specialization: {
+    label: 'Especialización',
+    note: 'DATA POR VALIDAR',
+  },
+}
+
+/**
+ * CHILE · CAPABILITIES DEPTH PLACEHOLDER
+ * ────────────────────────────────────────────────────────────────────────
+ * Centralized pending-state object for the Chile side of Scene 03
+ * Capacidades > Evolución / Progresión / Programa FY26. Panorama already
+ * has validated Chile data (see presentationData.oneGdne.capabilities.chile)
+ * and is untouched. Everything here is unavailable and must render with
+ * "POR VALIDAR" markers only — no believable fake numbers.
+ */
+export const chileCapabilitiesDepthPlaceholder = {
+  status: 'pending' as const,
+  tag: 'CHILE · DATA POR VALIDAR',
+  certificationEvolution: {
+    fy25: 'XXX',
+    fy26: 'XXX',
+    increment: 'XXX',
+    multiplier: 'X,Xx',
+    focusNote: 'DATA POR VALIDAR',
+  },
+  approvalHistory: [
+    { period: 'FY24', value: 'XX%' },
+    { period: 'FY25', value: 'XX%' },
+    { period: 'FY26', value: 'XX%' },
+  ],
+  approvalDeltaNote: 'POR VALIDAR',
+  certificationFunnel: {
+    fundamentals: 'XXX',
+    associate: 'XXX',
+    professional: 'XX',
+    expert: 'XX',
+  },
+  focusNote: 'DATA POR VALIDAR',
+  fy26Program: {
+    inProgress: 'XXX',
+    upskillingParticipants: 'XXX',
+    otherPrograms: 'XXX',
+    currentApprovalRate: 'XX%',
+    targetApprovalRate: 'XX%',
+  },
+}
+
 export const presentationData = {
   peru: {
     identity: countryIdentity.peru, hc: peruData.hc, hubs: peruHubs, history: peruHistory,
@@ -141,8 +215,31 @@ export const presentationData = {
       peru: { total: { value: 1434, status: 'pending_validation' as const }, principalShare: { value: 51, status: 'pending_validation' as const }, locations: ['La Libertad / Trujillo', 'Arequipa'], regions: [{ name: 'La Libertad (Trujillo)', value: 511, percent: 36, status: 'validated' as const }, { name: 'Arequipa', value: 214, percent: 15, status: 'validated' as const }, { name: 'Lima', value: 189, percent: 13, status: 'validated' as const }, { name: 'Resto Perú', value: 520, percent: 36, status: 'validated' as const }], message: 'Una capacidad distribuida que amplía el acceso al talento más allá de las capitales.' },
     },
     talent: {
-      peru: { total: { value: 1434, status: 'pending_validation' as const }, femaleRepresentation: { value: '22%', status: 'validated' as const }, families: [{ name: 'Engineer', value: 958, percent: 67, status: 'pending_validation' as const }, { name: 'Enterprise Solutions Engineering', value: 187, percent: 13, status: 'pending_validation' as const }, { name: 'Quality Assurance', value: 119, percent: 8, status: 'pending_validation' as const }, { name: 'Enterprise Solutions Functional A.', value: 102, percent: 7, status: 'pending_validation' as const }], pyramid: [{ name: 'Executive', value: 9, percent: 1, status: 'validated' as const }, { name: 'Leaders', value: 108, percent: 7, status: 'validated' as const }, { name: 'Contributor', value: 1317, percent: 92, status: 'validated' as const }] },
+      peru: { total: { value: 1434, status: 'validated' as const }, femaleRepresentation: { value: '22%', status: 'validated' as const }, families: [{ name: 'Engineer', value: 958, percent: 67, status: 'pending_validation' as const }, { name: 'Enterprise Solutions Engineering', value: 187, percent: 13, status: 'pending_validation' as const }, { name: 'Quality Assurance', value: 119, percent: 8, status: 'pending_validation' as const }, { name: 'Enterprise Solutions Functional A.', value: 102, percent: 7, status: 'pending_validation' as const }], pyramid: [{ name: 'Executives', value: 9, percent: 0.6, status: 'validated' as const }, { name: 'Leads', value: 127, percent: 8.9, status: 'validated' as const }, { name: 'Contributors', value: 1298, percent: 90.5, status: 'validated' as const }] },
       chile: { total: { value: 605, status: 'pending_validation' as const }, femaleRepresentation: { value: '15,9%', status: 'validated' as const }, families: [{ name: 'Engineer', value: 363, percent: 75, status: 'validated' as const }, { name: 'Enterprise Solutions Eng.', value: 44, percent: 9, status: 'validated' as const }, { name: 'Quality Assurance', value: 34, percent: 7, status: 'validated' as const }, { name: 'Otros', value: 41, percent: 9, status: 'validated' as const }], pyramid: [{ name: 'Executive', value: 6, percent: 1, status: 'validated' as const }, { name: 'Leaders', value: 43, percent: 8, status: 'validated' as const }, { name: 'Contributor', value: 457, percent: 91, status: 'validated' as const }] },
+    },
+    talentDepth: {
+      peru: {
+        pyramidComposition: {
+          contributors: { total: 1298, percent: 90.5, breakdown: [{ name: 'Key Contributor', value: 491 }, { name: 'Contributor', value: 465 }, { name: 'Top Contributor', value: 342 }] },
+          leads: { total: 127, percent: 8.9, breakdown: [{ name: 'Lead', value: 101 }, { name: 'Expert Lead', value: 19 }, { name: 'Top Leader', value: 7 }] },
+          executives: { total: 9, percent: 0.6, breakdown: [{ name: 'Executive', value: 9 }] },
+        } as PeruTalentPyramidComposition,
+        contributorComparison: {
+          gdne: { hcTotal: 1434, contributor: 465, percent: 32.4 },
+          office: { hcTotal: 1579, contributor: 415, percent: 26.3 },
+          deltaPp: 6.1,
+          deltaCount: 50,
+          insight: 'GDN-e concentra una proporción mayor que AS Oficina, aun contando con un HC total menor.',
+        } as PeruContributorComparison,
+        sapDepth: {
+          ese: 133,
+          totalGdne: 227,
+          concentrationPercent: 58.6,
+          insight: 'Enterprise Solutions Engineering concentra 133 de los 227 perfiles SAP de GDN-e Perú.',
+        } as PeruSapDepth,
+      } as PeruTalentDepth,
+      chile: chileTalentDepthPlaceholder,
     },
     studios: {
       peru: peruStudios,
@@ -154,8 +251,7 @@ export const presentationData = {
       peru: {
         certifications: { value: '+2.100', status: 'validated' as const, label: 'certificaciones obtenidas' },
         hc: { value: 1434, status: 'pending_validation' as const },
-        currentRate: { value: '57%', status: 'validated' as const },
-        objective: { value: '70%', status: 'pending_validation' as const },
+        currentRate: { value: '70%', status: 'validated' as const },
         highlights: ['+1.300 certificaciones OpenAI, acelerando capacidades en IA.', '878 certificaciones técnicas vigentes registradas.'],
         partners: [
           { name: 'AWS', logo: '/partners/aws.png' },
@@ -168,6 +264,40 @@ export const presentationData = {
         strategicFocus: ['Cloud', 'AI', 'Data', 'QA'],
         ecosystems: 'AWS · Microsoft · Google · ISTQB · SAP · entre otras',
         progression: 'Fundamentals → Associate → Expert',
+        approvalHistory: [
+          { period: 'FY24', percent: 28, note: 'Seguimiento descentralizado por tecnología. ISTQB, Google y SAP eran gestionados por los responsables de cada frente.' },
+          { period: 'FY25', percent: 57, note: 'Tasa registrada.' },
+          { period: 'FY26', percent: 70, note: 'Mejora asociada al despliegue y seguimiento del Programa Upskilling en IA.' },
+        ] as PeruApprovalHistoryEntry[],
+        approvalDeltaPp: 13,
+        certificationEvolution: {
+          fy25: 430,
+          fy26: 691,
+          increment: 261,
+          multiplier: '1,6x',
+          fy25Focus: 'Microsoft GitHub 300, Angular, SAP, Big Data en GCP para Data Engineer, principalmente nivel Associate.',
+          fy26Focus: 'Crecimiento impulsado por Upskilling y OpenAI, con foco en IA y certificaciones Fundamental y Associate.',
+        } as PeruCertificationEvolution,
+        certificationFunnel: {
+          fundamentals: 516,
+          associate: 434,
+          associateProgressionPercent: 84.1,
+          professional: 1,
+          expert: 0,
+        } as PeruCertificationFunnel,
+        certificationFocuses: [
+          { area: 'IA', level: 'Associate', text: 'Impulsada principalmente por los programas Upskilling y OpenAI.' },
+          { area: 'SAP', level: 'Associate', text: 'Fortalecimiento de capacidades especializadas en soluciones SAP.' },
+          { area: 'QA', level: 'Fundamentals', text: 'ISTQB Foundation, orientado a fundamentos de testing y aseguramiento de la calidad.' },
+        ] as PeruCertificationFocus[],
+        fy26Program: {
+          inProgress: 711,
+          upskillingParticipants: 621,
+          otherPrograms: 90,
+          otherProgramsDetail: 'Bonificaciones · SAP · ISTQB',
+          currentApprovalRate: 70,
+          targetApprovalRate: 70,
+        } as PeruFy26Program,
       },
       chile: {
         certifiedPeople: { value: '+700', status: 'pending_validation' as const },
@@ -185,6 +315,7 @@ export const presentationData = {
         ecosystems: 'AWS · Microsoft · Google · ISTQB · entre otras',
         progression: 'Fundamentals → Associate → Expert',
       },
+      chileDepth: chileCapabilitiesDepthPlaceholder,
     },
   },
   efficiency: {
@@ -249,6 +380,16 @@ export const presentationData = {
         ] as PeruUpskillingItem[],
         openAI: { certifications: '1.303', fte: 492 } as PeruOpenAI,
         aiBuildTeamSummary: '100% AI-901 · 100% GH-300 · 8% AI-103',
+        program: {
+          participants: 1138,
+          team: 'ADT',
+          teamLabel: 'Equipo impulsor',
+          teamDetail: 'GDN-e Perú',
+          focus: 'IA',
+          focusLabel: 'Foco del programa',
+          focusDetail: 'Desarrollo de capacidades',
+          narrative: 'El programa de Upskilling en IA alcanza actualmente a 1.138 personas y es desplegado desde el equipo de ADT de GDN-e Perú, con foco en el desarrollo y fortalecimiento continuo de capacidades.',
+        } as PeruUpskillingProgram,
       } as PeruUpskilling,
       results: {
         kpis: [
@@ -388,6 +529,99 @@ export interface PeruOpenAI {
   fte: number
 }
 
+export interface PeruUpskillingProgram {
+  participants: number
+  team: string
+  teamLabel: string
+  teamDetail: string
+  focus: string
+  focusLabel: string
+  focusDetail: string
+  narrative: string
+}
+
+export interface PeruTalentPyramidBreakdownItem {
+  name: string
+  value: number
+}
+
+export interface PeruTalentPyramidGroup {
+  total: number
+  percent: number
+  breakdown: PeruTalentPyramidBreakdownItem[]
+}
+
+export interface PeruTalentPyramidComposition {
+  contributors: PeruTalentPyramidGroup
+  leads: PeruTalentPyramidGroup
+  executives: PeruTalentPyramidGroup
+}
+
+export interface PeruContributorComparisonSide {
+  hcTotal: number
+  contributor: number
+  percent: number
+}
+
+export interface PeruContributorComparison {
+  gdne: PeruContributorComparisonSide
+  office: PeruContributorComparisonSide
+  deltaPp: number
+  deltaCount: number
+  insight: string
+}
+
+export interface PeruSapDepth {
+  ese: number
+  totalGdne: number
+  concentrationPercent: number
+  insight: string
+}
+
+export interface PeruTalentDepth {
+  pyramidComposition: PeruTalentPyramidComposition
+  contributorComparison: PeruContributorComparison
+  sapDepth: PeruSapDepth
+}
+
+export interface PeruApprovalHistoryEntry {
+  period: string
+  percent: number
+  note: string
+}
+
+export interface PeruCertificationEvolution {
+  fy25: number
+  fy26: number
+  increment: number
+  multiplier: string
+  fy25Focus: string
+  fy26Focus: string
+}
+
+export interface PeruCertificationFunnel {
+  fundamentals: number
+  associate: number
+  associateProgressionPercent: number
+  professional: number
+  expert: number
+}
+
+export interface PeruCertificationFocus {
+  area: string
+  level: string
+  text: string
+}
+
+export interface PeruFy26Program {
+  inProgress: number
+  upskillingParticipants: number
+  otherPrograms: number
+  otherProgramsDetail: string
+  currentApprovalRate: number
+  targetApprovalRate: number
+}
+
 export interface PeruAdoption {
   onboarded: { value: number; percentOfPeru: number; sourceTotal: number }
   active: { value: number; percentOfPeru: number; sourceTotal: number }
@@ -438,6 +672,7 @@ export interface PeruUpskilling {
   items: PeruUpskillingItem[]
   openAI: PeruOpenAI
   aiBuildTeamSummary: string
+  program: PeruUpskillingProgram
 }
 
 export interface PeruResultKpi {

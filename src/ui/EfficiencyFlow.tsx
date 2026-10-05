@@ -285,6 +285,17 @@ function UpskillingPeru() {
   const data = presentationData.efficiency.peru.upskilling
   return (
     <>
+      <div className="ef-upskilling-program">
+        <div className="ef-upskilling-program__primary">
+          <strong>{data.program.participants.toLocaleString('es-PE')}</strong>
+          <span>Personas participantes · Upskilling en IA</span>
+        </div>
+        <div className="ef-upskilling-program__meta">
+          <div><strong>{data.program.team}</strong><span>{data.program.teamLabel}</span><small>{data.program.teamDetail}</small></div>
+          <div><strong>{data.program.focus}</strong><span>{data.program.focusLabel}</span><small>{data.program.focusDetail}</small></div>
+        </div>
+        <p className="ef-upskilling-program__narrative">{data.program.narrative}</p>
+      </div>
       <div className="ef-upskilling-items">
         {data.items.map((item) => (
           <div className="ef-upskilling-item" key={item.code}>
