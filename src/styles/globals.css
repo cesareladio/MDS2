@@ -3657,7 +3657,7 @@ html {
   color: #ffc16b;
   text-transform: uppercase;
   letter-spacing: .1em;
-  font-size: .66rem;
+  font-size: .86rem;
   font-weight: 600;
 }
 
@@ -3680,7 +3680,7 @@ html {
   color: #9fb6cb;
   text-transform: uppercase;
   letter-spacing: .1em;
-  font-size: .5rem;
+  font-size: .68rem;
 }
 
 .og-talent-depth__composition-group header strong {
@@ -3703,7 +3703,7 @@ html {
   justify-content: space-between;
   gap: .4rem;
   color: #c3d8e9;
-  font-size: .58rem;
+  font-size: .78rem;
 }
 
 .og-talent-depth__composition-group li strong {
@@ -3730,16 +3730,21 @@ html {
 .og-talent-depth__comparison-card span {
   text-transform: uppercase;
   letter-spacing: .1em;
-  font-size: .54rem;
+  font-size: .68rem;
   color: #9fb6cb;
 }
 
-.og-talent-depth__comparison-card--gdne span { color: #ffc16b; }
-.og-talent-depth__comparison-card--office span { color: #78dbff; }
+.og-talent-depth__comparison-card--gdne span {
+  color: #ffc16b;
+}
+
+.og-talent-depth__comparison-card--office span {
+  color: #78dbff;
+}
 
 .og-talent-depth__comparison-card small {
   color: #7c96ae;
-  font-size: .48rem;
+  font-size: .68rem;
 }
 
 .og-talent-depth__comparison-card strong {
@@ -3750,7 +3755,7 @@ html {
 
 .og-talent-depth__comparison-card b {
   font-weight: 400;
-  font-size: .52rem;
+  font-size: .68rem;
   color: #c3d8e9;
 }
 
@@ -3775,7 +3780,7 @@ html {
 
 .og-talent-depth__comparison-deltas span {
   color: #9fb6cb;
-  font-size: .5rem;
+  font-size: .6rem;
   text-transform: uppercase;
   letter-spacing: .07em;
 }
@@ -3785,7 +3790,7 @@ html {
   padding-top: .4rem;
   border-top: 1px solid rgba(148, 205, 255, .16);
   color: #cfe3f2;
-  font-size: .6rem;
+  font-size: .68rem;
   font-style: italic;
   line-height: 1.4;
 }
@@ -3815,13 +3820,13 @@ html {
 .og-talent-depth__sap-grid span {
   text-transform: uppercase;
   letter-spacing: .08em;
-  font-size: .52rem;
+  font-size: .68rem;
   color: #c3d8e9;
 }
 
 .og-talent-depth__sap-grid small {
   color: #7c96ae;
-  font-size: .46rem;
+  font-size: .66rem;
 }
 
 /* ─── SCENE 03 · CAPACIDADES · APPROVAL SEQUENCE ───────────────────────── */
@@ -3949,13 +3954,13 @@ html {
 .og-cert-evolution__step span {
   text-transform: uppercase;
   letter-spacing: .1em;
-  font-size: .5rem;
+  font-size: .6rem;
   color: #9fb6cb;
 }
 
 .og-cert-evolution__step small {
   color: #7c96ae;
-  font-size: .46rem;
+  font-size: .66rem;
   text-transform: uppercase;
   letter-spacing: .05em;
 }
@@ -3967,7 +3972,7 @@ html {
 }
 
 .og-cert-evolution__deltas {
-  display: flex;
+
   align-items: center;
   gap: 1.2rem;
   margin-left: auto;
@@ -3991,7 +3996,7 @@ html {
 
 .og-cert-evolution__deltas span {
   color: #9fb6cb;
-  font-size: .45rem;
+  font-size: .58rem;
   text-transform: uppercase;
   letter-spacing: .05em;
   white-space: nowrap;
@@ -4047,7 +4052,7 @@ html {
 .og-cert-evolution__approval-row .og-approval-sequence__step span {
   text-transform: uppercase;
   letter-spacing: .07em;
-  font-size: .45rem;
+  font-size: .55rem;
   color: #7c96ae;
 }
 
@@ -4082,13 +4087,13 @@ html {
   color: #9fb6cb;
   text-transform: uppercase;
   letter-spacing: .08em;
-  font-size: .5rem;
+  font-size: .6rem;
 }
 
 .og-cert-evolution__focus p {
   margin: 0;
   color: #cfe3f2;
-  font-size: .58rem;
+  font-size: .68rem;
   line-height: 1.38;
 }
 
@@ -4113,7 +4118,7 @@ html {
   color: #9fb6cb;
   text-transform: uppercase;
   letter-spacing: .07em;
-  font-size: .48rem;
+  font-size: .58rem;
   font-weight: 400;
 }
 
@@ -4128,13 +4133,13 @@ html {
   color: #78dbff;
   text-transform: uppercase;
   letter-spacing: .08em;
-  font-size: .5rem;
+  font-size: .68rem;
 }
 
 .og-cert-evolution__approval-notes p {
   margin: .2rem 0 0;
   color: #b2c6d8;
-  font-size: .54rem;
+  font-size: .68rem;
   line-height: 1.35;
 }
 
@@ -4211,7 +4216,7 @@ html {
   color: #78dbff;
   text-transform: uppercase;
   letter-spacing: .1em;
-  font-size: .64rem;
+  font-size: .78rem;
 }
 
 .og-cert-focus-card span {
@@ -4220,13 +4225,13 @@ html {
   color: #9fb6cb;
   text-transform: uppercase;
   letter-spacing: .06em;
-  font-size: .46rem;
+  font-size: .66rem;
 }
 
 .og-cert-focus-card p {
   margin: 0;
   color: #cfe3f2;
-  font-size: .56rem;
+  font-size: .68rem;
   line-height: 1.36;
 }
 
@@ -4264,7 +4269,7 @@ html {
 .og-cert-program__cell span {
   text-transform: uppercase;
   letter-spacing: .07em;
-  font-size: .5rem;
+  font-size: .75rem;
   color: #9fb6cb;
 }
 
@@ -4274,6 +4279,7 @@ html {
 }
 
 @media (max-width: 1024px) {
+
   .og-talent-depth__composition-grid,
   .og-talent-depth__sap-grid,
   .og-cert-evolution__approval-notes,
@@ -4488,14 +4494,14 @@ html {
 .og-mini-funnel__level span {
   text-transform: uppercase;
   letter-spacing: .08em;
-  font-size: .46rem;
+  font-size: .66rem;
   color: #9fb6cb;
 }
 
 .og-mini-funnel__level b {
   margin-top: .1rem;
   font-weight: 500;
-  font-size: .4rem;
+  font-size: .6rem;
   color: #85e0a3;
   text-transform: uppercase;
   letter-spacing: .03em;
@@ -4594,6 +4600,7 @@ html {
 }
 
 @media (max-width: 1024px) {
+
   .og-talent-depth-compare,
   .og-cert-evolution-compare,
   .og-cert-funnel-compare,
@@ -4604,6 +4611,7 @@ html {
 }
 
 @media (max-width: 640px) {
+
   .og-talent-depth-compare,
   .og-cert-evolution-compare,
   .og-cert-funnel-compare,
@@ -4614,6 +4622,7 @@ html {
 }
 
 @media (max-height: 820px) {
+
   .og-talent-depth-compare,
   .og-cert-evolution-compare {
     gap: .8rem;
